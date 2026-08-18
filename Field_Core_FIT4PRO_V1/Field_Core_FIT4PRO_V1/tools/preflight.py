@@ -65,7 +65,7 @@ try:
     if not app_id or app_id.group(1) != PHONE_PACKAGE:
         errors.append("android applicationId mismatch")
     watch_pkg = re.search(
-        r"buildConfigField\s+['\"]String['\"]\s*,\s*['\"]WATCH_PACKAGE['\"]\s*,\s*['\"]\\\"([^\\\"]+)\\\"['\"]",
+        r"buildConfigField\s+['\"]String['\"]\s*,\s*['\"]WATCH_PACKAGE['\"]\s*,\s*['\"]\"([^\"]+)\"['\"]",
         gradle,
     )
     if not watch_pkg or watch_pkg.group(1) != WATCH_BUNDLE:
