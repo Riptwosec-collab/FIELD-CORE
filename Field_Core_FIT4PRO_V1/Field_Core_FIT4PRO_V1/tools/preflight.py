@@ -180,6 +180,23 @@ try:
         if token not in hml: errors.append("watch phase2 UI missing " + token)
 except Exception as exc: errors.append("advanced phase2 check: " + str(exc))
 
+
+# Advanced phase 3 interaction surface.
+try:
+    upgrades = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldUpgradeManager.java")
+    wifi = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutManager.java")
+    runtime = read("watch-lite/entry/src/main/js/MainAbility/pages/index/index.js")
+    hml = read("watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml")
+    for token in ["PHONE_FIND", "captureOutdoorLocationIfEnabled", "priority"]:
+        if token not in upgrades: errors.append("advanced phase3 manager missing " + token)
+    for token in ["weightedLoad", "2.4 GHZ INCLUDES NEARBY-CHANNEL WEIGHTING"]:
+        if token not in wifi: errors.append("Wi-Fi Scout phase3 missing " + token)
+    for token in ["wifi1Detail", "wifiTrustSelected", "advMissionPrepare", "advFindPhone", "cyberSweep"]:
+        if token not in runtime: errors.append("watch phase3 runtime missing " + token)
+    for token in ["NETWORK DETAIL", "SIGNAL HUNT USES RSSI TREND", "NEW / UNKNOWN ≠ MALICIOUS", "PREPARE PACK"]:
+        if token not in hml: errors.append("watch phase3 UI missing " + token)
+except Exception as exc: errors.append("advanced phase3 check: " + str(exc))
+
 # Both transport directions must enforce <=1 KB P2P messages.
 try:
     bridge = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/WearBridge.java")

@@ -471,6 +471,38 @@
     <text class="wifi-note">RSSI = SIGNAL PROXIMITY • NOT PHYSICAL DISTANCE</text>
   </div>
 
+
+  <div if="{{view == 'wifiList'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">LOCAL / PHONE</text><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="wifiListBack"/><div class="status-area"><text class="status-title">SORT</text><text class="status-secure">SIGNAL</text></div></div>
+    <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiListTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RSSI • SECURITY • BAND</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="wifi-network-list">
+      <div class="wifi-network-row"><input type="button" class="wifi-network-btn" value="{{wifi1}}" onclick="wifi1Detail"/><text class="wifi-network-meta">{{wifi1Meta}}</text></div>
+      <div class="wifi-network-row"><input type="button" class="wifi-network-btn" value="{{wifi2}}" onclick="wifi2Detail"/><text class="wifi-network-meta">{{wifi2Meta}}</text></div>
+      <div class="wifi-network-row"><input type="button" class="wifi-network-btn" value="{{wifi3}}" onclick="wifi3Detail"/><text class="wifi-network-meta">{{wifi3Meta}}</text></div>
+      <div class="wifi-network-row"><input type="button" class="wifi-network-btn" value="{{wifi4}}" onclick="wifi4Detail"/><text class="wifi-network-meta">{{wifi4Meta}}</text></div>
+    </div>
+    <text class="wifi-note">OPEN ≠ FREE INTERNET • HIDDEN ≠ THREAT</text>
+  </div>
+
+  <div if="{{view == 'wifiDetail'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">WI-FI</text></div><text class="status-label">DETAIL</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advWifiNetworks"/><div class="status-area"><text class="status-title">RISK</text><text class="status-secure">{{wifiSelectedRisk}}</text></div></div>
+    <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiSelectedSsid}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">NETWORK DETAIL</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="wifi-detail-card"><div class="wifi-detail-row"><text class="module-k">SIGNAL</text><text class="module-v">{{wifiSelectedRssi}} dBm</text></div><div class="wifi-detail-row"><text class="module-k">SECURITY</text><text class="module-v">{{wifiSelectedSecurity}}</text></div><div class="wifi-detail-row"><text class="module-k">BAND / CH</text><text class="module-v">{{wifiSelectedBand}} / {{wifiSelectedChannel}}</text></div><div class="wifi-detail-row"><text class="module-k">BSSID</text><text class="wifi-bssid">{{wifiSelectedBssid}}</text></div></div>
+    <div class="wifi-detail-actions"><input type="button" class="wifi-detail-btn" value="TRUST" onclick="wifiTrustSelected"/><input type="button" class="wifi-detail-btn" value="PIN" onclick="wifiPinSelected"/><input type="button" class="wifi-detail-btn active-state" value="SIGNAL HUNT" onclick="wifiSignalSelected"/><input type="button" class="wifi-detail-btn warning-btn" value="HIDE" onclick="wifiHideSelected"/></div>
+    <text class="wifi-note">SIGNAL HUNT USES RSSI TREND • NOT PHYSICAL DIRECTION</text>
+  </div>
+
+  <div if="{{view == 'cyberSweep'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">CYBER SWEEP</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="openWifiScout"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
+    <div class="page-header compact-header"><text class="page-title">CYBER SWEEP</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">WI-FI + BLUETOOTH</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="cyber-sweep-stage"><div class="network-radar sweep-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="radar-sweep"></div><div class="radar-core"><text class="radar-value">{{wifiCount}}</text><text class="radar-label">WIFI</text></div></div><div class="sweep-side"><div class="module-stat"><text class="module-k">BLUETOOTH</text><text class="module-v">{{btCount}}</text></div><div class="module-stat"><text class="module-k">TRUSTED</text><text class="module-v">{{btTrusted}}</text></div><div class="module-stat"><text class="module-k">UNKNOWN</text><text class="module-v">{{btUnknown}}</text></div><div class="module-stat"><text class="module-k">OPEN WIFI</text><text class="module-v warning-text">{{wifiOpen}}</text></div></div></div>
+    <div class="detail-extra"><input type="button" class="mini-extra active-state" value="SCAN AGAIN" onclick="advCyberSweep"/><input type="button" class="mini-extra" value="DEVICE HISTORY" onclick="advBtHistory"/></div>
+    <text class="wifi-note">NEW / UNKNOWN ≠ MALICIOUS</text>
+  </div>
+
   <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADV</text></div><text class="status-label">{{advancedState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
@@ -480,11 +512,14 @@
     <div class="detail-extra"><input type="button" class="mini-extra active-state" value="REFRESH" onclick="advancedRefresh"/><input type="button" class="mini-extra" value="ADVANCED HUB" onclick="openAdvancedHub"/></div>
     <div if="{{advancedTitle == 'NIGHT / STEALTH HUD'}}" class="detail-extra"><input type="button" class="mini-extra" value="ENABLE" onclick="advStealthOn"/><input type="button" class="mini-extra" value="DISABLE" onclick="advStealthOff"/></div>
     <div if="{{advancedTitle == 'FIELD QUICK PROFILES'}}" class="profile-row"><input type="button" class="profile-btn" value="DAILY" onclick="advProfileDaily"/><input type="button" class="profile-btn" value="OUTDOOR" onclick="advProfileOutdoor"/><input type="button" class="profile-btn" value="RUNNING" onclick="advProfileRunning"/><input type="button" class="profile-btn" value="NIGHT" onclick="advProfileNight"/></div>
-    <div if="{{advancedTitle == 'MISSION PACK'}}" class="detail-extra"><input type="button" class="mini-extra" value="MISSION START" onclick="advMissionStart"/><input type="button" class="mini-extra" value="MISSION STOP" onclick="advMissionStop"/></div>
-    <div if="{{advancedTitle == 'LOST MODE PRO'}}" class="detail-extra"><input type="button" class="mini-extra" value="START LOST" onclick="advLostStart"/><input type="button" class="mini-extra" value="STOP LOST" onclick="advLostStop"/></div>
+    <div if="{{advancedTitle == 'MISSION PACK'}}" class="detail-extra"><input type="button" class="mini-extra active-state" value="PREPARE PACK" onclick="advMissionPrepare"/><input type="button" class="mini-extra" value="MISSION START" onclick="advMissionStart"/></div><input if="{{advancedTitle == 'MISSION PACK'}}" type="button" class="wide-extra" value="MISSION STOP" onclick="advMissionStop"/>
+    <div if="{{advancedTitle == 'LOST MODE PRO'}}" class="profile-row"><input type="button" class="profile-btn" value="FIND PHONE" onclick="advFindPhone"/><input type="button" class="profile-btn" value="RETURN" onclick="advLostReturn"/><input type="button" class="profile-btn danger-btn" value="SOS" onclick="advLostSos"/></div><div if="{{advancedTitle == 'LOST MODE PRO'}}" class="detail-extra"><input type="button" class="mini-extra" value="START LOST" onclick="advLostStart"/><input type="button" class="mini-extra" value="STOP LOST" onclick="advLostStop"/></div>
     <div if="{{advancedTitle == 'FIELD NOTIFICATION FILTER'}}" class="profile-row"><input type="button" class="profile-btn" value="FIELD" onclick="advNotifyField"/><input type="button" class="profile-btn" value="MISSION" onclick="advNotifyMission"/><input type="button" class="profile-btn" value="STEALTH" onclick="advNotifyStealth"/></div>
     <div if="{{advancedTitle == 'NEARBY DEVICE RECON'}}" class="detail-extra"><input type="button" class="mini-extra" value="SCAN" onclick="advBtScan"/><input type="button" class="mini-extra" value="HISTORY" onclick="advBtHistory"/></div>
     <div if="{{advancedTitle == 'EMERGENCY ESCALATION'}}" class="profile-row"><input type="button" class="profile-btn" value="L0" onclick="advEmergencyLevel0"/><input type="button" class="profile-btn" value="L1" onclick="advEmergencyLevel1"/><input type="button" class="profile-btn" value="L2" onclick="advEmergencyLevel2"/><input type="button" class="profile-btn danger-btn" value="L3" onclick="advEmergencyLevel3"/></div>
+    <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="profile-row"><input type="button" class="profile-btn" value="WIFI ACTIVE" onclick="advWifiModeActive"/><input type="button" class="profile-btn" value="BALANCED" onclick="advWifiModeBalanced"/><input type="button" class="profile-btn" value="SAVER" onclick="advWifiModeSaver"/></div>
+    <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="detail-extra"><input type="button" class="mini-extra" value="LOCATION ATTACH ON" onclick="advLocationAttachOn"/><input type="button" class="mini-extra" value="LOCATION ATTACH OFF" onclick="advLocationAttachOff"/></div>
+    <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="detail-extra"><input type="button" class="mini-extra" value="HAPTICS ON" onclick="advHapticsOn"/><input type="button" class="mini-extra" value="HAPTICS OFF" onclick="advHapticsOff"/></div>
   </div>
 
   <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen page-enter">

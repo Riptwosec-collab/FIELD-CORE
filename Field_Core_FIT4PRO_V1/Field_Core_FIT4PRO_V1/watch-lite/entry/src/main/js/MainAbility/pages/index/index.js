@@ -32,7 +32,9 @@ export default {
     hrSubscribed:false,motionArmed:false,motionCalibrating:false,compassActive:false,barometerActive:false,breadcrumbActive:false,breadcrumbPoints:0,returning:false,sosConfirmUntil:0,
     advancedTitle:'COMMAND CENTER',advancedSubtitle:'FIELD INTELLIGENCE',advancedState:'NO DATA',advancedData:'NO DATA',advancedAction:'',
     wifiCount:'--',wifiOpen:'--',wifiSecured:'--',wifiBest:'NO DATA',wifiAge:'--',btCount:'--',btTrusted:'--',btUnknown:'--',
-    contextMode:'UNKNOWN',contextConfidence:'--',missionLabel:'INACTIVE',envRisk:'--',quickProfile:'DAILY',notificationMode:'FIELD',stealthMode:false,fieldSettings:'--'
+    contextMode:'UNKNOWN',contextConfidence:'--',missionLabel:'INACTIVE',envRisk:'--',quickProfile:'DAILY',notificationMode:'FIELD',stealthMode:false,fieldSettings:'--',wifiScanMode:'BALANCED',
+    wifiListTitle:'NEARBY NETWORKS',wifi1:'-',wifi2:'-',wifi3:'-',wifi4:'-',wifi1Meta:'',wifi2Meta:'',wifi3Meta:'',wifi4Meta:'',wifi1Bssid:'',wifi2Bssid:'',wifi3Bssid:'',wifi4Bssid:'',
+    wifiSelectedSsid:'-',wifiSelectedBssid:'',wifiSelectedRssi:'--',wifiSelectedSecurity:'--',wifiSelectedBand:'--',wifiSelectedChannel:'--',wifiSelectedRisk:'--',lastSignalHaptic:0
   },
 
   anchors:[],timeline:[],breadcrumbRoute:[],pressureHistory:[],lastLocation:null,previousLocation:null,weatherCache:null,phoneCapabilities:null,
@@ -92,9 +94,9 @@ export default {
   pick(o,k,fallback){return o&&typeof o[k]!=='undefined'?o[k]:fallback;},
   compactAdvanced(v){if(!v)return 'NO DATA';if(typeof v!=='object')return String(v);var keys=['status','mode','decision','profile','recommended','level','score','confidence','count','networks','open','secured','trusted','new','unknown','durationSec','ageSec','active'],out=[],i,k;for(i=0;i<keys.length;i++){k=keys[i];if(typeof v[k]!=='undefined'&&v[k]!==null)out.push(k.toUpperCase()+': '+String(v[k]));}if(out.length)return out.join(' • ');try{var s=JSON.stringify(v);return s.length>230?s.substring(0,227)+'...':s;}catch(e){return 'DATA READY';}},
   applyAdvancedResult(action,obj){var d=obj&&obj.data?obj.data:{};this.advancedState=obj&&obj.ok?'READY':'ERROR';this.advancedData=this.compactAdvanced(d);this.featureData=this.advancedData;this.message=(obj&&obj.ok?'OK: ':'ERROR: ')+(obj&&obj.message?obj.message:action);this.lastSync=timeText(Date.now());
-    if(action.indexOf('WIFI_')===0||action.indexOf('OUTDOOR_SCAN')===0){this.wifiCount=this.pick(d,'count',this.pick(d,'total',this.pick(d,'networks',this.wifiCount)));this.wifiOpen=this.pick(d,'open',this.wifiOpen);this.wifiSecured=this.pick(d,'secured',this.wifiSecured);this.wifiAge=this.pick(d,'ageSec',this.wifiAge);var b=d.best&&d.best.network?d.best.network:(d.best||d.strongest||null);if(b)this.wifiBest=String(this.pick(b,'s',this.pick(b,'ssid','AVAILABLE')));}
+    if(action.indexOf('WIFI_')===0||action.indexOf('OUTDOOR_SCAN')===0){this.wifiCount=this.pick(d,'count',this.pick(d,'total',this.pick(d,'networks',this.wifiCount)));this.wifiOpen=this.pick(d,'open',this.wifiOpen);this.wifiSecured=this.pick(d,'secured',this.wifiSecured);this.wifiAge=this.pick(d,'ageSec',this.wifiAge);this.wifiScanMode=String(this.pick(d,'mode',this.pick(d,'scanMode',this.wifiScanMode)));var b=d.best&&d.best.network?d.best.network:(d.best||d.strongest||null);if(b)this.wifiBest=String(this.pick(b,'s',this.pick(b,'ssid','AVAILABLE')));if(action==='WIFI_NETWORKS'||action==='WIFI_OPEN'||action==='WIFI_HISTORY'||action==='WIFI_TRUSTED'||action==='WIFI_SEARCH'){this.applyWifiList(d,action);}if(action==='WIFI_DETAIL'){this.applyWifiDetail(d);}if(action==='WIFI_SIGNAL_HUNT'){this.signalHuntFeedback(d);}}
     if(action.indexOf('BT_RECON_')===0){this.btCount=this.pick(d,'count',this.pick(d,'total',this.btCount));this.btTrusted=this.pick(d,'trusted',this.btTrusted);this.btUnknown=this.pick(d,'unknown',this.btUnknown);}
-    if(action==='CYBER_SWEEP'){var w=d.wifi||{},b2=d.bluetooth||{};this.wifiCount=this.pick(w,'count',this.wifiCount);this.wifiOpen=this.pick(w,'open',this.wifiOpen);this.btCount=this.pick(b2,'count',this.btCount);this.btTrusted=this.pick(b2,'trusted',this.btTrusted);this.btUnknown=this.pick(b2,'unknown',this.btUnknown);}
+    if(action==='CYBER_SWEEP'){var w=d.wifi||{},b2=d.bluetooth||{};this.wifiCount=this.pick(w,'count',this.wifiCount);this.wifiOpen=this.pick(w,'open',this.wifiOpen);this.btCount=this.pick(b2,'count',this.btCount);this.btTrusted=this.pick(b2,'trusted',this.btTrusted);this.btUnknown=this.pick(b2,'unknown',this.btUnknown);this.view='cyberSweep';}
     if(action==='FIELD_CONTEXT_STATUS'){this.contextMode=String(this.pick(d,'mode','UNKNOWN'));this.contextConfidence=String(this.pick(d,'confidence','--'));}
     if(action==='ENV_RISK_STATUS'){this.envRisk=String(this.pick(d,'level','--'));}
     if(action==='MISSION_STATUS'||action==='MISSION_START'||action==='MISSION_STOP'){this.missionLabel=this.pick(d,'active',false)?'ACTIVE':'INACTIVE';}
@@ -133,15 +135,29 @@ export default {
   advEmergencyEscalation(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_STATUS');},
   advPowerAuto(){this.openFeature('24');},
   advSmartAnchor(){this.openFeature('11');},
+  wifiItemName(x){return x?String(this.pick(x,'s',this.pick(x,'ssid','HIDDEN NETWORK'))):'-';},
+  wifiItemMeta(x){if(!x)return '';var r=this.pick(x,'r',this.pick(x,'rssi','--')),sec=this.pick(x,'sec',this.pick(x,'security','UNKNOWN')),band=this.pick(x,'band','');return String(r)+' dBm • '+String(sec)+' • '+String(band);},
+  setWifiSlot(i,x){this['wifi'+i]=this.wifiItemName(x);this['wifi'+i+'Meta']=this.wifiItemMeta(x);this['wifi'+i+'Bssid']=x?String(this.pick(x,'b',this.pick(x,'bssid',''))):'';},
+  applyWifiList(d,action){var arr=d&&d.items?d.items:[];this.wifiListTitle=action==='WIFI_OPEN'?'OPEN WI-FI':(action==='WIFI_HISTORY'?'WI-FI HISTORY':(action==='WIFI_TRUSTED'?'TRUSTED WI-FI':(action==='WIFI_SEARCH'?'SEARCH RESULTS':'NEARBY NETWORKS')));var i;for(i=1;i<=4;i++)this.setWifiSlot(i,arr&&arr.length>=i?arr[i-1]:null);this.view='wifiList';},
+  applyWifiDetail(d){this.wifiSelectedSsid=String(this.pick(d,'s',this.pick(d,'ssid','HIDDEN NETWORK')));this.wifiSelectedBssid=String(this.pick(d,'b',this.pick(d,'bssid','')));this.wifiSelectedRssi=String(this.pick(d,'r',this.pick(d,'rssi','--')));this.wifiSelectedSecurity=String(this.pick(d,'sec',this.pick(d,'security','UNKNOWN')));this.wifiSelectedBand=String(this.pick(d,'band','UNKNOWN'));this.wifiSelectedChannel=String(this.pick(d,'ch',this.pick(d,'channel','--')));this.wifiSelectedRisk=String(this.pick(d,'riskLevel',this.pick(d,'risk','--')));this.view='wifiDetail';},
+  signalHuntFeedback(d){var now=Date.now();if(now-this.lastSignalHaptic<2500)return;var trend=String(this.pick(d,'trend','STABLE')),prox=String(this.pick(d,'proximity',''));if(trend==='STRONGER'||prox==='VERY NEAR'){this.haptic('short');if(prox==='VERY NEAR'){var self=this;setTimeout(function(){self.haptic('short');},220);}this.lastSignalHaptic=now;}},
+  wifiOpenSlot(i){var b=this['wifi'+i+'Bssid'];if(!b){this.message='NO NETWORK';return;}this.openAdvanced('WI-FI DETAIL','SECURITY / SIGNAL','WIFI_DETAIL',{bssid:b});},
+  wifi1Detail(){this.wifiOpenSlot(1);},wifi2Detail(){this.wifiOpenSlot(2);},wifi3Detail(){this.wifiOpenSlot(3);},wifi4Detail(){this.wifiOpenSlot(4);},
+  wifiTrustSelected(){if(this.wifiSelectedBssid)this.sendCommand('WIFI_TRUST',{bssid:this.wifiSelectedBssid});},wifiPinSelected(){if(this.wifiSelectedBssid)this.sendCommand('WIFI_PIN',{bssid:this.wifiSelectedBssid});},wifiHideSelected(){if(this.wifiSelectedBssid){this.sendCommand('WIFI_HIDE',{bssid:this.wifiSelectedBssid});this.view='wifiScout';}},wifiSignalSelected(){if(this.wifiSelectedBssid)this.openAdvanced('SIGNAL HUNT','RSSI TREND • NOT DIRECTION','WIFI_SIGNAL_HUNT',{bssid:this.wifiSelectedBssid});},
+  wifiListBack(){this.view='wifiScout';},
+
   advSettings(){this.openAdvanced('FIELD CORE SETTINGS','PRIVACY / POWER / ALERTS','FIELD_SETTINGS_STATUS');},
-  advStealthOn(){this.openAdvanced('NIGHT / STEALTH HUD','LOW MOTION / LOW ALERT','STEALTH_SET',{enabled:true});},
-  advStealthOff(){this.openAdvanced('NIGHT / STEALTH HUD','LOW MOTION / LOW ALERT','STEALTH_SET',{enabled:false});},
+  advWifiModeActive(){this.openAdvanced('FIELD CORE SETTINGS','WI-FI SCAN MODE','WIFI_SCAN_MODE',{mode:'ACTIVE'});},advWifiModeBalanced(){this.openAdvanced('FIELD CORE SETTINGS','WI-FI SCAN MODE','WIFI_SCAN_MODE',{mode:'BALANCED'});},advWifiModeSaver(){this.openAdvanced('FIELD CORE SETTINGS','WI-FI SCAN MODE','WIFI_SCAN_MODE',{mode:'BATTERY_SAVER'});},
+  advLocationAttachOn(){this.openAdvanced('FIELD CORE SETTINGS','PRIVACY','FIELD_SETTINGS_SET',{attachLocation:true});},advLocationAttachOff(){this.openAdvanced('FIELD CORE SETTINGS','PRIVACY','FIELD_SETTINGS_SET',{attachLocation:false});},advHapticsOn(){this.openAdvanced('FIELD CORE SETTINGS','HAPTICS','FIELD_SETTINGS_SET',{haptics:true});},advHapticsOff(){this.openAdvanced('FIELD CORE SETTINGS','HAPTICS','FIELD_SETTINGS_SET',{haptics:false});},
+
+  advStealthOn(){this.applyPowerProfileInternal('ENDURANCE',false);this.openAdvanced('NIGHT / STEALTH HUD','LOW MOTION / LOW ALERT','STEALTH_SET',{enabled:true});},
+  advStealthOff(){this.enableAutoPower();this.openAdvanced('NIGHT / STEALTH HUD','LOW MOTION / LOW ALERT','STEALTH_SET',{enabled:false});},
   advProfileDaily(){this.openAdvanced('FIELD QUICK PROFILES','MULTI-SYSTEM PRESETS','QUICK_PROFILE_SET',{profile:'DAILY'});},
   advProfileOutdoor(){this.openAdvanced('FIELD QUICK PROFILES','MULTI-SYSTEM PRESETS','QUICK_PROFILE_SET',{profile:'OUTDOOR'});},
   advProfileRunning(){this.openAdvanced('FIELD QUICK PROFILES','MULTI-SYSTEM PRESETS','QUICK_PROFILE_SET',{profile:'RUNNING'});},
   advProfileNight(){this.openAdvanced('FIELD QUICK PROFILES','MULTI-SYSTEM PRESETS','QUICK_PROFILE_SET',{profile:'NIGHT'});},
-  advMissionStart(){this.openAdvanced('MISSION PACK','MISSION CONTROL','MISSION_START');},advMissionStop(){this.openAdvanced('MISSION PACK','MISSION CONTROL','MISSION_STOP');},
-  advLostStart(){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_START');},advLostStop(){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_STOP');},
+  advMissionPrepare(){this.openAdvanced('MISSION PACK','OFFLINE MISSION DATA','MISSION_PACK_SAVE',{name:'FIELD MISSION',waypoints:this.breadcrumbPoints,weatherSnapshot:this.weatherState,compassBearing:this.headingNameText,safePoints:this.anchorsCount,map:'NOT CACHED'});},advMissionStart(){this.openAdvanced('MISSION PACK','MISSION CONTROL','MISSION_START');},advMissionStop(){this.openAdvanced('MISSION PACK','MISSION CONTROL','MISSION_STOP');},
+  advFindPhone(){this.openAdvanced('FIND PHONE','PHONE HAPTIC ALERT','PHONE_FIND');},advLostReturn(){if(this.breadcrumbRoute.length)this.returnBreadcrumb();else this.message='NO RETURN ROUTE';},advLostSos(){this.quickEmergency();},advLostStart(){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_START');},advLostStop(){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_STOP');},
   advNotifyField(){this.openAdvanced('NOTIFICATION FILTER','FIELD PRIORITIES','NOTIFICATION_FILTER_SET',{mode:'FIELD'});},advNotifyMission(){this.openAdvanced('NOTIFICATION FILTER','FIELD PRIORITIES','NOTIFICATION_FILTER_SET',{mode:'MISSION'});},advNotifyStealth(){this.openAdvanced('NOTIFICATION FILTER','FIELD PRIORITIES','NOTIFICATION_FILTER_SET',{mode:'STEALTH'});},
   advEmergencyLevel0(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_SET',{level:0,reason:'USER'});},advEmergencyLevel1(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_SET',{level:1,reason:'USER CHECK'});},advEmergencyLevel2(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_SET',{level:2,reason:'USER WARNING'});},advEmergencyLevel3(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_SET',{level:3,reason:'USER SOS'});},
   advBtHistory(){this.openAdvanced('DEVICE HISTORY','LOCAL BLE HISTORY','BT_RECON_HISTORY',{limit:6});},
@@ -149,14 +165,14 @@ export default {
   advWifiDuplicates(){this.openAdvanced('DUPLICATE SSID','CHECK BEFORE CONNECTING','WIFI_DUPLICATES');},
 
   advWifiScan(){this.view='wifiScout';this.advancedState='SCANNING';this.advancedData='WAITING FOR PHONE SCAN';this.sendCommand('WIFI_SCAN',this.advancedPayload());},
-  advWifiNetworks(){this.openAdvanced('NEARBY NETWORKS','RSSI STRONGEST FIRST','WIFI_NETWORKS',{page:0,size:4,filter:'ALL',sort:'SIGNAL'});},
-  advWifiOpen(){this.openAdvanced('OPEN WI-FI','OPEN DOES NOT MEAN FREE','WIFI_OPEN',{page:0});},
+  advWifiNetworks(){this.wifiListTitle='NEARBY NETWORKS';this.view='wifiList';this.sendCommand('WIFI_NETWORKS',{page:0,size:4,filter:'ALL',sort:'SIGNAL'});},
+  advWifiOpen(){this.wifiListTitle='OPEN WI-FI';this.view='wifiList';this.sendCommand('WIFI_OPEN',{page:0});},
   advWifiBest(){this.openAdvanced('BEST WI-FI','QUALITY RECOMMENDATION','WIFI_BEST');},
   advWifiChannels(){this.openAdvanced('CHANNELS','CHANNEL LOAD','WIFI_CHANNELS');},
-  advWifiHistory(){this.openAdvanced('WI-FI HISTORY','LOCAL ONLY','WIFI_HISTORY');},
-  advWifiTrusted(){this.openAdvanced('TRUSTED WI-FI','USER TRUST LIST','WIFI_TRUSTED');},
+  advWifiHistory(){this.wifiListTitle='WI-FI HISTORY';this.view='wifiList';this.sendCommand('WIFI_HISTORY');},
+  advWifiTrusted(){this.wifiListTitle='TRUSTED WI-FI';this.view='wifiList';this.sendCommand('WIFI_TRUSTED');},
   advWifiOutdoor(){this.openAdvanced('OUTDOOR SCAN','BALANCED BACKGROUND SCAN','OUTDOOR_SCAN_START',{mode:'BALANCED'});},
-  advCyberSweep(){this.openAdvanced('CYBER SWEEP','WI-FI + BLUETOOTH','CYBER_SWEEP');},
+  advCyberSweep(){this.advancedState='SCANNING';this.advancedData='WI-FI + BLUETOOTH';this.view='cyberSweep';this.sendCommand('CYBER_SWEEP',this.advancedPayload());},
   applyVoiceIntent(intent,data){var slot=data&&data.slot?String(data.slot):null;
     if(intent==='OPEN_EMERGENCY'){this.openFeature('21');this.message='VOICE: EMERGENCY CORE';return;}
     if(intent==='GEO_SAVE_TEMP'){this.saveAnchor(slot);return;}
@@ -292,6 +308,6 @@ export default {
   goList(){this.setCategory(this.category);},catBio(){this.setCategory('BIO');},catSport(){this.setCategory('SPORT');},catNav(){this.setCategory('NAV');},catEnv(){this.setCategory('ENV');},catTactical(){this.setCategory('TACTICAL');},catSystem(){this.setCategory('SYSTEM');},
   quickAnchor(){this.openFeature('11');},quickBreadcrumb(){this.openFeature('10');},quickNav(){this.openFeature('8');},quickEmergency(){this.openFeature('21');},
   detailAction1(){this.sendCommand(this.action1Command);},detailAction2(){this.sendCommand(this.action2Command);},detailAction3(){this.sendCommand(this.action3Command);},detailAction4(){this.sendCommand(this.action4Command);},
-  swipeEvent(e){if(e.direction==='right'){if(this.view==='lightRed'||this.view==='lightWhite'||this.view==='lightBlack'){this.stopLight();return;}if(this.view==='home')app.terminate();else if(this.view==='detail')this.goList();else if(this.view==='advanced'||this.view==='wifiScout')this.view='advancedHub';else if(this.view==='advancedHub'||this.view==='anchors'||this.view==='timeline'||this.view==='capabilities'||this.view==='emergencyConfirm')this.goHome();else this.goHome();}},
+  swipeEvent(e){if(e.direction==='right'){if(this.view==='lightRed'||this.view==='lightWhite'||this.view==='lightBlack'){this.stopLight();return;}if(this.view==='home')app.terminate();else if(this.view==='detail')this.goList();else if(this.view==='wifiDetail')this.view='wifiList';else if(this.view==='wifiList'||this.view==='cyberSweep')this.view='wifiScout';else if(this.view==='advanced'||this.view==='wifiScout')this.view='advancedHub';else if(this.view==='advancedHub'||this.view==='anchors'||this.view==='timeline'||this.view==='capabilities'||this.view==='emergencyConfirm')this.goHome();else this.goHome();}},
   f0(){this.openFeature('0');},f1(){this.openFeature('1');},f2(){this.openFeature('2');},f3(){this.openFeature('3');},f4(){this.openFeature('4');},f5(){this.openFeature('5');},f6(){this.openFeature('6');},f7(){this.openFeature('7');},f8(){this.openFeature('8');},f9(){this.openFeature('9');},f10(){this.openFeature('10');},f11(){this.openFeature('11');},f12(){this.openFeature('12');},f13(){this.openFeature('13');},f14(){this.openFeature('14');},f15(){this.openFeature('15');},f16(){this.openFeature('16');},f17(){this.openFeature('17');},f18(){this.openFeature('18');},f19(){this.openFeature('19');},f20(){this.openFeature('20');},f21(){this.openFeature('21');},f22(){this.openFeature('22');},f23(){this.openFeature('23');},f24(){this.openFeature('24');},f25(){this.openFeature('25');},f26(){this.openFeature('26');},f27(){this.openFeature('27');}
 };
