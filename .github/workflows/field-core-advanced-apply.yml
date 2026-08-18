@@ -1,0 +1,50 @@
+name: FIELD CORE Advanced Apply
+
+on:
+  push:
+    branches:
+      - agent/field-core-full-upgrade
+    paths:
+      - tools/apply_field_core_advanced.py
+      - .github/workflows/field-core-advanced-apply.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/field-core-full-upgrade
+          fetch-depth: 0
+      - name: Apply non-destructive Advanced integration
+        run: python tools/apply_field_core_advanced.py
+      - name: Run Fusion + Advanced preflight
+        run: |
+          cd Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1
+          python tools/preflight.py
+      - name: Check whitespace and resulting diff
+        run: |
+          git diff --check
+          git status --short
+      - name: Commit generated integration
+        run: |
+          if git diff --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldUpgradeManager.java
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutManager.java
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/BluetoothReconManager.java
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/MainActivity.java
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.js
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.css
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/tools/preflight.py
+          git commit -m "Integrate FIELD CORE Advanced Pro watch experience [advanced-applied]"
+          git push origin HEAD:agent/field-core-full-upgrade
