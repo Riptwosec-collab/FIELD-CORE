@@ -1,4 +1,4 @@
-# Build / Install Field Core — FIT 4 Pro
+# Build / Install FIELD CORE Fusion 2.0 — HUAWEI WATCH FIT 4 Pro
 
 ## 1. เตรียม
 
@@ -6,8 +6,12 @@
 - Huawei Developer account / Wear Engine access
 - DevEco Studio
 - Android Studio + Android SDK
+- JDK 17
 - Signing certificate ทั้ง Phone และ Watch
 - Huawei official Lite Wearable `wearengine.js`
+- Internet บนโทรศัพท์สำหรับ live Weather/UV/Sun/Sky
+
+หากต้องการ Sleep Readiness หรือ health metrics จาก HUAWEI Health จริง ต้องเตรียม Health Service Kit SDK + scopes ที่ได้รับอนุมัติ + user authorization เพิ่มเติม
 
 ## 2. Identity
 
@@ -25,104 +29,181 @@ Packages:
 
 ## 3. Wear Engine SDK
 
-ดาวน์โหลด Huawei Lite Wearable Wear Engine SDK แล้วแทน offline stub:
+แทน offline stub ด้วย official Lite Wearable SDK file:
 
 ```powershell
 python tools/install_wearengine_sdk.py C:\path\wearengine.js
 ```
 
-> อย่า release แอปโดยใช้ `wearengine.js` stub ที่อยู่ใน repository เพราะ stub ถูกสร้างไว้เพื่อให้ source tree เปิดอ่านได้แบบ offline เท่านั้น และจะไม่สร้าง P2P link จริง
+> Offline stub ใน repository ใช้สำหรับ source development เท่านั้น ไม่สร้าง P2P link จริง
 
 ## 4. Preflight
 
-ตรวจ source ก่อนเปิด IDE:
+Development:
 
 ```powershell
 python tools/preflight.py
 ```
 
-ก่อนทำ build สำหรับติดตั้งจริง ให้ใช้ release gate:
+Release gate:
 
 ```powershell
 python tools/preflight.py --release
 ```
 
-Release gate จะตรวจอย่างน้อย:
+Fusion 2.0 preflight ตรวจ:
 
-- Phone/Watch package identity ตรงกัน
-- Feature catalog ครบ 28 modules
-- UI แสดง Depth/Light เป็น `API GATED`
-- Watch/Phone มี P2P message guard 1 KB
-- ไม่มี App ID / signing fingerprint placeholder
-- ไม่ได้ใช้ offline Wear Engine stub
-- Syntax ของ watch JavaScript เมื่อเครื่องมี Node.js
+- Phone/Watch package identity + version
+- Feature catalog IDs `0..27`
+- Field Fusion runtime
+- Geo Anchor / Breadcrumb / Timeline / Cache / Impact Assist hooks
+- Field HUD dedicated views
+- live Weather adapter
+- Health `REAL_DATA_ONLY` + scope gate
+- Depth/Ambient Light `API GATED`
+- P2P <= 1 KB guards ทั้งสองฝั่ง
+- App ID / fingerprint placeholders
+- offline Wear Engine stub
+- Watch JS syntax เมื่อมี Node.js
+
+GitHub Actions จะเรียก development preflight อัตโนมัติบน push/PR
 
 ## 5. Android Companion
 
-เปิด `android-companion/` ใน Android Studio → Sync Gradle → Sign → Install บน Android phone ที่จับคู่กับ Watch
+เปิด `android-companion/` ใน Android Studio → Sync Gradle → Sign → Install บนโทรศัพท์ Android ที่จับคู่กับ Watch
 
-กดในแอปตามลำดับ:
+กดตามลำดับ:
 
 1. `AUTHORIZE WEAR ENGINE`
 2. `FIND / REGISTER WATCH`
 3. `GRANT LOCATION`
 4. `SEND FIELD STATUS`
+5. `TEST PHONE LOCATION`
+6. `TEST LIVE WEATHER`
+7. `PROVIDER STATUS`
 
-ตรวจว่า log แสดง watch connected/receiver ready ก่อนทดสอบ command จากนาฬิกา
+Location จะพยายามขอ fresh fix ก่อน และ fallback เป็น last-known พร้อม `ageMs/stale` เมื่อจำเป็น
 
 ## 6. Watch
 
 เปิด `watch-lite/` ใน DevEco Studio → ตั้ง signing → เลือก FIT 4 Pro real device target → Run/Install
 
-หน้าหลักควรแสดง:
+Fusion HUD ควรแสดงอย่างน้อย:
 
-- PHONE: `CONNECTED` เมื่อ P2P พร้อม
-- Battery จาก watch
-- HR เฉพาะเมื่อ subscription สำเร็จ
-- FIELD status จาก local state หรือ phone snapshot
+- Field state / reason
+- PHONE link
+- GPS state
+- Battery
+- HR เมื่อ subscription สำเร็จ
+- Altitude เมื่อ location API ให้ค่า
+- Weather/UV เมื่อ phone provider พร้อม
+- Pressure เมื่อ Barometer ทำงาน
+- Heading เมื่อ Compass ทำงาน
+- Power profile
+- Route/cache status
 
-## 7. ทดสอบ local-first ก่อน
+## 7. Local-first test matrix
 
-ทดสอบทีละ module และตรวจทั้ง success/failure state:
+### Field Fusion
+- เปิด HR + Compass + Barometer
+- ตรวจว่าค่าใน Fusion HUD เปลี่ยนตาม source จริง
+- ปิด sensor ทีละตัวและตรวจว่า state ไม่ค้าง ACTIVE
 
-- BIO TELEMETRY → `START HR` / `STOP HR`
-- TACTICAL NAV → `COMPASS` / `STOP`
-- ATMOSPHERIC → `PRESSURE` / `STOP`
-- GEO ANCHOR → `SAVE` / `LAST` / `RETURN`
-- BREADCRUMB → `START` / `MARK` / `RETURN` / `STOP`
-- POWER COMMANDER → เปลี่ยน profile แล้วปิด/เปิดแอปเพื่อตรวจ restore
-- TACTICAL LIGHT → RED / WHITE / SOS และ Stop
-- MOTION COMMAND → ARM / CALIBRATE / DISARM
+### Geo Anchor Pro
+- Save anchor หลายจุด
+- ทดสอบ named anchors: `CAR`, `CAMP`, `HOTEL`, `HOME` ผ่าน Voice
+- ตรวจ distance / bearing return
+- ปิด/เปิด app แล้ว anchor ต้อง restore
 
-สิ่งที่ต้องตรวจเป็นพิเศษใน V1.1:
+### Breadcrumb 2.0
+- START → เดินจริง → ตรวจ point count
+- เปลี่ยน Power profile ระหว่าง route และตรวจ sampling policy
+- ปิด/เปิด app แล้ว START ต้อง resume route
+- RETURN ต้องอัปเดต distance/bearing/ETA
+- เดินออกจาก route มากพอและตรวจ off-route haptic
+- NEW ROUTE ต้องเริ่ม route ใหม่โดยไม่แตะ Geo Anchors
 
-- เมื่อ sensor permission/API fail ต้องไม่ค้างสถานะ ACTIVE
-- `BREADCRUMB MARK` ต้องไม่เขียนทับ GEO Anchor
-- เปลี่ยน POWER profile ขณะ Breadcrumb ทำงานแล้ว sampling interval ต้องถูก reschedule
+### Power Commander 2.0
+- AUTO: ตรวจการเปลี่ยน BALANCED → ENDURANCE → GRID ตาม battery thresholds
+- Manual: PERFORMANCE / BALANCED / ENDURANCE / GRID
+- ปิด/เปิด app และตรวจ persistence
 
-## 8. ทดสอบ Phone-assisted
+### Offline Field Cache
+- Sync Weather แล้วตัด phone link
+- ตรวจว่า cached data ถูกแสดงด้วย label `CACHED`
+- ตรวจ route/anchor/power state หลัง restart
 
-- DEVICE ACCESS → STATUS / SYNC
-- PHONE location: ทดสอบทั้ง permission granted และ denied
-- VOICE COMMAND → ทดสอบ Anchor / Compass / Weather / Emergency / Breadcrumb Return
-- EMERGENCY CORE → SEND LOC ต้องรายงานชัดเจนหากยังไม่ได้ตั้ง contact channel
-- ปิด Bluetooth/Watch link แล้วทดสอบ reconnect + `FIND / REGISTER WATCH`
+### Mission Timeline
+- ทำ Anchor / Route / Power / Sensor / SOS action
+- ตรวจ timeline และ paging
+- ตรวจ cap ไม่เกิน 80 events
 
-## 9. Provider-backed
+## 8. Emergency Core Pro
 
-Weather / UV / Transit / Sleep / Running Advanced Metrics / Golf / Sky ยังถูกแยกผ่าน `ProviderRegistry.java`
-ต้องต่อ provider จริงก่อนจึงจะแสดง live data; ค่า default จะตอบ `PROVIDER NOT CONFIGURED` แทนการปลอมข้อมูล
+Impact Assist เป็น **opt-in assistance heuristic** ไม่ใช่ certified fall-detection หรือ medical system
 
-Depth HUD และ Light Guardian ต้องคงสถานะ `API GATED` จนกว่าจะยืนยัน third-party API ที่อนุญาตสำหรับ FIT 4 Pro ได้จริง
+ทดสอบ:
 
-## 10. Release checklist
+1. เปิด `IMPACT ON`
+2. ตรวจว่า Motion monitoring ถูก arm
+3. ทดสอบ workflow ด้วย simulator/dev instrumentation ก่อน ไม่ควรสร้างการกระแทกอุปกรณ์จริงเพื่อทดสอบ
+4. เมื่อเกิด candidate state ต้องขึ้น countdown
+5. `I'M OK / CANCEL` ต้องยกเลิกได้
+6. `SEND NOW` หรือ countdown หมด → ขอ fresh phone location packet
+7. ตรวจ packet มี timestamp/location/accuracy เมื่อ source มีข้อมูล
 
-ก่อนส่งไฟล์ให้ติดตั้งจริง:
+> Repository ปัจจุบัน **ยังไม่ส่ง SMS/โทร/ติดต่อ emergency service อัตโนมัติ** จนกว่าจะเพิ่ม delivery channel ที่ผู้ใช้ตั้งค่าเอง
+
+## 9. Phone-assisted providers
+
+### Implemented
+- fresh phone location
+- live Weather
+- UV
+- sunrise/sunset
+- moonrise/moonset/moon phase
+- thermal load derived from live weather fields
+- Voice Command TH/EN
+- local field sessions / hydration / manual golf score
+
+### Still gated
+- HUAWEI Health live Sleep Readiness / advanced health metrics: Health Service Kit + scopes + authorization required
+- Transit / route-backed Silent Nav: provider not configured
+- Acoustic exposure: provider/API not configured
+- Raw Depth / Ambient Light: `API GATED`
+
+Provider failure must return an explicit error; cached data must remain labeled cached.
+
+## 10. Voice Command 2.0 test
+
+ตัวอย่าง:
+
+- `บันทึกตำแหน่งรถ` → save `CAR`
+- `กลับไปที่รถ` → return `CAR`
+- `เปิดเข็มทิศ`
+- `เช็กอากาศ`
+- `โหมดประหยัด`
+- `โหมด performance`
+- `ประวัติภาคสนาม`
+- `สถานะอุปกรณ์`
+
+คำสั่งนอก whitelist ต้องตอบ unknown และไม่ execute
+
+## 11. Release checklist
+
+ก่อนส่งไฟล์ติดตั้งจริง:
 
 1. `python tools/preflight.py --release` ต้อง PASS
-2. Android Companion build/sign สำเร็จ
-3. Watch app build/sign สำเร็จ
-4. P2P ส่ง/รับ command ได้สองทางบนอุปกรณ์จริง
-5. ทดสอบ sensor permission denial อย่างน้อย 1 รอบ
-6. ทดสอบ disconnect/reconnect อย่างน้อย 1 รอบ
-7. ยืนยันว่าไม่มี DEMO/provider-missing data ถูกแสดงเป็น live data
+2. official Watch Wear Engine SDK ถูกใส่จริง
+3. App ID/fingerprints ถูกต้อง
+4. Android Companion build/sign สำเร็จ
+5. Watch build/sign สำเร็จ
+6. P2P รับ/ส่งได้สองทางบน FIT 4 Pro จริง
+7. sensor permission denial/retry ผ่าน
+8. Bluetooth disconnect/reconnect ผ่าน
+9. Weather live → cached fallback ผ่าน
+10. Geo Anchor/Breadcrumb persistence ผ่าน
+11. Emergency cancel path ผ่าน
+12. ไม่มี demo/provider-missing data ถูกแสดงเป็น live data
+
+ดู status matrix ที่ `docs/FUSION_2_FEATURE_MATRIX.md`
