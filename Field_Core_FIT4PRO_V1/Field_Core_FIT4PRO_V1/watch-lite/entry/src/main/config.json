@@ -3,8 +3,8 @@
     "bundleName": "com.riptwosec.fieldcore.watch",
     "vendor": "Riptwosec",
     "version": {
-      "code": 1000000,
-      "name": "1.0.0"
+      "code": 2000000,
+      "name": "2.0.0"
     }
   },
   "deviceConfig": {},
@@ -12,9 +12,7 @@
     "package": "com.riptwosec.fieldcore.watch",
     "name": ".MainAbility",
     "mainAbility": ".MainAbility",
-    "deviceType": [
-      "liteWearable"
-    ],
+    "deviceType": ["liteWearable"],
     "distro": {
       "deliveryWithInstall": true,
       "moduleName": "entry",
@@ -29,59 +27,29 @@
         "description": "$string:description",
         "type": "page",
         "launchType": "standard",
-        "skills": [
-          {
-            "entities": [
-              "entity.system.home"
-            ],
-            "actions": [
-              "action.system.home"
-            ]
-          }
-        ],
+        "skills": [{"entities":["entity.system.home"],"actions":["action.system.home"]}],
         "srcLanguage": "js",
         "srcPath": "MainAbility"
       }
     ],
     "js": [
       {
-        "pages": [
-          "pages/index/index"
-        ],
+        "pages": ["pages/index/index"],
         "name": ".MainAbility",
-        "window": {
-          "designWidth": 480,
-          "autoDesignWidth": false
-        }
+        "window": {"designWidth":480,"autoDesignWidth":false}
       }
     ],
     "reqPermissions": [
-      {
-        "name": "ohos.permission.VIBRATE"
-      },
-      {
-        "name": "ohos.permission.LOCATION"
-      },
-      {
-        "name": "ohos.permission.READ_HEALTH_DATA"
-      },
-      {
-        "name": "ohos.permission.ACTIVITY_MOTION"
-      },
-      {
-        "name": "ohos.permission.ACCELEROMETER"
-      },
-      {
-        "name": "ohos.permission.GYROSCOPE"
-      }
+      {"name":"ohos.permission.VIBRATE"},
+      {"name":"ohos.permission.LOCATION"},
+      {"name":"ohos.permission.READ_HEALTH_DATA"},
+      {"name":"ohos.permission.ACTIVITY_MOTION"},
+      {"name":"ohos.permission.ACCELEROMETER"},
+      {"name":"ohos.permission.GYROSCOPE"}
     ],
     "metaData": {
       "customizeData": [
-        {
-          "name": "supportLists",
-          "value": "com.riptwosec.fieldcore:REPLACE_WITH_ANDROID_SHA256_FINGERPRINT",
-          "extra": ""
-        }
+        {"name":"supportLists","value":"com.riptwosec.fieldcore:REPLACE_WITH_ANDROID_SHA256_FINGERPRINT","extra":""}
       ]
     }
   }
