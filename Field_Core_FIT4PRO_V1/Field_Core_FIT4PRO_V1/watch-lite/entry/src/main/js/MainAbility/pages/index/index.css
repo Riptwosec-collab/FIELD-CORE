@@ -346,6 +346,9 @@
 .advanced-core{width:452px;height:126px;flex-direction:row;align-items:center;justify-content:space-around;border-width:1px;border-color:#12364a;border-radius:13px;background-color:#02080b;margin-top:3px;}
 .advanced-side{width:210px;height:108px;flex-direction:column;justify-content:space-between;}.advanced-data-card{width:452px;height:102px;border-radius:12px;background-color:#07111c;border-width:1px;border-color:#12364a;padding:8px 10px;margin-top:5px;}.advanced-data{width:430px;height:54px;color:#a9f0ec;font-size:7px;margin-top:3px;}
 
+
+.profile-row{width:452px;height:31px;flex-direction:row;justify-content:space-between;margin-top:3px;}.profile-btn{width:109px;height:29px;border-radius:8px;border-width:1px;border-color:#12343d;background-color:#010507;color:#9aa4aa;font-size:6px;}
+
 @keyframes scanMove { 0% { transform:translateY(0px); opacity:0.06; } 45% { opacity:0.35; } 100% { transform:translateY(406px); opacity:0.06; } }
 @keyframes statusPulse { 0% { opacity:0.35; } 50% { opacity:1; } 100% { opacity:0.35; } }
 @keyframes softGlow { 0% { opacity:0.65; } 50% { opacity:1; } 100% { opacity:0.65; } }

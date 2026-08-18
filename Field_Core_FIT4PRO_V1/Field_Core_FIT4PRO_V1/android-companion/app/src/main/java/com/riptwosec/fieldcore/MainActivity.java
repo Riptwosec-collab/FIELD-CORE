@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,7 @@ public class MainActivity extends Activity implements WearBridge.Listener, Field
     private ProviderRegistry providers;
     private FieldUpgradeManager upgrades;
     private String pendingVoiceRequestId="";
+    private final Handler alertHandler=new Handler(Looper.getMainLooper());
 
     @Override protected void onCreate(Bundle b){
         super.onCreate(b);buildUi();wear=new WearBridge(this,this);location=new PhoneLocationProvider(this);providers=new ProviderRegistry(this,location);upgrades=new FieldUpgradeManager(this,providers,location);upgrades.eventBus().subscribe(this);router=new FieldCommandRouter(providers,location,upgrades,this);
@@ -71,10 +74,10 @@ public class MainActivity extends Activity implements WearBridge.Listener, Field
     @Override public void status(String s){runOnUiThread(()->{if(log!=null)log.setText(s+"\n\n"+log.getText());});}
 
     @Override public void onFieldEvent(JSONObject event){
-        if(upgrades==null||event==null||!upgrades.shouldSurface(event))return;
+        if(upgrades==null||event==null||!upgrades.shouldSurface(event)||!upgrades.hapticAlertsEnabled())return;
         try{
-            String priority=event.optString("priority","P3");String pattern="P1".equals(priority)?"long":("P2".equals(priority)?"short":"short");
-            JSONObject h=new JSONObject();h.put("v",1);h.put("type","haptic");h.put("pattern",pattern);h.put("message",event.optString("message",event.optString("type","FIELD EVENT")));wear.sendJson(h.toString());
+            String priority=event.optString("priority","P3");String pattern="P1".equals(priority)?"long":"short";
+            JSONObject h=new JSONObject();h.put("v",1);h.put("type","haptic");h.put("pattern",pattern);h.put("message",event.optString("message",event.optString("type","FIELD EVENT")));final String wire=h.toString();wear.sendJson(wire);if("P2".equals(priority))alertHandler.postDelayed(()->wear.sendJson(wire),260L);
         }catch(Exception ignored){}
     }
 

@@ -51,7 +51,7 @@
       <input type="button" class="btn-cyber" value="BREADCRUMB" onclick="quickBreadcrumb"/>
     </div>
 
-    <div class="favorite-label"><text class="section-lbl">● FIELD QUICK ACTIONS</text><text class="mini-state">{{powerLabel}}</text></div>
+    <div class="favorite-label"><text class="section-lbl">● FIELD QUICK ACTIONS</text><text class="mini-state">{{powerLabel}} • WIFI {{wifiCount}}</text></div>
     <div class="grid-2 macro-grid"><input type="button" class="macro-btn" value="NAV" onclick="quickNav"/><input type="button" class="macro-btn danger-lite" value="EMERGENCY" onclick="quickEmergency"/></div>
 
     <div class="dock-wrapper">
@@ -453,6 +453,7 @@
       <list-item class="advanced-row"><input type="button" class="advanced-btn" value="IMPACT REVIEW SCREEN" onclick="advImpactReview"/><text class="advanced-source">SAFETY</text></list-item>
       <list-item class="advanced-row"><input type="button" class="advanced-btn danger-feature" value="EMERGENCY ESCALATION" onclick="advEmergencyEscalation"/><text class="advanced-source danger-text">P1–P4</text></list-item>
       <list-item class="advanced-row"><input type="button" class="advanced-btn" value="WI-FI SCOUT / CYBER SWEEP" onclick="openWifiScout"/><text class="advanced-source">RECON</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="FIELD CORE SETTINGS" onclick="advSettings"/><text class="advanced-source">PRIVACY</text></list-item>
     </list>
   </div>
 
@@ -465,7 +466,7 @@
       <div class="wifi-row"><input type="button" class="wifi-btn active-state" value="SCAN" onclick="advWifiScan"/><input type="button" class="wifi-btn" value="NETWORKS" onclick="advWifiNetworks"/><input type="button" class="wifi-btn warning-btn" value="OPEN" onclick="advWifiOpen"/></div>
       <div class="wifi-row"><input type="button" class="wifi-btn" value="BEST" onclick="advWifiBest"/><input type="button" class="wifi-btn" value="CHANNELS" onclick="advWifiChannels"/><input type="button" class="wifi-btn" value="HISTORY" onclick="advWifiHistory"/></div>
       <div class="wifi-row"><input type="button" class="wifi-btn" value="TRUSTED" onclick="advWifiTrusted"/><input type="button" class="wifi-btn" value="OUTDOOR" onclick="advWifiOutdoor"/><input type="button" class="wifi-btn" value="CYBER SWEEP" onclick="advCyberSweep"/></div>
-      <div class="wifi-row"><input type="button" class="wifi-btn" value="BT RECON" onclick="advBtScan"/><input type="button" class="wifi-btn" value="DUPLICATE" onclick="advWifiNetworks"/><input type="button" class="wifi-btn" value="STATUS" onclick="openWifiScout"/></div>
+      <div class="wifi-row"><input type="button" class="wifi-btn" value="BT RECON" onclick="advBtScan"/><input type="button" class="wifi-btn" value="SIGNAL HUNT" onclick="advWifiSignal"/><input type="button" class="wifi-btn" value="DUPLICATE" onclick="advWifiDuplicates"/></div>
     </div>
     <text class="wifi-note">RSSI = SIGNAL PROXIMITY • NOT PHYSICAL DISTANCE</text>
   </div>
@@ -477,6 +478,13 @@
     <div class="advanced-core"><div class="command-core"><div if="{{powerProfile != 'ENDURANCE'}}" class="command-pulse"></div><text class="command-state">{{advancedState}}</text><text class="command-app">{{contextMode}}</text></div><div class="advanced-side"><div class="module-stat"><text class="module-k">CONTEXT</text><text class="module-v">{{contextMode}}</text></div><div class="module-stat"><text class="module-k">CONF</text><text class="module-v">{{contextConfidence}}</text></div><div class="module-stat"><text class="module-k">WIFI / BT</text><text class="module-v">{{wifiCount}} / {{btCount}}</text></div><div class="module-stat"><text class="module-k">RISK</text><text class="module-v">{{envRisk}}</text></div></div></div>
     <div class="advanced-data-card"><text class="section-label">REAL / CACHED RESULT</text><text class="advanced-data">{{advancedData}}</text><text class="module-note">{{message}}</text></div>
     <div class="detail-extra"><input type="button" class="mini-extra active-state" value="REFRESH" onclick="advancedRefresh"/><input type="button" class="mini-extra" value="ADVANCED HUB" onclick="openAdvancedHub"/></div>
+    <div if="{{advancedTitle == 'NIGHT / STEALTH HUD'}}" class="detail-extra"><input type="button" class="mini-extra" value="ENABLE" onclick="advStealthOn"/><input type="button" class="mini-extra" value="DISABLE" onclick="advStealthOff"/></div>
+    <div if="{{advancedTitle == 'FIELD QUICK PROFILES'}}" class="profile-row"><input type="button" class="profile-btn" value="DAILY" onclick="advProfileDaily"/><input type="button" class="profile-btn" value="OUTDOOR" onclick="advProfileOutdoor"/><input type="button" class="profile-btn" value="RUNNING" onclick="advProfileRunning"/><input type="button" class="profile-btn" value="NIGHT" onclick="advProfileNight"/></div>
+    <div if="{{advancedTitle == 'MISSION PACK'}}" class="detail-extra"><input type="button" class="mini-extra" value="MISSION START" onclick="advMissionStart"/><input type="button" class="mini-extra" value="MISSION STOP" onclick="advMissionStop"/></div>
+    <div if="{{advancedTitle == 'LOST MODE PRO'}}" class="detail-extra"><input type="button" class="mini-extra" value="START LOST" onclick="advLostStart"/><input type="button" class="mini-extra" value="STOP LOST" onclick="advLostStop"/></div>
+    <div if="{{advancedTitle == 'FIELD NOTIFICATION FILTER'}}" class="profile-row"><input type="button" class="profile-btn" value="FIELD" onclick="advNotifyField"/><input type="button" class="profile-btn" value="MISSION" onclick="advNotifyMission"/><input type="button" class="profile-btn" value="STEALTH" onclick="advNotifyStealth"/></div>
+    <div if="{{advancedTitle == 'NEARBY DEVICE RECON'}}" class="detail-extra"><input type="button" class="mini-extra" value="SCAN" onclick="advBtScan"/><input type="button" class="mini-extra" value="HISTORY" onclick="advBtHistory"/></div>
+    <div if="{{advancedTitle == 'EMERGENCY ESCALATION'}}" class="profile-row"><input type="button" class="profile-btn" value="L0" onclick="advEmergencyLevel0"/><input type="button" class="profile-btn" value="L1" onclick="advEmergencyLevel1"/><input type="button" class="profile-btn" value="L2" onclick="advEmergencyLevel2"/><input type="button" class="profile-btn danger-btn" value="L3" onclick="advEmergencyLevel3"/></div>
   </div>
 
   <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen page-enter">
