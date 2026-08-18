@@ -1,5 +1,6 @@
 name: FIELD CORE Advanced Phase 3 Apply
 
+# One-shot source integration for the phase 3 interaction layer.
 on:
   push:
     branches:
