@@ -45,10 +45,14 @@ export function fusionState(s){
 export function routeStats(current,route,distanceFn,bearingFn){
   route=route||[];if(!current||!route.length)return null;
   var base=route[0],last=route[route.length-1],distBase=Math.round(distanceFn(current,base)),distLast=Math.round(distanceFn(current,last));
-  var bearing=Math.round(bearingFn(current,base)),routeDistance=0,i=1;
-  for(i=1;i<route.length;i++)routeDistance+=distanceFn(route[i-1],route[i]);
-  var etaMin=null;var speed=safeNumber(current.speedKmh,0);if(speed>0.5)etaMin=Math.max(1,Math.round((distBase/1000)/speed*60));
-  return {distanceToBaseM:distBase,distanceToLastM:distLast,bearing:bearing,routeDistanceM:Math.round(routeDistance),etaMin:etaMin,points:route.length};
+  var bearing=Math.round(bearingFn(current,base)),routeDistance=0,gain=0,loss=0,i=1,a1,a2,dAlt;
+  for(i=1;i<route.length;i++){
+    routeDistance+=distanceFn(route[i-1],route[i]);a1=safeNumber(route[i-1].altitude,null);a2=safeNumber(route[i].altitude,null);
+    if(a1!==null&&a2!==null){dAlt=a2-a1;if(dAlt>0)gain+=dAlt;else loss+=Math.abs(dAlt);}
+  }
+  var speed=safeNumber(current.speedKmh,null);if(speed===null){var ms=safeNumber(current.speed,null);if(ms!==null)speed=ms*3.6;}
+  var etaMin=null;if(speed!==null&&speed>0.5)etaMin=Math.max(1,Math.round((distBase/1000)/speed*60));
+  return {distanceToBaseM:distBase,distanceToLastM:distLast,bearing:bearing,routeDistanceM:Math.round(routeDistance),altitudeGainM:Math.round(gain),altitudeLossM:Math.round(loss),etaMin:etaMin,points:route.length};
 }
 
 export function impactUpdate(sample,state,now){
