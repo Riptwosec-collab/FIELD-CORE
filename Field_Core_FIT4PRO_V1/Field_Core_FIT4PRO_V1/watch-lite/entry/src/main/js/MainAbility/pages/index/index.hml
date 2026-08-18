@@ -63,6 +63,8 @@
         <input type="button" class="dock-item" value="ENV" onclick="catEnv"/>
         <input type="button" class="dock-item" value="TAC" onclick="catTactical"/>
         <input type="button" class="dock-item" value="SYS" onclick="catSystem"/>
+        <input type="button" class="dock-item" value="CMD" onclick="openCommandCenter"/>
+        <input type="button" class="dock-item" value="REC" onclick="openReconHub"/>
       </div>
     </div>
   </div>
@@ -388,6 +390,8 @@
     <div if="{{selectedId == '21'}}" class="detail-extra"><input type="button" class="mini-extra" value="{{impactButtonLabel}}" onclick="toggleImpactAssist"/><input type="button" class="mini-extra danger" value="COUNTDOWN" onclick="startEmergencyCountdown"/></div>
     <input if="{{selectedId == '24'}}" type="button" class="wide-extra" value="AUTO POWER" onclick="enableAutoPower"/>
     <input if="{{selectedId == '27'}}" type="button" class="wide-extra" value="CAPABILITY MATRIX" onclick="openCapabilities"/>
+    <input if="{{selectedId == '0'}}" type="button" class="wide-extra advanced-wide" value="COMMAND CENTER" onclick="openCommandCenter"/>
+    <input if="{{selectedId == '27'}}" type="button" class="wide-extra advanced-wide" value="RECON / WI-FI SCOUT" onclick="openReconHub"/>
   </div>
 
   <div if="{{view == 'anchors'}}" class="page masterpiece-page utility-page page-enter">
@@ -419,6 +423,60 @@
     <input type="button" class="wide-extra" value="REFRESH PHONE STATUS" onclick="detailAction1"/>
     <input type="button" class="wide-extra" value="SYNC" onclick="detailAction2"/>
     <text class="gated-note">DEPTH + AMBIENT LIGHT • API GATED</text>
+  </div>
+
+
+  <div if="{{view == 'advancedHub'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADVANCED</text></div><text class="status-label">{{quickProfile}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">CONTEXT</text><text class="status-secure">{{contextMode}}</text></div></div>
+    <div class="page-header compact-header"><text class="page-title">FIELD CORE PRO</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">CONTEXT • MISSION • RECON</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="advanced-summary"><div class="adv-stat"><text class="adv-k">WIFI</text><text class="adv-v">{{wifiCount}}</text></div><div class="adv-stat"><text class="adv-k">BT</text><text class="adv-v">{{btCount}}</text></div><div class="adv-stat"><text class="adv-k">MISSION</text><text class="adv-v">{{missionLabel}}</text></div><div class="adv-stat"><text class="adv-k">RISK</text><text class="adv-v">{{envRisk}}</text></div></div>
+    <list class="advanced-list">
+      <list-item class="advanced-row"><input type="button" class="advanced-btn active-state" value="COMMAND CENTER" onclick="openCommandCenter"/><text class="advanced-source">CORE</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="FIELD CONTEXT ENGINE 2.0" onclick="advContext"/><text class="advanced-source">FUSION</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="TELEMETRY CONFIDENCE" onclick="advTelemetry"/><text class="advanced-source">QUALITY</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="LOST MODE PRO" onclick="advLostMode"/><text class="advanced-source">NAV</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="MISSION PACK OFFLINE" onclick="advMissionPack"/><text class="advanced-source">OFFLINE</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="SMART GEO ANCHOR" onclick="advSmartAnchor"/><text class="advanced-source">WATCH</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="ENVIRONMENT RISK INDEX" onclick="advEnvRisk"/><text class="advanced-source">ENV</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="POWER COMMANDER AUTO 2.0" onclick="advPowerAuto"/><text class="advanced-source">WATCH</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="SENSOR SELF-TEST" onclick="advSensorTest"/><text class="advanced-source">SYSTEM</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="MISSION TIMELINE PRO" onclick="advTimeline"/><text class="advanced-source">EVENTS</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="VOICE MACRO ENGINE" onclick="advVoiceMacro"/><text class="advanced-source">PHONE</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="FIELD NOTIFICATION FILTER" onclick="advNotification"/><text class="advanced-source">ALERT</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="NEARBY DEVICE RECON" onclick="advBtRecon"/><text class="advanced-source">PHONE BLE</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="RUNNING ZONE HUD" onclick="advRunZone"/><text class="advanced-source">SPORT</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="SKY SCANNER PRO" onclick="advSkyPro"/><text class="advanced-source">PHONE</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="NIGHT / STEALTH HUD" onclick="advStealth"/><text class="advanced-source">POWER</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="RETURN DECISION HUD" onclick="advReturnDecision"/><text class="advanced-source">NAV</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="FIELD QUICK PROFILES" onclick="advProfiles"/><text class="advanced-source">SYSTEM</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="IMPACT REVIEW SCREEN" onclick="advImpactReview"/><text class="advanced-source">SAFETY</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn danger-feature" value="EMERGENCY ESCALATION" onclick="advEmergencyEscalation"/><text class="advanced-source danger-text">P1–P4</text></list-item>
+      <list-item class="advanced-row"><input type="button" class="advanced-btn" value="WI-FI SCOUT / CYBER SWEEP" onclick="openWifiScout"/><text class="advanced-source">RECON</text></list-item>
+    </list>
+  </div>
+
+  <div if="{{view == 'wifiScout'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">PHONE SCAN</text></div><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">PHONE LINK</text><text class="status-secure">{{connectionState}}</text></div></div>
+    <div class="page-header compact-header"><text class="page-title">WI-FI SCOUT</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RADAR • LOCAL HISTORY</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="wifi-stage"><div class="network-radar wifi-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="radar-sweep"></div><div class="radar-core"><text class="radar-value">{{wifiCount}}</text><text class="radar-label">NETWORKS</text></div></div><div class="wifi-side"><div class="module-stat"><text class="module-k">OPEN</text><text class="module-v warning-text">{{wifiOpen}}</text></div><div class="module-stat"><text class="module-k">SECURED</text><text class="module-v">{{wifiSecured}}</text></div><div class="module-stat"><text class="module-k">BEST</text><text class="module-v wifi-best">{{wifiBest}}</text></div></div></div>
+    <div class="wifi-menu">
+      <div class="wifi-row"><input type="button" class="wifi-btn active-state" value="SCAN" onclick="advWifiScan"/><input type="button" class="wifi-btn" value="NETWORKS" onclick="advWifiNetworks"/><input type="button" class="wifi-btn warning-btn" value="OPEN" onclick="advWifiOpen"/></div>
+      <div class="wifi-row"><input type="button" class="wifi-btn" value="BEST" onclick="advWifiBest"/><input type="button" class="wifi-btn" value="CHANNELS" onclick="advWifiChannels"/><input type="button" class="wifi-btn" value="HISTORY" onclick="advWifiHistory"/></div>
+      <div class="wifi-row"><input type="button" class="wifi-btn" value="TRUSTED" onclick="advWifiTrusted"/><input type="button" class="wifi-btn" value="OUTDOOR" onclick="advWifiOutdoor"/><input type="button" class="wifi-btn" value="CYBER SWEEP" onclick="advCyberSweep"/></div>
+      <div class="wifi-row"><input type="button" class="wifi-btn" value="BT RECON" onclick="advBtScan"/><input type="button" class="wifi-btn" value="DUPLICATE" onclick="advWifiNetworks"/><input type="button" class="wifi-btn" value="STATUS" onclick="openWifiScout"/></div>
+    </div>
+    <text class="wifi-note">RSSI = SIGNAL PROXIMITY • NOT PHYSICAL DISTANCE</text>
+  </div>
+
+  <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page page-enter">
+    <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADV</text></div><text class="status-label">{{advancedState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
+    <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
+    <div class="page-header compact-header"><text class="page-title advanced-title">{{advancedTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">{{advancedSubtitle}}</text><div class="subtitle-line pulse-line"></div></div></div>
+    <div class="advanced-core"><div class="command-core"><div if="{{powerProfile != 'ENDURANCE'}}" class="command-pulse"></div><text class="command-state">{{advancedState}}</text><text class="command-app">{{contextMode}}</text></div><div class="advanced-side"><div class="module-stat"><text class="module-k">CONTEXT</text><text class="module-v">{{contextMode}}</text></div><div class="module-stat"><text class="module-k">CONF</text><text class="module-v">{{contextConfidence}}</text></div><div class="module-stat"><text class="module-k">WIFI / BT</text><text class="module-v">{{wifiCount}} / {{btCount}}</text></div><div class="module-stat"><text class="module-k">RISK</text><text class="module-v">{{envRisk}}</text></div></div></div>
+    <div class="advanced-data-card"><text class="section-label">REAL / CACHED RESULT</text><text class="advanced-data">{{advancedData}}</text><text class="module-note">{{message}}</text></div>
+    <div class="detail-extra"><input type="button" class="mini-extra active-state" value="REFRESH" onclick="advancedRefresh"/><input type="button" class="mini-extra" value="ADVANCED HUB" onclick="openAdvancedHub"/></div>
   </div>
 
   <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen page-enter">

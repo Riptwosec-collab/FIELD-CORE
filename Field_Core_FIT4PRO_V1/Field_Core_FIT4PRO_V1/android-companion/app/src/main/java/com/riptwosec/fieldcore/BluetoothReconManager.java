@@ -38,7 +38,7 @@ public final class BluetoothReconManager {
     private Callback pending;
 
     public BluetoothReconManager(Context c,EventSink sink){context=c.getApplicationContext();events=sink;BluetoothManager m=(BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);adapter=m==null?null:m.getAdapter();prefs=context.getSharedPreferences("fieldcore_bt_recon",Context.MODE_PRIVATE);loadHistory();}
-    public boolean hasPermission(){return Build.VERSION.SDK_INT<31||context.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN)==PackageManager.PERMISSION_GRANTED;}
+    public boolean hasPermission(){return Build.VERSION.SDK_INT<31||(context.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN)==PackageManager.PERMISSION_GRANTED&&context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT)==PackageManager.PERMISSION_GRANTED);}
     public boolean enabled(){return adapter!=null&&adapter.isEnabled();}
     public void close(){if(scanning)stopScan("SCAN CANCELED");main.removeCallbacksAndMessages(null);}
 

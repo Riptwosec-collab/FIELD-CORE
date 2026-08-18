@@ -29,7 +29,10 @@ export default {
     timelinePage:0,timeline1:'-',timeline2:'-',timeline3:'-',timeline4:'-',capabilityText:'LOCAL\nGPS ?  HR ?  COMPASS ?\nBAROMETER ?  MOTION ?\n\nPHONE\nOFFLINE',
     selectedId:'',selectedTitle:'',selectedSource:'',selectedDesc:'',featureState:'READY',featureData:'-',message:'READY',
     action1Label:'',action2Label:'',action3Label:'',action4Label:'',action1Command:'',action2Command:'',action3Command:'',action4Command:'',
-    hrSubscribed:false,motionArmed:false,motionCalibrating:false,compassActive:false,barometerActive:false,breadcrumbActive:false,breadcrumbPoints:0,returning:false,sosConfirmUntil:0
+    hrSubscribed:false,motionArmed:false,motionCalibrating:false,compassActive:false,barometerActive:false,breadcrumbActive:false,breadcrumbPoints:0,returning:false,sosConfirmUntil:0,
+    advancedTitle:'COMMAND CENTER',advancedSubtitle:'FIELD INTELLIGENCE',advancedState:'NO DATA',advancedData:'NO DATA',advancedAction:'',
+    wifiCount:'--',wifiOpen:'--',wifiSecured:'--',wifiBest:'NO DATA',wifiAge:'--',btCount:'--',btTrusted:'--',btUnknown:'--',
+    contextMode:'UNKNOWN',contextConfidence:'--',missionLabel:'INACTIVE',envRisk:'--',quickProfile:'DAILY',notificationMode:'FIELD'
   },
 
   anchors:[],timeline:[],breadcrumbRoute:[],pressureHistory:[],lastLocation:null,previousLocation:null,weatherCache:null,phoneCapabilities:null,
@@ -68,6 +71,7 @@ export default {
   }catch(e){this.message='RX DATA ERROR';}},
 
   handleResult(obj){var action=String(obj.action||'');this.featureState=obj.ok?'READY':'ERROR';this.message=(obj.ok?'OK: ':'ERROR: ')+(obj.message||action||'');
+    if(this.isAdvancedAction(action)){this.applyAdvancedResult(action,obj);return;}
     if(action==='DEVICE_STATUS'||action==='FIELD_SYNC'){if(obj.data){this.phoneCapabilities=obj.data;this.updateCapabilityText();}return;}
     if(action==='WEATHER_REFRESH'||action==='UV_REFRESH'||action==='SUN_REFRESH'||action==='THERMAL_REFRESH'||action==='SKY_REFRESH'||action==='ASTRO_REFRESH'){
       if(obj.ok&&obj.data){this.weatherCache=this.mergeObject(this.weatherCache||{},obj.data);this.applyWeatherCache(this.weatherCache,false);this.persistWeather();this.logEvent('ENV',action.replace('_REFRESH',''));}
@@ -84,6 +88,58 @@ export default {
     var parts=[];if(typeof w.temperatureC!=='undefined')parts.push(this.weatherTemp);if(typeof w.apparentC!=='undefined')parts.push('FEELS '+Math.round(Number(w.apparentC))+'°');if(typeof w.uvIndexMax!=='undefined')parts.push(this.weatherUV);if(w.heatLoad)parts.push('LOAD '+w.heatLoad);if(w.sunrise)parts.push('SUN '+String(w.sunrise).substring(11,16)+'-'+String(w.sunset||'').substring(11,16));this.featureData=parts.join(' • ')||'WEATHER CACHE';this.updateFusion();},
   persistWeather(){var self=this;try{storage.set({key:'fieldcore_weather_cache',value:JSON.stringify(this.weatherCache||{}),success:function(){self.saveOfflineCache();},fail:function(){}});}catch(e){}},
 
+  isAdvancedAction(action){return action.indexOf('WIFI_')===0||action.indexOf('BT_RECON_')===0||action.indexOf('FIELD_CONTEXT')===0||action.indexOf('TELEMETRY_CONFIDENCE')===0||action.indexOf('LOST_MODE')===0||action.indexOf('MISSION_')===0||action.indexOf('ENV_RISK')===0||action.indexOf('SENSOR_SELF_TEST')===0||action.indexOf('TIMELINE_PRO')===0||action.indexOf('VOICE_MACRO')===0||action.indexOf('NOTIFICATION_FILTER')===0||action.indexOf('RUN_ZONE')===0||action.indexOf('SKY_PRO')===0||action.indexOf('STEALTH')===0||action.indexOf('RETURN_DECISION')===0||action.indexOf('QUICK_PROFILE')===0||action.indexOf('IMPACT_REVIEW')===0||action.indexOf('COMMAND_CENTER')===0||action.indexOf('CYBER_SWEEP')===0||action.indexOf('OUTDOOR_SCAN')===0||action.indexOf('EMERGENCY_ESCALATION')===0||action.indexOf('ALERT_')===0;},
+  pick(o,k,fallback){return o&&typeof o[k]!=='undefined'?o[k]:fallback;},
+  compactAdvanced(v){if(!v)return 'NO DATA';if(typeof v!=='object')return String(v);var keys=['status','mode','decision','profile','recommended','level','score','confidence','count','networks','open','secured','trusted','new','unknown','durationSec','ageSec','active'],out=[],i,k;for(i=0;i<keys.length;i++){k=keys[i];if(typeof v[k]!=='undefined'&&v[k]!==null)out.push(k.toUpperCase()+': '+String(v[k]));}if(out.length)return out.join(' • ');try{var s=JSON.stringify(v);return s.length>230?s.substring(0,227)+'...':s;}catch(e){return 'DATA READY';}},
+  applyAdvancedResult(action,obj){var d=obj&&obj.data?obj.data:{};this.advancedState=obj&&obj.ok?'READY':'ERROR';this.advancedData=this.compactAdvanced(d);this.featureData=this.advancedData;this.message=(obj&&obj.ok?'OK: ':'ERROR: ')+(obj&&obj.message?obj.message:action);this.lastSync=timeText(Date.now());
+    if(action.indexOf('WIFI_')===0||action.indexOf('OUTDOOR_SCAN')===0){this.wifiCount=this.pick(d,'count',this.pick(d,'total',this.pick(d,'networks',this.wifiCount)));this.wifiOpen=this.pick(d,'open',this.wifiOpen);this.wifiSecured=this.pick(d,'secured',this.wifiSecured);this.wifiAge=this.pick(d,'ageSec',this.wifiAge);var b=d.best&&d.best.network?d.best.network:(d.best||d.strongest||null);if(b)this.wifiBest=String(this.pick(b,'s',this.pick(b,'ssid','AVAILABLE')));}
+    if(action.indexOf('BT_RECON_')===0){this.btCount=this.pick(d,'count',this.pick(d,'total',this.btCount));this.btTrusted=this.pick(d,'trusted',this.btTrusted);this.btUnknown=this.pick(d,'unknown',this.btUnknown);}
+    if(action==='CYBER_SWEEP'){var w=d.wifi||{},b2=d.bluetooth||{};this.wifiCount=this.pick(w,'count',this.wifiCount);this.wifiOpen=this.pick(w,'open',this.wifiOpen);this.btCount=this.pick(b2,'count',this.btCount);this.btTrusted=this.pick(b2,'trusted',this.btTrusted);this.btUnknown=this.pick(b2,'unknown',this.btUnknown);}
+    if(action==='FIELD_CONTEXT_STATUS'){this.contextMode=String(this.pick(d,'mode','UNKNOWN'));this.contextConfidence=String(this.pick(d,'confidence','--'));}
+    if(action==='ENV_RISK_STATUS'){this.envRisk=String(this.pick(d,'level','--'));}
+    if(action==='MISSION_STATUS'||action==='MISSION_START'||action==='MISSION_STOP'){this.missionLabel=this.pick(d,'active',false)?'ACTIVE':'INACTIVE';}
+    if(action==='QUICK_PROFILE_STATUS'||action==='QUICK_PROFILE_SET'){this.quickProfile=String(this.pick(d,'profile',this.quickProfile));}
+    if(action==='NOTIFICATION_FILTER_STATUS'||action==='NOTIFICATION_FILTER_SET'){this.notificationMode=String(this.pick(d,'mode',this.notificationMode));}
+    if(action==='COMMAND_CENTER'){var c=d.context||{},w2=d.wifi||{},bt=d.devices||{},env=d.environment||{},ms=d.mission||{};this.contextMode=String(this.pick(c,'mode',this.contextMode));this.contextConfidence=String(this.pick(c,'confidence',this.contextConfidence));this.wifiCount=this.pick(w2,'count',this.wifiCount);this.wifiOpen=this.pick(w2,'open',this.wifiOpen);this.btCount=this.pick(bt,'count',this.btCount);this.btTrusted=this.pick(bt,'trusted',this.btTrusted);this.envRisk=String(this.pick(env,'level',this.envRisk));this.missionLabel=this.pick(ms,'active',false)?'ACTIVE':'INACTIVE';this.quickProfile=String(this.pick(d,'profile',this.quickProfile));this.notificationMode=String(this.pick(d,'notification',this.notificationMode));}
+    this.logEvent('ADV',action+' '+(obj&&obj.ok?'OK':'ERROR'));
+  },
+  advancedPayload(extra){var p={battery:this.watchBattery,heartRate:this.heartRate,speedKmh:this.speedKmh,altitude:this.altitude,gpsState:this.gpsState,gpsAvailable:!!this.lastLocation,gpsAccuracyM:this.lastLocation&&this.lastLocation.accuracy?Number(this.lastLocation.accuracy):null,gpsAgeMs:this.lastLocation?Date.now()-Number(this.lastLocation.ts||0):null,hrAvailable:this.hrSubscribed,compassAvailable:this.compassActive,barometerAvailable:this.barometerActive,motionAvailable:this.motionArmed,emergency:this.emergencyCountdown>0||this.impactPending,returnAvailable:this.breadcrumbRoute.length>0,missionMinutes:0};var k;if(extra)for(k in extra)if(extra.hasOwnProperty(k))p[k]=extra[k];return p;},
+  openAdvanced(title,subtitle,action,extra){this.advancedTitle=title;this.advancedSubtitle=subtitle||'FIELD INTELLIGENCE';this.advancedAction=action||'';this.advancedState='LOADING';this.advancedData='WAITING FOR PHONE';this.view='advanced';if(action)this.sendCommand(action,this.advancedPayload(extra));this.haptic('short');},
+  openAdvancedHub(){this.view='advancedHub';this.haptic('short');},
+  openCommandCenter(){this.openAdvanced('COMMAND CENTER','UNIFIED FIELD CORE','COMMAND_CENTER');},
+  openWifiScout(){this.view='wifiScout';this.advancedTitle='WI-FI SCOUT';this.advancedSubtitle='PHONE SCAN • LOCAL DATA';this.sendCommand('WIFI_STATUS',this.advancedPayload());this.haptic('short');},
+  openReconHub(){this.openWifiScout();},
+  advancedRefresh(){if(this.advancedAction)this.sendCommand(this.advancedAction,this.advancedPayload());},
+  advancedBack(){if(this.view==='advanced'||this.view==='wifiScout')this.view='advancedHub';else this.goHome();},
+  advContext(){this.openAdvanced('FIELD CONTEXT','CONTEXT AWARENESS','FIELD_CONTEXT_STATUS');},
+  advTelemetry(){this.openAdvanced('TELEMETRY CONFIDENCE','DATA QUALITY','TELEMETRY_CONFIDENCE');},
+  advLostMode(){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_STATUS');},
+  advMissionPack(){this.openAdvanced('MISSION PACK','OFFLINE MISSION DATA','MISSION_PACK_STATUS');},
+  advEnvRisk(){var temp=finite(this.weatherTemp),uv=String(this.weatherUV||'').replace(/[^0-9.]/g,'');this.openAdvanced('ENVIRONMENT RISK','DECISION SUPPORT','ENV_RISK_STATUS',{temperatureC:temp,uv:finite(uv),altitudeM:this.lastLocation&&finite(this.lastLocation.altitude)!==null?Number(this.lastLocation.altitude):null});},
+  advSensorTest(){this.openAdvanced('SENSOR SELF-TEST','DIAGNOSTICS','SENSOR_SELF_TEST');},
+  advTimeline(){this.openAdvanced('MISSION TIMELINE PRO','UNIFIED EVENT LOG','TIMELINE_PRO',{filter:'ALL',limit:6});},
+  advVoiceMacro(){this.openAdvanced('VOICE MACRO ENGINE','WHITELISTED COMMANDS','VOICE_MACRO_STATUS');},
+  advNotification(){this.openAdvanced('NOTIFICATION FILTER','FIELD PRIORITIES','NOTIFICATION_FILTER_STATUS');},
+  advBtRecon(){this.openAdvanced('NEARBY DEVICE RECON','PHONE BLE SCAN','BT_RECON_STATUS');},
+  advBtScan(){this.openAdvanced('NEARBY DEVICE RECON','PHONE BLE SCAN','BT_RECON_SCAN');},
+  advRunZone(){this.openAdvanced('RUNNING ZONE HUD','REAL RUN TELEMETRY','RUN_ZONE_STATUS');},
+  advSkyPro(){this.openAdvanced('SKY SCANNER PRO','OUTDOOR / PHOTO','SKY_PRO_STATUS');},
+  advStealth(){this.openAdvanced('NIGHT / STEALTH HUD','LOW MOTION / LOW ALERT','STEALTH_STATUS');},
+  advReturnDecision(){this.openAdvanced('RETURN DECISION HUD','DECISION SUPPORT','RETURN_DECISION',{battery:this.watchBattery,returnDistanceM:-1,returnEtaMin:-1,sunsetInMin:-1});},
+  advProfiles(){this.openAdvanced('FIELD QUICK PROFILES','MULTI-SYSTEM PRESETS','QUICK_PROFILE_STATUS');},
+  advImpactReview(){this.openAdvanced('IMPACT REVIEW','EVENT SNAPSHOT','IMPACT_REVIEW_STATUS');},
+  advEmergencyEscalation(){this.openAdvanced('EMERGENCY ESCALATION','LEVEL 0–3','EMERGENCY_ESCALATION_STATUS');},
+  advPowerAuto(){this.openFeature('24');},
+  advSmartAnchor(){this.openFeature('11');},
+  advWifiScan(){this.view='wifiScout';this.advancedState='SCANNING';this.advancedData='WAITING FOR PHONE SCAN';this.sendCommand('WIFI_SCAN',this.advancedPayload());},
+  advWifiNetworks(){this.openAdvanced('NEARBY NETWORKS','RSSI STRONGEST FIRST','WIFI_NETWORKS',{page:0,size:4,filter:'ALL',sort:'SIGNAL'});},
+  advWifiOpen(){this.openAdvanced('OPEN WI-FI','OPEN DOES NOT MEAN FREE','WIFI_OPEN',{page:0});},
+  advWifiBest(){this.openAdvanced('BEST WI-FI','QUALITY RECOMMENDATION','WIFI_BEST');},
+  advWifiChannels(){this.openAdvanced('CHANNELS','CHANNEL LOAD','WIFI_CHANNELS');},
+  advWifiHistory(){this.openAdvanced('WI-FI HISTORY','LOCAL ONLY','WIFI_HISTORY');},
+  advWifiTrusted(){this.openAdvanced('TRUSTED WI-FI','USER TRUST LIST','WIFI_TRUSTED');},
+  advWifiOutdoor(){this.openAdvanced('OUTDOOR SCAN','BALANCED BACKGROUND SCAN','OUTDOOR_SCAN_START',{mode:'BALANCED'});},
+  advCyberSweep(){this.openAdvanced('CYBER SWEEP','WI-FI + BLUETOOTH','CYBER_SWEEP');},
   applyVoiceIntent(intent,data){var slot=data&&data.slot?String(data.slot):null;
     if(intent==='OPEN_EMERGENCY'){this.openFeature('21');this.message='VOICE: EMERGENCY CORE';return;}
     if(intent==='GEO_SAVE_TEMP'){this.saveAnchor(slot);return;}
@@ -94,6 +150,12 @@ export default {
     if(intent.indexOf('POWER_')===0){this.openFeature('24');this.applyPowerProfile(intent);return;}
     if(intent==='DEVICE_STATUS'){this.openCapabilities();this.sendCommand('DEVICE_STATUS');return;}
     if(intent==='OPEN_TIMELINE'){this.openTimeline();return;}
+    if(intent==='CYBER_SWEEP'){this.advCyberSweep();return;}
+    if(intent==='WIFI_SCAN'){this.openWifiScout();this.advWifiScan();return;}
+    if(intent==='OUTDOOR_SCAN_START'){this.advWifiOutdoor();return;}
+    if(intent==='MISSION_START'){this.openAdvanced('MISSION','MISSION CONTROL','MISSION_START');return;}
+    if(intent==='COMMAND_CENTER'){this.openCommandCenter();return;}
+    if(intent==='LOST_MODE_START'){this.openAdvanced('LOST MODE PRO','RETURN / PHONE / SAFE POINT','LOST_MODE_START');return;}
     this.message='VOICE INTENT UNSUPPORTED';
   },
 
@@ -213,6 +275,6 @@ export default {
   goList(){this.setCategory(this.category);},catBio(){this.setCategory('BIO');},catSport(){this.setCategory('SPORT');},catNav(){this.setCategory('NAV');},catEnv(){this.setCategory('ENV');},catTactical(){this.setCategory('TACTICAL');},catSystem(){this.setCategory('SYSTEM');},
   quickAnchor(){this.openFeature('11');},quickBreadcrumb(){this.openFeature('10');},quickNav(){this.openFeature('8');},quickEmergency(){this.openFeature('21');},
   detailAction1(){this.sendCommand(this.action1Command);},detailAction2(){this.sendCommand(this.action2Command);},detailAction3(){this.sendCommand(this.action3Command);},detailAction4(){this.sendCommand(this.action4Command);},
-  swipeEvent(e){if(e.direction==='right'){if(this.view==='lightRed'||this.view==='lightWhite'||this.view==='lightBlack'){this.stopLight();return;}if(this.view==='home')app.terminate();else if(this.view==='detail')this.goList();else if(this.view==='anchors'||this.view==='timeline'||this.view==='capabilities'||this.view==='emergencyConfirm')this.goHome();else this.goHome();}},
+  swipeEvent(e){if(e.direction==='right'){if(this.view==='lightRed'||this.view==='lightWhite'||this.view==='lightBlack'){this.stopLight();return;}if(this.view==='home')app.terminate();else if(this.view==='detail')this.goList();else if(this.view==='advanced'||this.view==='wifiScout')this.view='advancedHub';else if(this.view==='advancedHub'||this.view==='anchors'||this.view==='timeline'||this.view==='capabilities'||this.view==='emergencyConfirm')this.goHome();else this.goHome();}},
   f0(){this.openFeature('0');},f1(){this.openFeature('1');},f2(){this.openFeature('2');},f3(){this.openFeature('3');},f4(){this.openFeature('4');},f5(){this.openFeature('5');},f6(){this.openFeature('6');},f7(){this.openFeature('7');},f8(){this.openFeature('8');},f9(){this.openFeature('9');},f10(){this.openFeature('10');},f11(){this.openFeature('11');},f12(){this.openFeature('12');},f13(){this.openFeature('13');},f14(){this.openFeature('14');},f15(){this.openFeature('15');},f16(){this.openFeature('16');},f17(){this.openFeature('17');},f18(){this.openFeature('18');},f19(){this.openFeature('19');},f20(){this.openFeature('20');},f21(){this.openFeature('21');},f22(){this.openFeature('22');},f23(){this.openFeature('23');},f24(){this.openFeature('24');},f25(){this.openFeature('25');},f26(){this.openFeature('26');},f27(){this.openFeature('27');}
 };

@@ -1,6 +1,7 @@
 package com.riptwosec.fieldcore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ public final class FieldUpgradeManager implements FieldEventBus.Listener {
         try{lastImpact=new JSONObject(prefs.getString("impact_review","{}"));}catch(Exception ignored){}
     }
 
-    public void close(){events.unsubscribe(this);wifi.close();bluetooth.scan((ok,msg,data)->{});}
+    public void close(){events.unsubscribe(this);stopOutdoorService();wifi.close();bluetooth.close();}
     public FieldEventBus eventBus(){return events;}
     public WifiScoutManager wifi(){return wifi;}
     public BluetoothReconManager bluetooth(){return bluetooth;}
@@ -59,8 +60,8 @@ public final class FieldUpgradeManager implements FieldEventBus.Listener {
             case "WIFI_UNTRUST": cb.done(true,"TRUSTED NETWORK UPDATED",wifi.setTrusted(p.optString("bssid",""),false));return;
             case "WIFI_SIGNAL_HUNT": cb.done(true,"SIGNAL DIRECTION ESTIMATE",wifi.signalHunt(p.optString("bssid","")));return;
             case "WIFI_SCAN_MODE": wifi.setMode(p.optString("mode",WifiScoutManager.MODE_BALANCED));cb.done(true,"SCAN MODE "+wifi.getMode(),wifi.status());return;
-            case "OUTDOOR_SCAN_START": cb.done(true,"OUTDOOR SCAN ACTIVE",wifi.startOutdoor());return;
-            case "OUTDOOR_SCAN_STOP": cb.done(true,"SCAN SUMMARY",wifi.stopOutdoor());return;
+            case "OUTDOOR_SCAN_START": wifi.setMode(p.optString("mode",wifi.getMode()));startOutdoorService(wifi.getMode());cb.done(true,"OUTDOOR SCAN ACTIVE",wifi.startOutdoor());return;
+            case "OUTDOOR_SCAN_STOP": stopOutdoorService();cb.done(true,"SCAN SUMMARY",wifi.stopOutdoor());return;
 
             case "BT_RECON_STATUS": cb.done(true,"NEARBY DEVICE RECON",bluetooth.status());return;
             case "BT_RECON_SCAN": bluetooth.scan((ok,msg,data)->cb.done(ok,msg,data));return;
@@ -108,6 +109,11 @@ public final class FieldUpgradeManager implements FieldEventBus.Listener {
             default: cb.done(false,"UNSUPPORTED UPGRADE COMMAND",null);
         }
     }
+
+    private void startOutdoorService(String mode){
+        try{Intent i=new Intent(context,ReconScanService.class);i.setAction(ReconScanService.ACTION_START);i.putExtra(ReconScanService.EXTRA_MODE,mode);if(Build.VERSION.SDK_INT>=26)context.startForegroundService(i);else context.startService(i);}catch(Exception e){events.emit("OUTDOOR_SCAN_SERVICE","SYSTEM","P2","BACKGROUND SCAN RESTRICTED",null);}
+    }
+    private void stopOutdoorService(){try{Intent i=new Intent(context,ReconScanService.class);i.setAction(ReconScanService.ACTION_STOP);context.stopService(i);}catch(Exception ignored){}}
 
     private void cyberSweep(Callback cb){
         wifi.scan((wOk,wMsg,wData)->bluetooth.scan((bOk,bMsg,bData)->{JSONObject o=new JSONObject();try{o.put("wifi",wData==null?wifi.summary():wData);o.put("bluetooth",bData==null?bluetooth.summary():bData);o.put("environment",environmentLabel());o.put("updatedAt",System.currentTimeMillis());}catch(Exception ignored){}events.emit("CYBER_SWEEP","NETWORK","P3","CYBER SWEEP COMPLETE",o);cb.done(wOk||bOk,"CYBER SWEEP COMPLETE",o);}));

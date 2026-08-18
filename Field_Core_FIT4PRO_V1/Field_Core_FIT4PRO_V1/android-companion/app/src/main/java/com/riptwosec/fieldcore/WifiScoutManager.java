@@ -51,7 +51,7 @@ public final class WifiScoutManager {
         context=c.getApplicationContext();events=sink;wifi=(WifiManager)context.getSystemService(Context.WIFI_SERVICE);store=new WifiScoutStore(context);register();
     }
 
-    public void close(){try{if(registered)context.unregisterReceiver(receiver);}catch(Exception ignored){}registered=false;store.close();}
+    public void close(){main.removeCallbacksAndMessages(null);scanPending=false;pending=null;try{if(registered)context.unregisterReceiver(receiver);}catch(Exception ignored){}registered=false;store.close();}
 
     private void register(){if(registered)return;IntentFilter f=new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);try{if(Build.VERSION.SDK_INT>=33)context.registerReceiver(receiver,f,Context.RECEIVER_NOT_EXPORTED);else context.registerReceiver(receiver,f);registered=true;}catch(Exception ignored){registered=false;}}
     private final BroadcastReceiver receiver=new BroadcastReceiver(){@Override public void onReceive(Context c,Intent i){if(!WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(i.getAction()))return;boolean updated=Build.VERSION.SDK_INT<23||i.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED,false);consumeResults(updated?"LIVE":"CACHED");}};
@@ -124,3 +124,4 @@ public final class WifiScoutManager {
         JSONObject detail(){JSONObject o=compact();try{o.put("ssid",hidden?"":ssid);o.put("bssid",bssid);o.put("rssi",rssi);o.put("frequency",frequency);o.put("security",security);o.put("band",band);o.put("channel",channel);o.put("hidden",hidden);o.put("trusted",trusted);o.put("new",isNew);o.put("duplicate",duplicate);o.put("securityChanged",securityChanged);o.put("risk",risk);o.put("lastSeen",seenAt);}catch(Exception ignored){}return o;}
     }
 }
+// DUPLICATE SSID DETECTOR: heuristic grouping only; never asserts malicious intent.

@@ -329,6 +329,23 @@
 .light-stop { width:220px; height:46px; margin-top:42px; background-color:#111111; color:#ffffff; border-radius:14px; font-size:16px; }
 
 @keyframes pageEnter { 0% { opacity:0; transform:scale(0.9); } 100% { opacity:1; transform:scale(1.0); } }
+
+/* FIELD CORE Advanced / Pro extension — inherits Original Masterpiece tokens */
+.advanced-wide{border-color:#00e5ff;color:#00e5ff;background-color:#00171d;}
+.advanced-summary{width:452px;height:42px;flex-direction:row;justify-content:space-between;align-items:center;border-width:1px;border-color:#12364a;border-radius:11px;background-color:#07111c;padding:3px 6px;margin-top:2px;}
+.adv-stat{width:106px;height:34px;flex-direction:column;align-items:center;justify-content:center;}
+.adv-k{width:100px;color:#7d8dae;font-size:6px;text-align:center;}.adv-v{width:100px;color:#00e5ff;font-size:8px;font-weight:bold;text-align:center;margin-top:2px;}
+.advanced-list{width:452px;height:270px;margin-top:4px;padding-bottom:5px;}
+.advanced-row{width:452px;height:38px;flex-direction:row;align-items:center;justify-content:space-between;border-bottom-width:1px;border-color:#0c252d;}
+.advanced-btn{width:348px;height:32px;border-radius:9px;border-width:1px;border-color:#27424d;border-left-width:2px;background-color:#010507;color:#ffffff;font-size:8px;text-align:left;padding-left:10px;}
+.advanced-source{width:94px;color:#00e5ff;font-size:7px;text-align:right;}.advanced-title{font-size:13px;}
+.wifi-stage{width:452px;height:146px;flex-direction:row;align-items:center;justify-content:center;border-width:1px;border-color:#12364a;border-radius:13px;background-color:#02080b;margin-top:2px;}
+.wifi-radar{margin-right:28px;}.wifi-side{width:188px;height:124px;flex-direction:column;justify-content:space-between;}.wifi-best{font-size:7px;}
+.wifi-menu{width:452px;height:142px;flex-direction:column;justify-content:space-between;margin-top:4px;}.wifi-row{width:452px;height:33px;flex-direction:row;justify-content:space-between;}
+.wifi-btn{width:148px;height:31px;border-radius:8px;border-width:1px;border-color:#12343d;background-color:#010507;color:#9aa4aa;font-size:7px;}.wifi-note{width:452px;height:12px;color:#7d8dae;font-size:6px;text-align:center;margin-top:2px;}
+.advanced-core{width:452px;height:126px;flex-direction:row;align-items:center;justify-content:space-around;border-width:1px;border-color:#12364a;border-radius:13px;background-color:#02080b;margin-top:3px;}
+.advanced-side{width:210px;height:108px;flex-direction:column;justify-content:space-between;}.advanced-data-card{width:452px;height:102px;border-radius:12px;background-color:#07111c;border-width:1px;border-color:#12364a;padding:8px 10px;margin-top:5px;}.advanced-data{width:430px;height:54px;color:#a9f0ec;font-size:7px;margin-top:3px;}
+
 @keyframes scanMove { 0% { transform:translateY(0px); opacity:0.06; } 45% { opacity:0.35; } 100% { transform:translateY(406px); opacity:0.06; } }
 @keyframes statusPulse { 0% { opacity:0.35; } 50% { opacity:1; } 100% { opacity:0.35; } }
 @keyframes softGlow { 0% { opacity:0.65; } 50% { opacity:1; } 100% { opacity:0.65; } }

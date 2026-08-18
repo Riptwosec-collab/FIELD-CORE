@@ -35,6 +35,12 @@ required = [
     "android-companion/app/src/main/java/com/riptwosec/fieldcore/ProviderRegistry.java",
     "android-companion/app/src/main/java/com/riptwosec/fieldcore/WeatherProvider.java",
     "android-companion/app/src/main/java/com/riptwosec/fieldcore/HealthProvider.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutStore.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutManager.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/BluetoothReconManager.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldEventBus.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldUpgradeManager.java",
+    "android-companion/app/src/main/java/com/riptwosec/fieldcore/ReconScanService.java",
 ]
 for rel in required:
     if not (ROOT / rel).exists(): errors.append("missing " + rel)
@@ -117,7 +123,7 @@ try:
     ]
     for token in required_runtime:
         if token not in runtime and token not in engine: errors.append("Fusion runtime missing " + token)
-    for token in ["FUSION OS", "GEO ANCHORS", "MISSION TIMELINE", "DEVICE ACCESS", "emergencyConfirm"]:
+    for token in ["FUSION OS", "GEO ANCHORS", "MISSION TIMELINE", "DEVICE ACCESS", "emergencyConfirm", "COMMAND CENTER", "WI-FI SCOUT", "CYBER SWEEP"]:
         if token not in hml: errors.append("Fusion UI missing " + token)
     if len(re.findall(r"MAX_P2P_BYTES\s*=\s*1024", runtime)) < 1: errors.append("watch P2P 1KB guard missing")
 except Exception as exc: errors.append("Fusion watch check: " + str(exc))
@@ -134,6 +140,28 @@ try:
     if "READY_KEYLESS" not in registry: errors.append("weather provider not registered")
     if "API GATED" not in registry: errors.append("capability API gates missing")
 except Exception as exc: errors.append("phone provider check: " + str(exc))
+
+
+# FIELD CORE Advanced / Outdoor Wi-Fi Scout integration contract.
+try:
+    manifest = read("android-companion/app/src/main/AndroidManifest.xml")
+    router = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldCommandRouter.java")
+    upgrades = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldUpgradeManager.java")
+    wifi = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutManager.java")
+    bt = read("android-companion/app/src/main/java/com/riptwosec/fieldcore/BluetoothReconManager.java")
+    runtime = read("watch-lite/entry/src/main/js/MainAbility/pages/index/index.js")
+    for token in ["ACCESS_WIFI_STATE", "CHANGE_WIFI_STATE", "BLUETOOTH_SCAN", "FOREGROUND_SERVICE"]:
+        if token not in manifest: errors.append("advanced manifest missing " + token)
+    if "FieldUpgradeManager" not in router: errors.append("advanced command router missing")
+    for token in ["WIFI_SCAN", "CYBER_SWEEP", "FIELD_CONTEXT_STATUS", "COMMAND_CENTER", "MISSION_PACK_STATUS", "SENSOR_SELF_TEST", "RETURN_DECISION", "IMPACT_REVIEW_STATUS"]:
+        if token not in upgrades: errors.append("advanced manager missing " + token)
+    for token in ["SCAN_RESULTS_AVAILABLE_ACTION", "VERY NEAR", "DUPLICATE", "BATTERY_SAVER"]:
+        if token not in wifi: errors.append("Wi-Fi Scout missing " + token)
+    for token in ["BluetoothLeScanner", "BLUETOOTH_SCAN", "UNKNOWN"]:
+        if token not in bt: errors.append("Bluetooth Recon missing " + token)
+    for token in ["openCommandCenter", "openWifiScout", "advCyberSweep", "TELEMETRY_CONFIDENCE"]:
+        if token not in runtime: errors.append("watch advanced runtime missing " + token)
+except Exception as exc: errors.append("advanced integration check: " + str(exc))
 
 # Both transport directions must enforce <=1 KB P2P messages.
 try:
