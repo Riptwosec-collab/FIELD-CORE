@@ -1,0 +1,9 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Field Core Lite Wearable UI and local sensor layer",
+  "main": "",
+  "author": "Riptwosec",
+  "license": "",
+  "dependencies": {}
+}

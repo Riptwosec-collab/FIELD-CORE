@@ -1,0 +1,158 @@
+{
+  "project": "Field Core FIT 4 Pro V1",
+  "packages": {
+    "phone": "com.riptwosec.fieldcore",
+    "watch": "com.riptwosec.fieldcore.watch"
+  },
+  "fileCount": 37,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 97
+    },
+    {
+      "path": "README_TH.md",
+      "bytes": 1665
+    },
+    {
+      "path": "android-companion/app/build.gradle",
+      "bytes": 581
+    },
+    {
+      "path": "android-companion/app/proguard-rules.pro",
+      "bytes": 74
+    },
+    {
+      "path": "android-companion/app/src/main/AndroidManifest.xml",
+      "bytes": 942
+    },
+    {
+      "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldCommandRouter.java",
+      "bytes": 2067
+    },
+    {
+      "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/MainActivity.java",
+      "bytes": 5608
+    },
+    {
+      "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/PhoneLocationProvider.java",
+      "bytes": 1544
+    },
+    {
+      "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/ProviderRegistry.java",
+      "bytes": 1334
+    },
+    {
+      "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/WearBridge.java",
+      "bytes": 3590
+    },
+    {
+      "path": "android-companion/app/src/main/res/values/strings.xml",
+      "bytes": 77
+    },
+    {
+      "path": "android-companion/build.gradle",
+      "bytes": 73
+    },
+    {
+      "path": "android-companion/gradle.properties",
+      "bytes": 87
+    },
+    {
+      "path": "android-companion/settings.gradle",
+      "bytes": 383
+    },
+    {
+      "path": "docs/BUILD_INSTALL_TH.md",
+      "bytes": 1773
+    },
+    {
+      "path": "docs/MODULE_MAP.md",
+      "bytes": 577
+    },
+    {
+      "path": "tools/configure_identity.py",
+      "bytes": 1111
+    },
+    {
+      "path": "tools/install_wearengine_sdk.py",
+      "bytes": 458
+    },
+    {
+      "path": "tools/preflight.py",
+      "bytes": 1480
+    },
+    {
+      "path": "watch-lite/build-profile.json5",
+      "bytes": 548
+    },
+    {
+      "path": "watch-lite/entry/build-profile.json5",
+      "bytes": 87
+    },
+    {
+      "path": "watch-lite/entry/hvigorfile.ts",
+      "bytes": 114
+    },
+    {
+      "path": "watch-lite/entry/oh-package.json5",
+      "bytes": 193
+    },
+    {
+      "path": "watch-lite/entry/src/main/config.json",
+      "bytes": 1876
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/app.js",
+      "bytes": 50
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/common/constants.js",
+      "bytes": 128
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/common/featureCatalog.js",
+      "bytes": 7533
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.css",
+      "bytes": 3263
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml",
+      "bytes": 9223
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.js",
+      "bytes": 18393
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/wearengine/REPLACE_WITH_OFFICIAL_SDK.txt",
+      "bytes": 102
+    },
+    {
+      "path": "watch-lite/entry/src/main/js/MainAbility/wearengine/wearengine.js",
+      "bytes": 625
+    },
+    {
+      "path": "watch-lite/entry/src/main/resources/base/element/string.json",
+      "bytes": 149
+    },
+    {
+      "path": "watch-lite/entry/src/main/resources/base/media/icon.png",
+      "bytes": 807
+    },
+    {
+      "path": "watch-lite/entry/src/main/resources/base/media/icon_small.png",
+      "bytes": 416
+    },
+    {
+      "path": "watch-lite/hvigorfile.ts",
+      "bytes": 114
+    },
+    {
+      "path": "watch-lite/oh-package.json5",
+      "bytes": 135
+    }
+  ]
+}

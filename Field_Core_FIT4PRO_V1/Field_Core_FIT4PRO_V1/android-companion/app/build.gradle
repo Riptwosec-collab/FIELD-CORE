@@ -1,0 +1,20 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.riptwosec.fieldcore'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.riptwosec.fieldcore'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0-fieldcore'
+        buildConfigField 'String', 'WATCH_PACKAGE', '"com.riptwosec.fieldcore.watch"'
+        buildConfigField 'String', 'WATCH_FINGERPRINT', '"REPLACE_WITH_WATCH_SHA256_FINGERPRINT"'
+    }
+    buildFeatures { buildConfig true }
+}
+
+dependencies {
+    implementation 'com.huawei.hms:wearengine:5.0.2.306'
+}
