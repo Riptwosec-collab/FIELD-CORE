@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements WearBridge.Listener, Field
         root.addView(btn("2. FIND / REGISTER WATCH",v->wear.discover()));
         root.addView(btn("3. GRANT LOCATION",v->requestLocation()));
         root.addView(btn("4. SEND FIELD STATUS",v->sendSnapshot()));
-        root.addView(btn("5. TEST PHONE LOCATION",v->location.lastKnown((ok,msg,data)->status(msg+" "+(data==null?"":data.toString())))));
+        root.addView(btn("5. TEST PHONE LOCATION",v->location.current((ok,msg,data)->status(msg+" "+(data==null?"":data.toString())))));
         root.addView(btn("6. TEST LIVE WEATHER",v->providers.execute("WEATHER_REFRESH",new JSONObject(),(ok,msg,data)->status(msg+" "+(data==null?"":data.toString())))));
         root.addView(btn("7. PROVIDER STATUS",v->status(providers.status().toString())));
         log=txt("READY",13,Color.LTGRAY);log.setPadding(0,24,0,80);root.addView(log);setContentView(sc);
@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements WearBridge.Listener, Field
     }
 
     @Override public void sendEmergencyLocation(String requestId){
-        location.lastKnown((ok,msg,data)->{try{JSONObject r=new JSONObject();r.put("v",1);r.put("type","result");r.put("id",requestId==null?"":requestId);r.put("ok",ok);r.put("action","EMERGENCY_SEND");r.put("message",ok?"EMERGENCY LOCATION PACKET READY":"LOCATION UNAVAILABLE");if(data!=null){data.put("packetType","FIELD_CORE_SOS");data.put("generatedAt",System.currentTimeMillis());r.put("data",data);}sendToWatch(r);}catch(Exception ignored){}});
+        location.current((ok,msg,data)->{try{JSONObject r=new JSONObject();r.put("v",1);r.put("type","result");r.put("id",requestId==null?"":requestId);r.put("ok",ok);r.put("action","EMERGENCY_SEND");r.put("message",ok?"EMERGENCY LOCATION PACKET READY":"LOCATION UNAVAILABLE");if(data!=null){data.put("packetType","FIELD_CORE_SOS");data.put("generatedAt",System.currentTimeMillis());r.put("data",data);}sendToWatch(r);}catch(Exception ignored){}});
     }
 
     private void sendSnapshot(){
