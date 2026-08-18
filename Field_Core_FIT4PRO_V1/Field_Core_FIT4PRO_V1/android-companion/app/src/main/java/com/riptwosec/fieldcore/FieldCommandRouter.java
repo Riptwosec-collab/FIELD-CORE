@@ -35,7 +35,7 @@ public final class FieldCommandRouter {
         }
 
         if("WATCH_LOCATION_RESULT".equals(action)){result(id,action,true,"PHONE RECEIVED WATCH LOCATION",payload);return;}
-        if("PHONE_LOCATION".equals(action)){location.lastKnown((ok,msg,data)->result(id,action,ok,msg,data));return;}
+        if("PHONE_LOCATION".equals(action)){location.current((ok,msg,data)->result(id,action,ok,msg,data));return;}
         if(providers.handles(action)){final JSONObject fp=payload;providers.execute(action,fp,(ok,msg,data)->result(id,action,ok,msg,data));return;}
         result(id,action,false,"UNSUPPORTED FIELD COMMAND",null);
     }
