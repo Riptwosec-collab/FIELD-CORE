@@ -22,34 +22,163 @@ public class MainActivity extends Activity implements WearBridge.Listener, Field
     private WearBridge wear;
     private FieldCommandRouter router;
     private PhoneLocationProvider location;
+    private String pendingVoiceRequestId="";
 
-    @Override protected void onCreate(Bundle b){super.onCreate(b);buildUi();wear=new WearBridge(this,this);location=new PhoneLocationProvider(this);router=new FieldCommandRouter(new ProviderRegistry(),location,this);}
-    @Override protected void onDestroy(){if(wear!=null)wear.unregister();super.onDestroy();}
+    @Override protected void onCreate(Bundle b){
+        super.onCreate(b);
+        buildUi();
+        wear=new WearBridge(this,this);
+        location=new PhoneLocationProvider(this);
+        router=new FieldCommandRouter(new ProviderRegistry(),location,this);
+    }
+
+    @Override protected void onDestroy(){
+        if(wear!=null)wear.unregister();
+        super.onDestroy();
+    }
 
     private void buildUi(){
-        ScrollView sc=new ScrollView(this);LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(28,28,28,28);root.setBackgroundColor(Color.rgb(2,10,11));sc.addView(root);
+        ScrollView sc=new ScrollView(this);
+        LinearLayout root=new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setPadding(28,28,28,28);
+        root.setBackgroundColor(Color.rgb(2,10,11));
+        sc.addView(root);
         root.addView(txt("FIELD CORE\nFIT 4 PRO COMPANION",22,Color.rgb(42,255,213)));
         root.addView(btn("1. AUTHORIZE WEAR ENGINE",v->wear.authorize(this)));
         root.addView(btn("2. FIND / REGISTER WATCH",v->wear.discover()));
         root.addView(btn("3. GRANT LOCATION",v->requestLocation()));
         root.addView(btn("4. SEND FIELD STATUS",v->sendSnapshot()));
-        root.addView(btn("5. TEST PHONE LOCATION",v->location.lastKnown((ok,msg,data)->{status(msg);try{JSONObject r=new JSONObject();r.put("type","result");r.put("ok",ok);r.put("action","PHONE_LOCATION");r.put("message",msg);if(data!=null)r.put("data",data);sendToWatch(r);}catch(Exception ignored){}})));
-        log=txt("READY",13,Color.LTGRAY);log.setPadding(0,24,0,80);root.addView(log);setContentView(sc);
+        root.addView(btn("5. TEST PHONE LOCATION",v->location.lastKnown((ok,msg,data)->{
+            status(msg);
+            try{
+                JSONObject r=new JSONObject();
+                r.put("type","result");
+                r.put("ok",ok);
+                r.put("action","PHONE_LOCATION");
+                r.put("message",msg);
+                if(data!=null)r.put("data",data);
+                sendToWatch(r);
+            }catch(Exception ignored){}
+        })));
+        log=txt("READY",13,Color.LTGRAY);
+        log.setPadding(0,24,0,80);
+        root.addView(log);
+        setContentView(sc);
     }
+
     private Button btn(String t,View.OnClickListener l){Button b=new Button(this);b.setText(t);b.setOnClickListener(l);return b;}
     private TextView txt(String s,int sp,int c){TextView t=new TextView(this);t.setText(s);t.setTextSize(sp);t.setTextColor(c);return t;}
-    private void requestLocation(){ArrayList<String> p=new ArrayList<>();if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED)p.add(Manifest.permission.ACCESS_FINE_LOCATION);if(p.isEmpty())status("LOCATION READY");else requestPermissions(p.toArray(new String[0]),REQ_LOCATION);}
+
+    private void requestLocation(){
+        ArrayList<String> p=new ArrayList<>();
+        if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED)p.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED)p.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        if(p.isEmpty())status("LOCATION READY");
+        else requestPermissions(p.toArray(new String[0]),REQ_LOCATION);
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(requestCode==REQ_LOCATION)status(location!=null&&location.hasPermission()?"LOCATION READY":"LOCATION PERMISSION REQUIRED");
+    }
 
     @Override public void onStatus(final String s){runOnUiThread(()->status(s));}
     @Override public void onMessage(String json){try{router.route(new JSONObject(json));}catch(Exception e){status("WATCH JSON ERROR: "+e.getMessage());}}
     @Override public void sendToWatch(JSONObject j){wear.sendJson(j.toString());}
     @Override public void status(String s){if(log!=null)log.setText(s+"\n\n"+log.getText());}
 
-    @Override public void requestVoice(){runOnUiThread(()->{try{Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);i.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.getDefault());i.putExtra(RecognizerIntent.EXTRA_PROMPT,"Field Core command");startActivityForResult(i,REQ_VOICE);}catch(Exception e){status("VOICE RECOGNITION UNAVAILABLE");}});}
-    @Override protected void onActivityResult(int request,int result,Intent data){super.onActivityResult(request,result,data);if(request==REQ_VOICE&&result==RESULT_OK&&data!=null){ArrayList<String> r=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);String speech=r!=null&&!r.isEmpty()?r.get(0):"";handleVoice(speech);}}
-    private void handleVoice(String speech){String s=speech.toLowerCase(Locale.ROOT);String action=null;if(s.contains("anchor")||s.contains("save location"))action="GEO_SAVE_TEMP";else if(s.contains("navigation")||s.contains("compass"))action="COMPASS_START";else if(s.contains("weather"))action="WEATHER_REFRESH";else if(s.contains("emergency"))action="OPEN_EMERGENCY";else if(s.contains("breadcrumb")||s.contains("return"))action="BREADCRUMB_RETURN";try{JSONObject d=new JSONObject();d.put("speech",speech);d.put("intent",action==null?"UNKNOWN":action);JSONObject r=new JSONObject();r.put("type","result");r.put("ok",action!=null);r.put("action","VOICE_PTT");r.put("message",action==null?"VOICE INTENT UNKNOWN":"VOICE: "+action);r.put("data",d);wear.sendJson(r.toString());}catch(Exception ignored){}}
+    @Override public void requestVoice(String requestId){
+        pendingVoiceRequestId=requestId==null?"":requestId;
+        runOnUiThread(()->{
+            try{
+                Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.getDefault());
+                i.putExtra(RecognizerIntent.EXTRA_PROMPT,"Field Core command");
+                startActivityForResult(i,REQ_VOICE);
+            }catch(Exception e){
+                status("VOICE RECOGNITION UNAVAILABLE");
+                sendVoiceResult(pendingVoiceRequestId,false,"",null,"VOICE RECOGNITION UNAVAILABLE");
+                pendingVoiceRequestId="";
+            }
+        });
+    }
 
-    @Override public void sendEmergencyLocation(){location.lastKnown((ok,msg,data)->{try{JSONObject r=new JSONObject();r.put("type","result");r.put("ok",false);r.put("action","EMERGENCY_SEND");r.put("message",ok?"LOCATION READY — CONTACT CHANNEL NOT CONFIGURED":"LOCATION UNAVAILABLE");if(data!=null)r.put("data",data);sendToWatch(r);}catch(Exception ignored){}});}
+    @Override protected void onActivityResult(int request,int result,Intent data){
+        super.onActivityResult(request,result,data);
+        if(request!=REQ_VOICE)return;
+        String requestId=pendingVoiceRequestId;
+        pendingVoiceRequestId="";
+        if(result==RESULT_OK&&data!=null){
+            ArrayList<String> r=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String speech=r!=null&&!r.isEmpty()?r.get(0):"";
+            handleVoice(requestId,speech);
+        }else{
+            sendVoiceResult(requestId,false,"",null,"VOICE CANCELED");
+        }
+    }
 
-    private void sendSnapshot(){try{JSONObject snap=new JSONObject();snap.put("type","snapshot");snap.put("ts",System.currentTimeMillis());JSONObject f=new JSONObject();f.put("state","PHONE READY");f.put("weatherProvider","NOT CONFIGURED");f.put("healthProvider","NOT CONFIGURED");f.put("transitProvider","NOT CONFIGURED");snap.put("field",f);snap.put("summary","FIELD CORE PHONE READY");wear.sendJson(snap.toString());}catch(Exception e){status("SNAPSHOT ERROR: "+e.getMessage());}}
+    private void handleVoice(String requestId,String speech){
+        String s=speech==null?"":speech.toLowerCase(Locale.ROOT);
+        String action=null;
+        if(s.contains("anchor")||s.contains("save location")||s.contains("บันทึกตำแหน่ง")||s.contains("ปักหมุด"))action="GEO_SAVE_TEMP";
+        else if(s.contains("navigation")||s.contains("compass")||s.contains("นำทาง")||s.contains("เข็มทิศ"))action="COMPASS_START";
+        else if(s.contains("weather")||s.contains("อากาศ"))action="WEATHER_REFRESH";
+        else if(s.contains("emergency")||s.contains("sos")||s.contains("ฉุกเฉิน"))action="OPEN_EMERGENCY";
+        else if(s.contains("breadcrumb")||s.contains("return")||s.contains("ย้อนทาง")||s.contains("กลับทางเดิม"))action="BREADCRUMB_RETURN";
+        sendVoiceResult(requestId,action!=null,speech,action,action==null?"VOICE INTENT UNKNOWN":"VOICE: "+action);
+    }
+
+    private void sendVoiceResult(String requestId,boolean ok,String speech,String action,String message){
+        try{
+            JSONObject d=new JSONObject();
+            d.put("speech",speech==null?"":speech);
+            d.put("intent",action==null?"UNKNOWN":action);
+            JSONObject r=new JSONObject();
+            r.put("v",1);
+            r.put("type","result");
+            r.put("id",requestId==null?"":requestId);
+            r.put("ok",ok);
+            r.put("action","VOICE_PTT");
+            r.put("message",message);
+            r.put("data",d);
+            wear.sendJson(r.toString());
+        }catch(Exception ignored){}
+    }
+
+    @Override public void sendEmergencyLocation(String requestId){
+        location.lastKnown((ok,msg,data)->{
+            try{
+                JSONObject r=new JSONObject();
+                r.put("v",1);
+                r.put("type","result");
+                r.put("id",requestId==null?"":requestId);
+                r.put("ok",false);
+                r.put("action","EMERGENCY_SEND");
+                r.put("message",ok?"LOCATION READY — CONTACT CHANNEL NOT CONFIGURED":"LOCATION UNAVAILABLE");
+                if(data!=null)r.put("data",data);
+                sendToWatch(r);
+            }catch(Exception ignored){}
+        });
+    }
+
+    private void sendSnapshot(){
+        try{
+            JSONObject snap=new JSONObject();
+            snap.put("type","snapshot");
+            snap.put("ts",System.currentTimeMillis());
+            JSONObject f=new JSONObject();
+            f.put("state","PHONE READY");
+            f.put("location",location!=null&&location.hasPermission()?"READY":"PERMISSION REQUIRED");
+            f.put("weatherProvider","NOT CONFIGURED");
+            f.put("healthProvider","NOT CONFIGURED");
+            f.put("transitProvider","NOT CONFIGURED");
+            snap.put("field",f);
+            snap.put("summary","FIELD CORE PHONE READY");
+            wear.sendJson(snap.toString());
+        }catch(Exception e){
+            status("SNAPSHOT ERROR: "+e.getMessage());
+        }
+    }
 }
