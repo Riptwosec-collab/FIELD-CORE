@@ -29,13 +29,17 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Apply all Advanced integration phases
+      - name: Apply Advanced integration phases safely
         run: |
-          for PATCHER in tools/apply_field_core_advanced*.py; do
-            if [ -f "$PATCHER" ]; then
-              python "$PATCHER"
+          RUNTIME="Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.js"
+          if ! grep -q "openCommandCenter" "$RUNTIME" && [ -f tools/apply_field_core_advanced.py ]; then
+            python tools/apply_field_core_advanced.py
+          fi
+          if [ -f tools/apply_field_core_advanced_phase2.py ]; then
+            if ! grep -q "advWifiSignal" "$RUNTIME"; then
+              python tools/apply_field_core_advanced_phase2.py
             fi
-          done
+          fi
 
       - name: Normalize Wi-Fi Scout preflight marker
         run: |
@@ -68,5 +72,5 @@ jobs:
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.css
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/tools/preflight.py
-          git commit -m "Integrate FIELD CORE Advanced Pro phase 2 [advanced-applied]"
+          git commit -m "Integrate FIELD CORE Advanced Pro generated changes [advanced-applied]"
           git push origin HEAD:${GITHUB_REF_NAME}
