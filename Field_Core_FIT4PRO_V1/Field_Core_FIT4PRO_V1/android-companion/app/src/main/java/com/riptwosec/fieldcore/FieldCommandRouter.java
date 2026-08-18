@@ -12,9 +12,10 @@ public final class FieldCommandRouter {
 
     private final ProviderRegistry providers;
     private final PhoneLocationProvider location;
+    private final FieldUpgradeManager upgrades;
     private final Listener listener;
 
-    public FieldCommandRouter(ProviderRegistry p, PhoneLocationProvider l, Listener li){providers=p;location=l;listener=li;}
+    public FieldCommandRouter(ProviderRegistry p, PhoneLocationProvider l, FieldUpgradeManager u, Listener li){providers=p;location=l;upgrades=u;listener=li;}
 
     public void route(JSONObject e){
         final String id=e.optString("id","");
@@ -29,6 +30,11 @@ public final class FieldCommandRouter {
                 JSONObject d=providers.status();
                 d.put("phone","READY");
                 d.put("location",location.hasPermission()?"READY":"PERMISSION REQUIRED");
+                if(upgrades!=null){
+                    d.put("advanced","READY");
+                    d.put("wifiScout",upgrades.wifi().hasPermission()?"READY":"PERMISSION REQUIRED");
+                    d.put("bluetoothRecon",upgrades.bluetooth().hasPermission()?"READY":"PERMISSION REQUIRED");
+                }
                 result(id,action,true,"FIELD CAPABILITY STATUS",d);
             }catch(Exception ignored){}
             return;
@@ -36,6 +42,7 @@ public final class FieldCommandRouter {
 
         if("WATCH_LOCATION_RESULT".equals(action)){result(id,action,true,"PHONE RECEIVED WATCH LOCATION",payload);return;}
         if("PHONE_LOCATION".equals(action)){location.current((ok,msg,data)->result(id,action,ok,msg,data));return;}
+        if(upgrades!=null&&upgrades.handles(action)){final JSONObject fp=payload;upgrades.execute(action,fp,(ok,msg,data)->result(id,action,ok,msg,data));return;}
         if(providers.handles(action)){final JSONObject fp=payload;providers.execute(action,fp,(ok,msg,data)->result(id,action,ok,msg,data));return;}
         result(id,action,false,"UNSUPPORTED FIELD COMMAND",null);
     }
