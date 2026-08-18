@@ -302,6 +302,37 @@ export default {
   startSosLight(){var self=this,on=true;this.view='lightRed';this.message='SOS FLASH ACTIVE';this.haptic('long');this.lightTimer=setInterval(function(){on=!on;self.view=on?'lightRed':'lightBlack';},450);this.logEvent('SOS','FLASH ACTIVE');},
   stopLight(){if(this.lightTimer){clearInterval(this.lightTimer);this.lightTimer=null;}if(this.view==='lightRed'||this.view==='lightWhite'||this.view==='lightBlack')this.view='detail';this.sosConfirmUntil=0;},
 
+  /* FIELD CORE FUNCTIONAL V5: WRIST-FIRST ACTION HELPERS */
+  v5BioStart(){this.openFeature('1');this.sendCommand('BIO_START');},
+  v5BioStop(){this.openFeature('1');this.sendCommand('BIO_STOP');},
+  v5Readiness(){this.openFeature('2');this.sendCommand('SLEEP_REFRESH');},
+  v5Impact(){this.advImpactReview();},
+
+  v5Run(){this.openFeature('5');this.sendCommand('RUN_START');},
+  v5Hike(){this.openFeature('4');this.sendCommand('SPORT_HIKE');},
+  v5RunZone(){this.advRunZone();},
+  v5RunStatus(){this.openFeature('5');this.sendCommand('RUN_STATUS');},
+
+  v5Locate(){this.openFeature('8');this.sendCommand('FIELD_LOCATION');},
+  v5Compass(){this.openFeature('8');this.sendCommand('COMPASS_START');},
+  v5Breadcrumb(){this.openFeature('10');},
+  v5Return(){this.openFeature('10');this.sendCommand('BREADCRUMB_RETURN');},
+
+  v5Weather(){this.openFeature('13');this.sendCommand('WEATHER_REFRESH');},
+  v5Pressure(){this.openFeature('13');this.sendCommand('BAROMETER_START');},
+  v5EnvRisk(){this.advEnvRisk();},
+  v5Sky(){this.advSkyPro();},
+
+  v5RedLight(){this.openFeature('19');this.sendCommand('TACTICAL_LIGHT_RED');},
+  v5SosLight(){this.openFeature('19');this.sendCommand('TACTICAL_LIGHT_SOS');},
+  v5Grid(){this.openFeature('20');this.sendCommand('GRID_ARM');},
+  v5Emergency(){this.openFeature('21');},
+
+  v5PowerAuto(){this.openFeature('24');this.enableAutoPower();},
+  v5Endurance(){this.openFeature('24');this.sendCommand('POWER_ENDURANCE');},
+  v5SensorTest(){this.advSensorTest();},
+  v5Settings(){this.advSettings();},
+
   openFeature(id){var f=getFeature(id);if(!f)return;this.selectedId=String(id);this.selectedTitle=f.title;this.selectedSource=f.source;this.selectedDesc=f.desc;this.action1Label=f.actions[0]?f.actions[0].label:'';this.action1Command=f.actions[0]?f.actions[0].command:'';this.action2Label=f.actions[1]?f.actions[1].label:'';this.action2Command=f.actions[1]?f.actions[1].command:'';this.action3Label=f.actions[2]?f.actions[2].label:'';this.action3Command=f.actions[2]?f.actions[2].command:'';this.action4Label=f.actions[3]?f.actions[3].label:'';this.action4Command=f.actions[3]?f.actions[3].command:'';this.featureState=(f.source==='UNAVAILABLE'||f.source==='API GATED')?'API GATED':'READY';this.featureData='-';this.message='MODULE READY';this.category=f.category;this.view='detail';this.haptic('short');},
   setCategory(c){this.category=c;this.view='list';this.showBio=c==='BIO';this.showSport=c==='SPORT';this.showNav=c==='NAV';this.showEnv=c==='ENV';this.showTactical=c==='TACTICAL';this.showSystem=c==='SYSTEM';},
   goHome(){this.view='home';this.showBio=false;this.showSport=false;this.showNav=false;this.showEnv=false;this.showTactical=false;this.showSystem=false;this.refreshBattery();this.updateFusion();},

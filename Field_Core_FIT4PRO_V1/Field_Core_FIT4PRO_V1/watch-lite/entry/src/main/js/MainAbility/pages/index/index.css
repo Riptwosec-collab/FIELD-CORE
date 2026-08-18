@@ -546,3 +546,65 @@
 .tactical-page-v4 .subtitle-line { background-color:#ff335f; }
 .emergency-v4 { background-color:#090105; }
 .emergency-v4 .emergency-dial { border-color:#ff335f; }
+
+
+/* FIELD CORE FUNCTIONAL V5: WRIST-FIRST ACTION LAYOUT
+   Keeps Original Masterpiece palette/theme while making each surface task-first.
+*/
+.v5-quickbar { width:452px; height:38px; flex-direction:row; justify-content:space-between; align-items:center; margin-top:2px; margin-bottom:2px; }
+.v5-quick { width:108px; height:32px; border-radius:8px; border-width:1px; border-color:#234653; background-color:#010507; color:#8ca0aa; font-size:7px; }
+.v5-quick.active-state { border-color:#00e5ff; background-color:#00313a; color:#ffffff; animation-name:buttonPulse; animation-duration:1800ms; animation-iteration-count:infinite; }
+.v5-quick.warning-btn { border-color:#ffcc00; color:#ffcc00; background-color:#0d0a02; }
+.v5-quick.danger-btn { border-color:#ff335f; color:#ff6684; background-color:#180309; }
+
+.bio-page-v4 .feature-list, .sport-page-v4 .feature-list, .nav-page-v4 .feature-list, .env-page-v4 .feature-list, .tactical-page-v4 .feature-list, .system-page-v4 .feature-list { height:108px; }
+.bio-page-v4 .category-hero { height:82px; }
+.bio-page-v4 .signal-strip { height:32px; }
+.sport-page-v4 .sport-stage { height:88px; }
+.sport-page-v4 .sport-ring { width:76px; height:76px; border-radius:38px; }
+.sport-page-v4 .sport-ring-inner { width:54px; height:54px; border-radius:27px; }
+.nav-page-v4 .nav-stage, .env-page-v4 .env-stage { height:96px; }
+.nav-page-v4 .network-radar, .env-page-v4 .atmo-dial { transform:scale(0.82); }
+.tactical-page-v4 .tactical-hero { height:82px; }
+.tactical-page-v4 .v5-quick { border-color:#6c1b35; background-color:#150309; color:#ff6684; }
+.tactical-page-v4 .v5-quick.active-state { border-color:#ff335f; background-color:#310610; color:#ffffff; }
+.system-page-v4 .system-core-panel { height:88px; }
+
+.functional-detail-v5 .module-stage { height:96px; }
+.functional-detail-v5 .module-desc { max-height:28px; font-size:7px; }
+.functional-detail-v5 .detail-actions { min-height:74px; align-items:stretch; }
+.functional-detail-v5 .hud-action { height:36px; font-size:8px; }
+.functional-detail-v5 .detail-extra { margin-top:3px; }
+.functional-detail-v5 .mini-extra, .functional-detail-v5 .wide-extra { height:31px; font-size:7px; }
+.v5-decision-strip { width:452px; min-height:0px; }
+.v5-decision-row { width:452px; height:28px; border-radius:8px; border-width:1px; border-color:#143a45; background-color:#01070a; flex-direction:row; align-items:center; justify-content:space-around; }
+.v5-decision-k { width:64px; color:#617481; font-size:6px; text-align:center; }
+.v5-decision-v { width:142px; color:#00e5ff; font-size:7px; text-align:center; }
+.danger-decision { border-color:#6f1835; background-color:#120308; }
+.danger-decision .v5-decision-v { color:#ff335f; }
+
+.functional-utility-v5 .anchor-card { min-height:64px; }
+.functional-utility-v5 .anchor-go { height:30px; }
+.functional-utility-v5 .timeline-card { min-height:39px; }
+.functional-utility-v5 .cap-panel { min-height:92px; }
+
+.functional-wifi-v5 .wifi-stage { height:100px; }
+.functional-wifi-v5 .wifi-btn { height:34px; font-size:7px; }
+.functional-wifi-list-v5 .wifi-network-row { height:52px; }
+.functional-wifi-list-v5 .wifi-network-btn { height:34px; font-size:8px; }
+.functional-wifi-detail-v5 .wifi-detail-card { min-height:112px; }
+.functional-wifi-detail-v5 .wifi-detail-btn { height:38px; font-size:8px; }
+.functional-sweep-v5 .cyber-sweep-stage { height:112px; }
+
+.functional-advanced-hub-v5 .advanced-row { min-height:36px; }
+.functional-advanced-hub-v5 .advanced-btn { height:32px; font-size:7px; }
+.functional-advanced-v5 .advanced-core { height:58px; }
+.functional-advanced-v5 .v4-stage { height:96px; }
+.functional-advanced-v5 .advanced-data-card { min-height:40px; margin-top:3px; }
+.functional-advanced-v5 .mini-extra, .functional-advanced-v5 .profile-btn, .functional-advanced-v5 .wide-extra { height:34px; font-size:7px; }
+
+.functional-emergency-v5 { background-color:#090105; }
+.functional-emergency-v5 .emergency-dial { width:190px; height:190px; border-color:#ff335f; }
+.functional-emergency-v5 .countdown { font-size:48px; }
+.functional-emergency-v5 .emergency-send, .functional-emergency-v5 .emergency-cancel { width:360px; height:42px; font-size:10px; }
+.light-red .light-stop, .light-white .light-stop, .light-black .light-stop { width:320px; height:44px; font-size:10px; }

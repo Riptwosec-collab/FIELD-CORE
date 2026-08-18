@@ -1,5 +1,6 @@
 <stack class="root" onswipe="swipeEvent">
   <!-- FIELD CORE VISUAL V4: DISTINCT ALL-PAGE MASTERPIECE -->
+  <!-- FIELD CORE FUNCTIONAL V5: WRIST-FIRST ACTION LAYOUT -->
   <div class="grid-layer"></div>
   <div if="{{powerProfile != 'ENDURANCE'}}" class="scan-beam"></div>
 
@@ -94,6 +95,12 @@
       <div class="signal-cell"><text class="signal-k">HEALTH</text><text class="signal-v warning-text">SCOPE GATED</text></div>
     </div>
 
+        <div class="v5-quickbar bio-quickbar">
+      <input type="button" class="v5-quick active-state" value="START HR" onclick="v5BioStart"/>
+      <input type="button" class="v5-quick" value="STOP HR" onclick="v5BioStop"/>
+      <input type="button" class="v5-quick" value="READINESS" onclick="v5Readiness"/>
+      <input type="button" class="v5-quick warning-btn" value="IMPACT" onclick="v5Impact"/>
+    </div>
     <list class="feature-list short-list">
       <list-item class="feature-row"><input type="button" class="feature-btn" value="DAILY HUB" onclick="f0"/><text class="source">WATCH</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn" value="BIO TELEMETRY" onclick="f1"/><text class="source">WATCH</text></list-item>
@@ -120,6 +127,12 @@
 
     <div class="eq-row sport-eq"><div class="eq-bar eq2"></div><div class="eq-bar eq5"></div><div class="eq-bar eq3"></div><div class="eq-bar eq6"></div><div class="eq-bar eq4"></div><div class="eq-bar eq1"></div><div class="eq-bar eq7"></div></div>
 
+        <div class="v5-quickbar sport-quickbar">
+      <input type="button" class="v5-quick active-state" value="RUN" onclick="v5Run"/>
+      <input type="button" class="v5-quick" value="HIKE" onclick="v5Hike"/>
+      <input type="button" class="v5-quick" value="RUN ZONE" onclick="v5RunZone"/>
+      <input type="button" class="v5-quick" value="STATUS" onclick="v5RunStatus"/>
+    </div>
     <list class="feature-list short-list sport-list">
       <list-item class="feature-row"><input type="button" class="feature-btn" value="SPORTS HUD" onclick="f4"/><text class="source">WATCH+PHONE</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn" value="RUNNING COACH" onclick="f5"/><text class="source">WATCH+PHONE</text></list-item>
@@ -148,6 +161,12 @@
       </div>
     </div>
 
+        <div class="v5-quickbar nav-quickbar">
+      <input type="button" class="v5-quick active-state" value="LOCATE" onclick="v5Locate"/>
+      <input type="button" class="v5-quick" value="COMPASS" onclick="v5Compass"/>
+      <input type="button" class="v5-quick" value="BREADCRUMB" onclick="v5Breadcrumb"/>
+      <input type="button" class="v5-quick" value="RETURN" onclick="v5Return"/>
+    </div>
     <list class="feature-list nav-list">
       <list-item class="feature-row"><input type="button" class="feature-btn" value="TACTICAL NAV" onclick="f8"/><text class="source">WATCH+PHONE</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn" value="SILENT NAV" onclick="f9"/><text class="source">PHONE</text></list-item>
@@ -176,6 +195,12 @@
       </div>
     </div>
 
+        <div class="v5-quickbar env-quickbar">
+      <input type="button" class="v5-quick active-state" value="WEATHER" onclick="v5Weather"/>
+      <input type="button" class="v5-quick" value="PRESSURE" onclick="v5Pressure"/>
+      <input type="button" class="v5-quick" value="RISK" onclick="v5EnvRisk"/>
+      <input type="button" class="v5-quick" value="SKY" onclick="v5Sky"/>
+    </div>
     <list class="feature-list env-list">
       <list-item class="feature-row"><input type="button" class="feature-btn" value="ATMOSPHERIC" onclick="f13"/><text class="source">WATCH+PHONE</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn" value="SOLAR SENTINEL" onclick="f14"/><text class="source">PHONE</text></list-item>
@@ -197,6 +222,12 @@
       <div class="tactical-copy"><text class="hero-k">FIELD STATE</text><text class="hero-v red">{{fieldState}}</text><text class="hero-sub danger-sub">{{fusionReason}}</text></div>
     </div>
 
+        <div class="v5-quickbar tactical-quickbar">
+      <input type="button" class="v5-quick active-state" value="RED LIGHT" onclick="v5RedLight"/>
+      <input type="button" class="v5-quick danger-btn" value="SOS LIGHT" onclick="v5SosLight"/>
+      <input type="button" class="v5-quick" value="GRID-DOWN" onclick="v5Grid"/>
+      <input type="button" class="v5-quick danger-btn" value="EMERGENCY" onclick="v5Emergency"/>
+    </div>
     <list class="feature-list tactical-list">
       <list-item class="feature-row"><input type="button" class="feature-btn tactical-feature" value="TACTICAL LIGHT" onclick="f19"/><text class="source red">WATCH</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn tactical-feature" value="GRID-DOWN" onclick="f20"/><text class="source red">WATCH</text></list-item>
@@ -221,6 +252,12 @@
       </div>
     </div>
 
+        <div class="v5-quickbar system-quickbar">
+      <input type="button" class="v5-quick active-state" value="AUTO POWER" onclick="v5PowerAuto"/>
+      <input type="button" class="v5-quick" value="ENDURANCE" onclick="v5Endurance"/>
+      <input type="button" class="v5-quick" value="SENSOR TEST" onclick="v5SensorTest"/>
+      <input type="button" class="v5-quick" value="SETTINGS" onclick="v5Settings"/>
+    </div>
     <list class="feature-list system-list">
       <list-item class="feature-row"><input type="button" class="feature-btn gated-feature" value="LIGHT GUARDIAN" onclick="f23"/><text class="source warning-text">API GATED</text></list-item>
       <list-item class="feature-row"><input type="button" class="feature-btn" value="POWER COMMANDER" onclick="f24"/><text class="source">WATCH</text></list-item>
@@ -231,7 +268,7 @@
     <div class="category-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item active" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{view == 'detail'}}" class="page masterpiece-page detail-page detail-page-v4 page-enter">
+  <div if="{{view == 'detail'}}" class="page masterpiece-page detail-page detail-page-v4 functional-detail-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">ID {{selectedId}}</text><text class="status-label">{{selectedSource}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goList"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{featureState}}</text></div></div>
     <div class="page-header detail-header"><text class="page-title detail-title">{{selectedTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">{{selectedSource}}</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -381,6 +418,18 @@
       <div class="metric-row"><text class="label">MESSAGE</text><text class="value small-value">{{message}}</text></div>
     </div>
 
+    <div class="v5-decision-strip">
+      <div if="{{selectedId == '1'}}" class="v5-decision-row"><text class="v5-decision-k">PRIMARY</text><text class="v5-decision-v">HR {{heartRate}} BPM</text><text class="v5-decision-k">SENSOR</text><text class="v5-decision-v">{{featureState}}</text></div>
+      <div if="{{selectedId == '5'}}" class="v5-decision-row"><text class="v5-decision-k">SPEED</text><text class="v5-decision-v">{{speedKmh}}</text><text class="v5-decision-k">HR</text><text class="v5-decision-v">{{heartRate}}</text></div>
+      <div if="{{selectedId == '8'}}" class="v5-decision-row"><text class="v5-decision-k">HEADING</text><text class="v5-decision-v">{{headingNameText}}</text><text class="v5-decision-k">GPS</text><text class="v5-decision-v">{{gpsState}}</text></div>
+      <div if="{{selectedId == '10'}}" class="v5-decision-row"><text class="v5-decision-k">POINTS</text><text class="v5-decision-v">{{breadcrumbPoints}}</text><text class="v5-decision-k">RETURN</text><text class="v5-decision-v">{{returning}}</text></div>
+      <div if="{{selectedId == '11'}}" class="v5-decision-row"><text class="v5-decision-k">ANCHORS</text><text class="v5-decision-v">{{anchorsCount}} / 20</text><text class="v5-decision-k">GPS</text><text class="v5-decision-v">{{gpsState}}</text></div>
+      <div if="{{selectedId == '13'}}" class="v5-decision-row"><text class="v5-decision-k">PRESS</text><text class="v5-decision-v">{{pressure}}</text><text class="v5-decision-k">TREND</text><text class="v5-decision-v">{{pressureTrend}}</text></div>
+      <div if="{{selectedId == '19'}}" class="v5-decision-row"><text class="v5-decision-k">LIGHT</text><text class="v5-decision-v">SCREEN</text><text class="v5-decision-k">POWER</text><text class="v5-decision-v">{{powerProfile}}</text></div>
+      <div if="{{selectedId == '21'}}" class="v5-decision-row danger-decision"><text class="v5-decision-k">GPS</text><text class="v5-decision-v">{{gpsState}}</text><text class="v5-decision-k">IMPACT</text><text class="v5-decision-v">{{impactButtonLabel}}</text></div>
+      <div if="{{selectedId == '24'}}" class="v5-decision-row"><text class="v5-decision-k">BATTERY</text><text class="v5-decision-v">{{watchBattery}}%</text><text class="v5-decision-k">PROFILE</text><text class="v5-decision-v">{{powerProfile}}</text></div>
+      <div if="{{selectedId == '27'}}" class="v5-decision-row"><text class="v5-decision-k">LINK</text><text class="v5-decision-v">{{connectionState}}</text><text class="v5-decision-k">RECON</text><text class="v5-decision-v">WIFI {{wifiCount}}</text></div>
+    </div>
     <div class="detail-actions">
       <input if="{{action1Label != ''}}" type="button" class="hud-action active-state" value="{{action1Label}}" onclick="detailAction1"/>
       <input if="{{action2Label != ''}}" type="button" class="hud-action" value="{{action2Label}}" onclick="detailAction2"/>
@@ -395,7 +444,7 @@
     <input if="{{selectedId == '27'}}" type="button" class="wide-extra advanced-wide" value="RECON / WI-FI SCOUT" onclick="openReconHub"/>
   </div>
 
-  <div if="{{view == 'anchors'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'anchors'}}" class="page masterpiece-page utility-page functional-utility-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">GPS</text></div><text class="status-label">LOCAL DB</text><text class="battery-mini">{{anchorsCount}} / 20</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">SLOTS</text><text class="status-secure">{{anchorsCount}} / 20</text></div></div>
     <div class="page-header compact-header"><text class="page-title">GEO ANCHORS</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">NAV DATABASE</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -407,7 +456,7 @@
     <div class="detail-extra"><input type="button" class="mini-extra" value="SAVE NEW" onclick="detailAction1"/><input type="button" class="mini-extra danger" value="DELETE LAST" onclick="deleteLastAnchor"/></div>
   </div>
 
-  <div if="{{view == 'timeline'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'timeline'}}" class="page masterpiece-page utility-page functional-utility-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">LOG</text></div><text class="status-label">LOCAL</text><text class="battery-mini">80 MAX</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">STORE</text><text class="status-secure">LOCAL</text></div></div>
     <div class="page-header compact-header"><text class="page-title">MISSION TIMELINE</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">LOCAL EVENT LOG</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -416,7 +465,7 @@
     <input type="button" class="wide-extra danger" value="CLEAR TIMELINE" onclick="clearTimeline"/>
   </div>
 
-  <div if="{{view == 'capabilities'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'capabilities'}}" class="page masterpiece-page utility-page functional-utility-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ACCESS</text></div><text class="status-label">REAL DATA ONLY</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">POLICY</text><text class="status-secure">REAL ONLY</text></div></div>
     <div class="page-header compact-header"><text class="page-title">DEVICE ACCESS</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">CAPABILITY MATRIX</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -427,7 +476,7 @@
   </div>
 
 
-  <div if="{{view == 'advancedHub'}}" class="page masterpiece-page utility-page advanced-hub-v4 page-enter">
+  <div if="{{view == 'advancedHub'}}" class="page masterpiece-page utility-page advanced-hub-v4 functional-advanced-hub-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADVANCED</text></div><text class="status-label">{{quickProfile}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">CONTEXT</text><text class="status-secure">{{contextMode}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">FIELD CORE PRO</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">CONTEXT • MISSION • RECON</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -458,7 +507,7 @@
     </list>
   </div>
 
-  <div if="{{view == 'wifiScout'}}" class="page masterpiece-page utility-page wifi-scout-v4 page-enter">
+  <div if="{{view == 'wifiScout'}}" class="page masterpiece-page utility-page wifi-scout-v4 functional-wifi-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">PHONE SCAN</text></div><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">PHONE LINK</text><text class="status-secure">{{connectionState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">WI-FI SCOUT</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RADAR • LOCAL HISTORY</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -473,7 +522,7 @@
   </div>
 
 
-  <div if="{{view == 'wifiList'}}" class="page masterpiece-page utility-page wifi-list-v4 page-enter">
+  <div if="{{view == 'wifiList'}}" class="page masterpiece-page utility-page wifi-list-v4 functional-wifi-list-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">LOCAL / PHONE</text><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="wifiListBack"/><div class="status-area"><text class="status-title">SORT</text><text class="status-secure">SIGNAL</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiListTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RSSI • SECURITY • BAND</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -486,7 +535,7 @@
     <text class="wifi-note">OPEN ≠ FREE INTERNET • HIDDEN ≠ THREAT</text>
   </div>
 
-  <div if="{{view == 'wifiDetail'}}" class="page masterpiece-page utility-page wifi-detail-v4 page-enter">
+  <div if="{{view == 'wifiDetail'}}" class="page masterpiece-page utility-page wifi-detail-v4 functional-wifi-detail-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">WI-FI</text></div><text class="status-label">DETAIL</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advWifiNetworks"/><div class="status-area"><text class="status-title">RISK</text><text class="status-secure">{{wifiSelectedRisk}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiSelectedSsid}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">NETWORK DETAIL</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -495,7 +544,7 @@
     <text class="wifi-note">SIGNAL HUNT USES RSSI TREND • NOT PHYSICAL DIRECTION</text>
   </div>
 
-  <div if="{{view == 'cyberSweep'}}" class="page masterpiece-page utility-page cyber-sweep-v4 page-enter">
+  <div if="{{view == 'cyberSweep'}}" class="page masterpiece-page utility-page cyber-sweep-v4 functional-sweep-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">CYBER SWEEP</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="openWifiScout"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">CYBER SWEEP</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">WI-FI + BLUETOOTH</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -504,7 +553,7 @@
     <text class="wifi-note">NEW / UNKNOWN ≠ MALICIOUS</text>
   </div>
 
-  <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page advanced-page-v4 page-enter">
+  <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page advanced-page-v4 functional-advanced-v5 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADV</text></div><text class="status-label">{{advancedState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{advancedTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">{{advancedSubtitle}}</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -629,7 +678,7 @@
     <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="detail-extra"><input type="button" class="mini-extra" value="HAPTICS ON" onclick="advHapticsOn"/><input type="button" class="mini-extra" value="HAPTICS OFF" onclick="advHapticsOff"/></div>
   </div>
 
-  <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen emergency-v4 page-enter">
+  <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen emergency-v4 functional-emergency-v5 page-enter">
     <div class="system-status-strip emergency-strip"><div class="status-cell"><text class="status-dot danger-dot">●</text><text class="status-label">CORE</text></div><text class="danger-text">EMERGENCY</text><text class="status-label">GPS {{gpsState}}</text><text class="danger-text">SOS</text></div>
     <div class="emergency-dial"><div if="{{powerProfile != 'ENDURANCE'}}" class="emergency-pulse"></div><div class="emergency-dial-inner"><text class="emergency-title">CHECK USER</text><text class="countdown">{{emergencyCountdown}}</text><text class="emergency-sub">HIGH IMPACT / SOS</text></div></div>
     <text class="emergency-sub">SEND LOCATION WHEN TIMER ENDS</text>
