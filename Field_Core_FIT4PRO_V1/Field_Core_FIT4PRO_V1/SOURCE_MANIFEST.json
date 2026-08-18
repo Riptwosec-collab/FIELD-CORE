@@ -1,5 +1,6 @@
 {
-  "project": "Field Core FIT 4 Pro V1",
+  "project": "Field Core FIT 4 Pro V1.1",
+  "manifestVersion": "1.1-reliability",
   "packages": {
     "phone": "com.riptwosec.fieldcore",
     "watch": "com.riptwosec.fieldcore.watch"
@@ -12,7 +13,7 @@
     },
     {
       "path": "README_TH.md",
-      "bytes": 1665
+      "bytes": 4950
     },
     {
       "path": "android-companion/app/build.gradle",
@@ -24,19 +25,19 @@
     },
     {
       "path": "android-companion/app/src/main/AndroidManifest.xml",
-      "bytes": 942
+      "bytes": 872
     },
     {
       "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldCommandRouter.java",
-      "bytes": 2067
+      "bytes": 2586
     },
     {
       "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/MainActivity.java",
-      "bytes": 5608
+      "bytes": 8570
     },
     {
       "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/PhoneLocationProvider.java",
-      "bytes": 1544
+      "bytes": 2248
     },
     {
       "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/ProviderRegistry.java",
@@ -44,7 +45,7 @@
     },
     {
       "path": "android-companion/app/src/main/java/com/riptwosec/fieldcore/WearBridge.java",
-      "bytes": 3590
+      "bytes": 4667
     },
     {
       "path": "android-companion/app/src/main/res/values/strings.xml",
@@ -64,7 +65,7 @@
     },
     {
       "path": "docs/BUILD_INSTALL_TH.md",
-      "bytes": 1773
+      "bytes": 5463
     },
     {
       "path": "docs/MODULE_MAP.md",
@@ -80,7 +81,7 @@
     },
     {
       "path": "tools/preflight.py",
-      "bytes": 1480
+      "bytes": 6322
     },
     {
       "path": "watch-lite/build-profile.json5",
@@ -112,7 +113,7 @@
     },
     {
       "path": "watch-lite/entry/src/main/js/MainAbility/common/featureCatalog.js",
-      "bytes": 7533
+      "bytes": 7638
     },
     {
       "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.css",
@@ -120,11 +121,11 @@
     },
     {
       "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml",
-      "bytes": 9223
+      "bytes": 9212
     },
     {
       "path": "watch-lite/entry/src/main/js/MainAbility/pages/index/index.js",
-      "bytes": 18393
+      "bytes": 21042
     },
     {
       "path": "watch-lite/entry/src/main/js/MainAbility/wearengine/REPLACE_WITH_OFFICIAL_SDK.txt",
