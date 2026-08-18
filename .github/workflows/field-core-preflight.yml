@@ -35,10 +35,11 @@ jobs:
           if ! grep -q "openCommandCenter" "$RUNTIME" && [ -f tools/apply_field_core_advanced.py ]; then
             python tools/apply_field_core_advanced.py
           fi
-          if [ -f tools/apply_field_core_advanced_phase2.py ]; then
-            if ! grep -q "advWifiSignal" "$RUNTIME"; then
-              python tools/apply_field_core_advanced_phase2.py
-            fi
+          if [ -f tools/apply_field_core_advanced_phase2.py ] && ! grep -q "advWifiSignal" "$RUNTIME"; then
+            python tools/apply_field_core_advanced_phase2.py
+          fi
+          if [ -f tools/apply_field_core_advanced_phase3.py ] && ! grep -q "wifi1Detail" "$RUNTIME"; then
+            python tools/apply_field_core_advanced_phase3.py
           fi
 
       - name: Normalize Wi-Fi Scout preflight marker
@@ -64,6 +65,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/AndroidManifest.xml
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/FieldUpgradeManager.java
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/WifiScoutManager.java
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/android-companion/app/src/main/java/com/riptwosec/fieldcore/BluetoothReconManager.java
@@ -72,5 +74,5 @@ jobs:
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.css
           git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/tools/preflight.py
-          git commit -m "Integrate FIELD CORE Advanced Pro generated changes [advanced-applied]"
+          git commit -m "Integrate FIELD CORE Advanced Pro phase 3 [advanced-applied]"
           git push origin HEAD:${GITHUB_REF_NAME}
