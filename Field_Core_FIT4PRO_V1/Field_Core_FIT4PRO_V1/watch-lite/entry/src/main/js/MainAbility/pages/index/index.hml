@@ -1,119 +1,457 @@
 <stack class="root" onswipe="swipeEvent">
-<div if="{{view == 'home'}}" class="page home-page">
-  <div class="brand"><text class="brand-main">FIELD CORE</text><text class="brand-sub">FUSION OS</text></div>
-  <div class="fusion-panel">
-    <div class="fusion-head"><text class="fusion-state">{{fieldState}}</text><text class="mini">{{connectionState}}</text></div>
-    <text class="fusion-reason">{{fusionReason}}</text>
-    <div class="fusion-line"><text class="label">POWER</text><text class="value">{{powerLabel}}</text></div>
-    <div class="fusion-line"><text class="label">ROUTE</text><text class="value small-value">{{routeSummary}}</text></div>
+
+<div if="{{view == 'home'}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><text class="hud-ver">FUSION 2.0</text><text class="hud-secure">SECURE CORE</text></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">FUSION OS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATUS</text><text class="hud-status-v">{{connectionState}}</text></div>
   </div>
-  <div class="hud-row">
-    <div class="hud-cell"><text class="hud-k">GPS</text><text class="hud-v">{{gpsState}}</text></div>
-    <div class="hud-cell"><text class="hud-k">HR</text><text class="hud-v">{{heartRate}}</text></div>
-    <div class="hud-cell"><text class="hud-k">ALT</text><text class="hud-v">{{altitude}}</text></div>
-    <div class="hud-cell"><text class="hud-k">BAT</text><text class="hud-v">{{watchBattery}}%</text></div>
+
+  <div class="hero-row">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">GPS LOCK</text><text class="mini-v">{{gpsState}}</text></div>
+      <div class="mini-card"><text class="mini-k">HR</text><text class="mini-v">{{heartRate}} BPM</text></div>
+      <div class="mini-card"><text class="mini-k">ALT</text><text class="mini-v">{{altitude}}</text></div>
+    </div>
+
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">FIELD STATUS</text>
+          <text class="gauge-state">{{fieldState}}</text>
+          <text class="gauge-big">{{watchBattery}}%</text>
+          <text class="gauge-note">{{fusionReason}}</text>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">BATTERY</text><text class="mini-v">{{watchBattery}}%</text></div>
+      <div class="mini-card"><text class="mini-k">TEMP</text><text class="mini-v">{{weatherTemp}}</text></div>
+      <div class="mini-card"><text class="mini-k">PRESSURE</text><text class="mini-v">{{pressure}} hPa</text></div>
+    </div>
   </div>
-  <div class="env-strip"><text class="env-v">{{weatherTemp}}</text><text class="env-v">{{weatherUV}}</text><text class="env-v">P {{pressure}}</text><text class="env-v">{{headingNameText}}</text></div>
-  <div class="quick-row"><input type="button" class="quick" value="ANCHOR" onclick="quickAnchor"/><input type="button" class="quick" value="BREADCRUMB" onclick="quickBreadcrumb"/></div>
-  <div class="quick-row"><input type="button" class="quick" value="NAV" onclick="quickNav"/><input type="button" class="quick danger-quick" value="EMERGENCY" onclick="quickEmergency"/></div>
-  <div class="cat-row3"><input type="button" class="cat3" value="BIO" onclick="catBio"/><input type="button" class="cat3" value="SPORT" onclick="catSport"/><input type="button" class="cat3" value="NAV" onclick="catNav"/></div>
-  <div class="cat-row3"><input type="button" class="cat3" value="ENV" onclick="catEnv"/><input type="button" class="cat3" value="TACT" onclick="catTactical"/><input type="button" class="cat3" value="SYSTEM" onclick="catSystem"/></div>
-  <text class="footer">CACHE {{cacheState}} • SYNC {{lastSync}}</text>
+
+  <div class="telemetry-row">
+    <div class="telemetry-cell"><text class="telemetry-k">UV</text><text class="telemetry-v">{{weatherUV}}</text></div>
+    <div class="telemetry-cell"><text class="telemetry-k">HEADING</text><text class="telemetry-v">{{headingNameText}}</text></div>
+    <div class="telemetry-cell wide"><text class="telemetry-k">POWER</text><text class="telemetry-v">{{powerLabel}}</text></div>
+    <div class="telemetry-cell wide"><text class="telemetry-k">ROUTE</text><text class="telemetry-v">{{routeSummary}}</text></div>
+  </div>
+
+  <div class="action-row4">
+    <input type="button" class="hud-action" value="ANCHOR" onclick="quickAnchor"/>
+    <input type="button" class="hud-action" value="BREADCRUMB" onclick="quickBreadcrumb"/>
+    <input type="button" class="hud-action" value="NAV" onclick="quickNav"/>
+    <input type="button" class="hud-action danger-hud" value="EMERGENCY" onclick="quickEmergency"/>
+  </div>
+
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn active-tab" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
 </div>
 
-<div if="{{showBio}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">BIO</text><text class="mini">{{connectionState}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="DAILY HUB" onclick="f0"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="BIO TELEMETRY" onclick="f1"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="SLEEP READINESS" onclick="f2"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="BIO COMBAT" onclick="f3"/><text class="source">WATCH+PHONE</text></list-item>
-</list></div>
+<div if="{{showBio}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">BIO SYSTEMS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATUS</text><text class="hud-status-v">{{connectionState}}</text></div>
+  </div>
 
-<div if="{{showSport}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">SPORT</text><text class="mini">{{connectionState}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="SPORTS HUD" onclick="f4"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="RUNNING COACH" onclick="f5"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="AQUA RECON" onclick="f6"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="GOLF CADDIE" onclick="f7"/><text class="source">PHONE</text></list-item>
-</list></div>
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">HR</text><text class="mini-v">{{heartRate}} BPM</text></div>
+      <div class="mini-card"><text class="mini-k">SENSOR</text><text class="mini-v">{{featureState}}</text></div>
+      <div class="mini-card"><text class="mini-k">MOTION</text><text class="mini-v">{{impactButtonLabel}}</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">VITAL STATUS</text>
+          <text class="gauge-state">{{fieldState}}</text>
+          <text class="gauge-big">{{heartRate}}</text>
+          <text class="gauge-note">BPM • REAL SENSOR</text>
+        </div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">PHONE</text><text class="mini-v">{{connectionState}}</text></div>
+      <div class="mini-card"><text class="mini-k">HEALTH</text><text class="mini-v">SCOPE GATED</text></div>
+      <div class="mini-card"><text class="mini-k">CACHE</text><text class="mini-v">{{cacheState}}</text></div>
+    </div>
+  </div>
 
-<div if="{{showNav}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">NAVIGATION</text><text class="mini">{{connectionState}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="TACTICAL NAV" onclick="f8"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="SILENT NAV" onclick="f9"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="BREADCRUMB 2.0" onclick="f10"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="GEO ANCHOR PRO" onclick="f11"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="TRANSIT GUARDIAN" onclick="f12"/><text class="source">PHONE</text></list-item>
-</list></div>
+  <div class="module-row4">
+    <input type="button" class="module-tile" value="DAILY HUB" onclick="f0"/>
+    <input type="button" class="module-tile" value="BIO TELEMETRY" onclick="f1"/>
+    <input type="button" class="module-tile" value="SLEEP READY" onclick="f2"/>
+    <input type="button" class="module-tile" value="BIO COMBAT" onclick="f3"/>
+  </div>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn active-tab" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
 
-<div if="{{showEnv}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">ENVIRONMENT</text><text class="mini">{{weatherState}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="ATMOSPHERIC" onclick="f13"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="SOLAR SENTINEL" onclick="f14"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="THERMAL LOAD" onclick="f15"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="ALTITUDE SENTINEL" onclick="f16"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="SKY SCANNER" onclick="f17"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="ACOUSTIC MONITOR" onclick="f18"/><text class="source">PHONE</text></list-item>
-</list></div>
+<div if="{{showSport}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">SPORT SYSTEMS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATUS</text><text class="hud-status-v">{{connectionState}}</text></div>
+  </div>
 
-<div if="{{showTactical}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">TACTICAL</text><text class="mini">{{powerProfile}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="TACTICAL LIGHT" onclick="f19"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="GRID-DOWN" onclick="f20"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="EMERGENCY CORE PRO" onclick="f21"/><text class="source">WATCH+PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="DEPTH HUD" onclick="f22"/><text class="source">API GATED</text></list-item>
-</list></div>
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">SPEED</text><text class="mini-v">{{speedKmh}} KM/H</text></div>
+      <div class="mini-card"><text class="mini-k">HR</text><text class="mini-v">{{heartRate}} BPM</text></div>
+      <div class="mini-card"><text class="mini-k">GPS</text><text class="mini-v">{{gpsState}}</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">PERFORMANCE</text>
+          <text class="gauge-state">{{featureState}}</text>
+          <text class="gauge-big">{{speedKmh}}</text>
+          <text class="gauge-note">KM/H • {{powerProfile}}</text>
+        </div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">ALTITUDE</text><text class="mini-v">{{altitude}}</text></div>
+      <div class="mini-card"><text class="mini-k">ROUTE</text><text class="mini-v">{{breadcrumbPoints}} PTS</text></div>
+      <div class="mini-card"><text class="mini-k">POWER</text><text class="mini-v">{{powerProfile}}</text></div>
+    </div>
+  </div>
 
-<div if="{{showSystem}}" class="page"><div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">SYSTEM</text><text class="mini">{{powerLabel}}</text></div><list class="feature-list">
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="LIGHT GUARDIAN" onclick="f23"/><text class="source">API GATED</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="POWER COMMANDER 2.0" onclick="f24"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="MOTION COMMAND" onclick="f25"/><text class="source">WATCH</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="VOICE COMMAND 2.0" onclick="f26"/><text class="source">PHONE</text></list-item>
-  <list-item class="feature-row"><input type="button" class="feature-btn" value="DEVICE ACCESS" onclick="f27"/><text class="source">WATCH+PHONE</text></list-item>
-</list></div>
+  <div class="module-row4">
+    <input type="button" class="module-tile" value="SPORTS HUD" onclick="f4"/>
+    <input type="button" class="module-tile" value="RUN COACH" onclick="f5"/>
+    <input type="button" class="module-tile" value="AQUA RECON" onclick="f6"/>
+    <input type="button" class="module-tile" value="GOLF CADDIE" onclick="f7"/>
+  </div>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn active-tab" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
+
+<div if="{{showNav}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">NAV SYSTEMS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATUS</text><text class="hud-status-v">{{connectionState}}</text></div>
+  </div>
+
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">GPS LOCK</text><text class="mini-v">{{gpsState}}</text></div>
+      <div class="mini-card"><text class="mini-k">ROUTE</text><text class="mini-v">{{breadcrumbPoints}} PTS</text></div>
+      <div class="mini-card"><text class="mini-k">ALT</text><text class="mini-v">{{altitude}}</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="compass-ring">
+        <text class="compass-cardinal">N</text>
+        <div class="compass-mid">
+          <text class="compass-cardinal side-cardinal">W</text>
+          <div class="compass-core">
+            <text class="compass-arrow">▲</text>
+            <text class="gauge-big">{{heading}}</text>
+            <text class="gauge-note">{{headingNameText}}</text>
+          </div>
+          <text class="compass-cardinal side-cardinal">E</text>
+        </div>
+        <text class="compass-cardinal">S</text>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">RETURN</text><text class="mini-v">{{returning}}</text></div>
+      <div class="mini-card"><text class="mini-k">SPEED</text><text class="mini-v">{{speedKmh}} KM/H</text></div>
+      <div class="mini-card"><text class="mini-k">POWER</text><text class="mini-v">{{powerProfile}}</text></div>
+    </div>
+  </div>
+
+  <div class="module-row5">
+    <input type="button" class="module-tile5" value="TACT NAV" onclick="f8"/>
+    <input type="button" class="module-tile5" value="SILENT NAV" onclick="f9"/>
+    <input type="button" class="module-tile5" value="BREADCRUMB" onclick="f10"/>
+    <input type="button" class="module-tile5" value="GEO ANCHOR" onclick="f11"/>
+    <input type="button" class="module-tile5" value="TRANSIT" onclick="f12"/>
+  </div>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn active-tab" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
+
+<div if="{{showEnv}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">ENV SYSTEMS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">WEATHER</text><text class="hud-status-v">{{weatherState}}</text></div>
+  </div>
+
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">TEMP</text><text class="mini-v">{{weatherTemp}}</text></div>
+      <div class="mini-card"><text class="mini-k">UV INDEX</text><text class="mini-v">{{weatherUV}}</text></div>
+      <div class="mini-card"><text class="mini-k">PRESSURE</text><text class="mini-v">{{pressure}} hPa</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">ENV STATUS</text>
+          <text class="gauge-state">{{pressureTrend}}</text>
+          <text class="gauge-big">{{weatherTemp}}</text>
+          <text class="gauge-note">{{weatherState}}</text>
+        </div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">SUNSET</text><text class="mini-v">{{weatherSun}}</text></div>
+      <div class="mini-card"><text class="mini-k">ALTITUDE</text><text class="mini-v">{{altitude}}</text></div>
+      <div class="mini-card"><text class="mini-k">CACHE</text><text class="mini-v">{{cacheState}}</text></div>
+    </div>
+  </div>
+
+  <div class="module-grid6">
+    <div class="module-row3">
+      <input type="button" class="module-tile6" value="ATMOSPHERIC" onclick="f13"/>
+      <input type="button" class="module-tile6" value="SOLAR" onclick="f14"/>
+      <input type="button" class="module-tile6" value="THERMAL" onclick="f15"/>
+    </div>
+    <div class="module-row3">
+      <input type="button" class="module-tile6" value="ALTITUDE" onclick="f16"/>
+      <input type="button" class="module-tile6" value="SKY SCANNER" onclick="f17"/>
+      <input type="button" class="module-tile6" value="ACOUSTIC" onclick="f18"/>
+    </div>
+  </div>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn active-tab" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
+
+<div if="{{showTactical}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">TACTICAL SYSTEMS</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">POWER</text><text class="hud-status-v">{{watchBattery}}%</text></div>
+  </div>
+
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">GRID MODE</text><text class="mini-v">{{powerProfile}}</text></div>
+      <div class="mini-card"><text class="mini-k">IMPACT</text><text class="mini-v">{{impactButtonLabel}}</text></div>
+      <div class="mini-card"><text class="mini-k">GPS</text><text class="mini-v">{{gpsState}}</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-ring tactical-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">TACTICAL STATUS</text>
+          <text class="gauge-state">{{fieldState}}</text>
+          <text class="gauge-big">{{watchBattery}}%</text>
+          <text class="gauge-note">{{fusionReason}}</text>
+        </div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">PHONE LINK</text><text class="mini-v">{{connectionState}}</text></div>
+      <div class="mini-card"><text class="mini-k">ROUTE</text><text class="mini-v">{{breadcrumbPoints}} PTS</text></div>
+      <div class="mini-card"><text class="mini-k">CACHE</text><text class="mini-v">{{cacheState}}</text></div>
+    </div>
+  </div>
+
+  <div class="module-row4">
+    <input type="button" class="module-tile" value="TACT LIGHT" onclick="f19"/>
+    <input type="button" class="module-tile" value="GRID-DOWN" onclick="f20"/>
+    <input type="button" class="module-tile danger-tile" value="EMERGENCY" onclick="f21"/>
+    <input type="button" class="module-tile" value="DEPTH HUD" onclick="f22"/>
+  </div>
+  <text class="api-gated-note">DEPTH HUD • API GATED</text>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn active-tab" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
+
+<div if="{{showSystem}}" class="page hud-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">FIELD CORE</text><text class="hud-subtitle">SYSTEM CONTROL</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATUS</text><text class="hud-status-v">{{connectionState}}</text></div>
+  </div>
+
+  <div class="hero-row category-hero">
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">DEVICE</text><text class="mini-v">FIT 4 PRO</text></div>
+      <div class="mini-card"><text class="mini-k">PHONE LINK</text><text class="mini-v">{{connectionState}}</text></div>
+      <div class="mini-card"><text class="mini-k">CACHE</text><text class="mini-v">{{cacheState}}</text></div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <div class="gauge-inner">
+          <text class="gauge-k">SYSTEM STATUS</text>
+          <text class="gauge-state">{{fieldState}}</text>
+          <text class="gauge-big">{{watchBattery}}%</text>
+          <text class="gauge-note">{{powerLabel}}</text>
+        </div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="mini-card"><text class="mini-k">VOICE</text><text class="mini-v">{{connectionState}}</text></div>
+      <div class="mini-card"><text class="mini-k">MOTION</text><text class="mini-v">{{motionArmed}}</text></div>
+      <div class="mini-card"><text class="mini-k">POWER</text><text class="mini-v">{{powerProfile}}</text></div>
+    </div>
+  </div>
+
+  <div class="module-row5">
+    <input type="button" class="module-tile5" value="LIGHT GUARD" onclick="f23"/>
+    <input type="button" class="module-tile5" value="POWER CMD" onclick="f24"/>
+    <input type="button" class="module-tile5" value="MOTION CMD" onclick="f25"/>
+    <input type="button" class="module-tile5" value="VOICE CMD" onclick="f26"/>
+    <input type="button" class="module-tile5" value="DEVICE" onclick="f27"/>
+  </div>
+  <text class="api-gated-note">LIGHT GUARDIAN • API GATED</text>
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn active-tab" value="SYSTEM" onclick="catSystem"/>
+  </div>
+</div>
 
 <div if="{{view == 'detail'}}" class="page detail-page">
-  <div class="topbar"><input type="button" class="back" value="&lt;" onclick="goList"/><text class="title">{{selectedTitle}}</text><text class="mini">{{selectedSource}}</text></div>
-  <div class="detail-card"><text class="detail-desc">{{selectedDesc}}</text><div class="metric-row"><text class="label">STATE</text><text class="ok">{{featureState}}</text></div><div class="metric-row"><text class="label">DATA</text><text class="value small-value">{{featureData}}</text></div></div>
-  <input if="{{action1Label != ''}}" type="button" class="action" value="{{action1Label}}" onclick="detailAction1"/>
-  <input if="{{action2Label != ''}}" type="button" class="action" value="{{action2Label}}" onclick="detailAction2"/>
-  <input if="{{action3Label != ''}}" type="button" class="action" value="{{action3Label}}" onclick="detailAction3"/>
-  <input if="{{action4Label != ''}}" type="button" class="action danger" value="{{action4Label}}" onclick="detailAction4"/>
-  <div if="{{selectedId == '10'}}" class="special-row"><input type="button" class="special" value="NEW ROUTE" onclick="newBreadcrumb"/><input type="button" class="special" value="STOP RETURN" onclick="stopReturn"/></div>
-  <div if="{{selectedId == '21'}}" class="special-row"><input type="button" class="special" value="{{impactButtonLabel}}" onclick="toggleImpactAssist"/><input type="button" class="special danger" value="COUNTDOWN" onclick="startEmergencyCountdown"/></div>
-  <input if="{{selectedId == '24'}}" type="button" class="special-wide" value="AUTO POWER" onclick="enableAutoPower"/>
-  <input if="{{selectedId == '27'}}" type="button" class="special-wide" value="CAPABILITY MATRIX" onclick="openCapabilities"/>
-  <text class="message">{{message}}</text>
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goList"/></div>
+    <div class="hud-top-center"><text class="hud-brand detail-title">{{selectedTitle}}</text><text class="hud-subtitle">{{selectedSource}}</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STATE</text><text class="hud-status-v">{{featureState}}</text></div>
+  </div>
+
+  <div class="detail-hud-card">
+    <div class="detail-gauge">
+      <div class="detail-gauge-inner">
+        <text class="gauge-k">MODULE</text>
+        <text class="detail-state">{{featureState}}</text>
+      </div>
+    </div>
+    <div class="detail-copy">
+      <text class="detail-desc">{{selectedDesc}}</text>
+      <text class="detail-data">{{featureData}}</text>
+      <text class="detail-message">{{message}}</text>
+    </div>
+  </div>
+
+  <div class="action-grid">
+    <input if="{{action1Label != ''}}" type="button" class="action-hud" value="{{action1Label}}" onclick="detailAction1"/>
+    <input if="{{action2Label != ''}}" type="button" class="action-hud" value="{{action2Label}}" onclick="detailAction2"/>
+    <input if="{{action3Label != ''}}" type="button" class="action-hud" value="{{action3Label}}" onclick="detailAction3"/>
+    <input if="{{action4Label != ''}}" type="button" class="action-hud danger-hud" value="{{action4Label}}" onclick="detailAction4"/>
+  </div>
+
+  <div if="{{selectedId == '10'}}" class="special-row">
+    <input type="button" class="special-hud" value="NEW ROUTE" onclick="newBreadcrumb"/>
+    <input type="button" class="special-hud" value="STOP RETURN" onclick="stopReturn"/>
+  </div>
+  <div if="{{selectedId == '21'}}" class="special-row">
+    <input type="button" class="special-hud" value="{{impactButtonLabel}}" onclick="toggleImpactAssist"/>
+    <input type="button" class="special-hud danger-hud" value="COUNTDOWN" onclick="startEmergencyCountdown"/>
+  </div>
+  <input if="{{selectedId == '24'}}" type="button" class="special-wide-hud" value="AUTO POWER" onclick="enableAutoPower"/>
+  <input if="{{selectedId == '27'}}" type="button" class="special-wide-hud" value="CAPABILITY MATRIX" onclick="openCapabilities"/>
+
+  <div class="bottom-tabs">
+    <input type="button" class="tab-btn" value="BIO" onclick="catBio"/>
+    <input type="button" class="tab-btn" value="SPORT" onclick="catSport"/>
+    <input type="button" class="tab-btn" value="NAV" onclick="catNav"/>
+    <input type="button" class="tab-btn" value="ENV" onclick="catEnv"/>
+    <input type="button" class="tab-btn" value="TACT" onclick="catTactical"/>
+    <input type="button" class="tab-btn" value="SYSTEM" onclick="catSystem"/>
+  </div>
 </div>
 
-<div if="{{view == 'anchors'}}" class="page">
-  <div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">GEO ANCHORS</text><text class="mini">{{anchorsCount}} / 20</text></div>
-  <div class="anchor-row"><div class="anchor-copy"><text class="anchor-name">{{anchor1}}</text><text class="anchor-meta">{{anchor1Meta}}</text></div><input type="button" class="anchor-go" value="RETURN" onclick="anchor1Return"/></div>
-  <div class="anchor-row"><div class="anchor-copy"><text class="anchor-name">{{anchor2}}</text><text class="anchor-meta">{{anchor2Meta}}</text></div><input type="button" class="anchor-go" value="RETURN" onclick="anchor2Return"/></div>
-  <div class="anchor-row"><div class="anchor-copy"><text class="anchor-name">{{anchor3}}</text><text class="anchor-meta">{{anchor3Meta}}</text></div><input type="button" class="anchor-go" value="RETURN" onclick="anchor3Return"/></div>
-  <div class="anchor-row"><div class="anchor-copy"><text class="anchor-name">{{anchor4}}</text><text class="anchor-meta">{{anchor4Meta}}</text></div><input type="button" class="anchor-go" value="RETURN" onclick="anchor4Return"/></div>
-  <div class="pager"><input type="button" class="special" value="PREV" onclick="anchorPrev"/><input type="button" class="special" value="NEXT" onclick="anchorNext"/></div>
-  <div class="pager"><input type="button" class="special" value="SAVE NEW" onclick="detailAction1"/><input type="button" class="special danger" value="DELETE LAST" onclick="deleteLastAnchor"/></div>
+<div if="{{view == 'anchors'}}" class="page utility-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">GEO ANCHORS</text><text class="hud-subtitle">NAV DATABASE</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">SLOTS</text><text class="hud-status-v">{{anchorsCount}} / 20</text></div>
+  </div>
+
+  <div class="anchor-grid">
+    <div class="anchor-grid-row">
+      <div class="anchor-card"><text class="anchor-name">{{anchor1}}</text><text class="anchor-meta">{{anchor1Meta}}</text><input type="button" class="anchor-go" value="RETURN" onclick="anchor1Return"/></div>
+      <div class="anchor-card"><text class="anchor-name">{{anchor2}}</text><text class="anchor-meta">{{anchor2Meta}}</text><input type="button" class="anchor-go" value="RETURN" onclick="anchor2Return"/></div>
+    </div>
+    <div class="anchor-grid-row">
+      <div class="anchor-card"><text class="anchor-name">{{anchor3}}</text><text class="anchor-meta">{{anchor3Meta}}</text><input type="button" class="anchor-go" value="RETURN" onclick="anchor3Return"/></div>
+      <div class="anchor-card"><text class="anchor-name">{{anchor4}}</text><text class="anchor-meta">{{anchor4Meta}}</text><input type="button" class="anchor-go" value="RETURN" onclick="anchor4Return"/></div>
+    </div>
+  </div>
+  <div class="special-row"><input type="button" class="special-hud" value="PREV" onclick="anchorPrev"/><input type="button" class="special-hud" value="NEXT" onclick="anchorNext"/></div>
+  <div class="special-row"><input type="button" class="special-hud" value="SAVE NEW" onclick="detailAction1"/><input type="button" class="special-hud danger-hud" value="DELETE LAST" onclick="deleteLastAnchor"/></div>
 </div>
 
-<div if="{{view == 'timeline'}}" class="page">
-  <div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">MISSION TIMELINE</text><text class="mini">LOCAL</text></div>
+<div if="{{view == 'timeline'}}" class="page utility-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">MISSION LOG</text><text class="hud-subtitle">MISSION TIMELINE</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">STORE</text><text class="hud-status-v">LOCAL</text></div>
+  </div>
   <div class="timeline-card"><text class="timeline-line">{{timeline1}}</text></div>
   <div class="timeline-card"><text class="timeline-line">{{timeline2}}</text></div>
   <div class="timeline-card"><text class="timeline-line">{{timeline3}}</text></div>
   <div class="timeline-card"><text class="timeline-line">{{timeline4}}</text></div>
-  <div class="pager"><input type="button" class="special" value="NEWER" onclick="timelineNewer"/><input type="button" class="special" value="OLDER" onclick="timelineOlder"/></div>
-  <input type="button" class="special-wide danger" value="CLEAR TIMELINE" onclick="clearTimeline"/>
+  <div class="special-row"><input type="button" class="special-hud" value="NEWER" onclick="timelineNewer"/><input type="button" class="special-hud" value="OLDER" onclick="timelineOlder"/></div>
+  <input type="button" class="special-wide-hud danger-hud" value="CLEAR TIMELINE" onclick="clearTimeline"/>
 </div>
 
-<div if="{{view == 'capabilities'}}" class="page">
-  <div class="topbar"><input type="button" class="back" value="&lt;" onclick="goHome"/><text class="title">DEVICE ACCESS</text><text class="mini">REAL ONLY</text></div>
+<div if="{{view == 'capabilities'}}" class="page utility-page">
+  <div class="hud-top">
+    <div class="hud-top-left"><input type="button" class="hud-back" value="&lt;" onclick="goHome"/></div>
+    <div class="hud-top-center"><text class="hud-brand">DEVICE ACCESS</text><text class="hud-subtitle">CAPABILITY MATRIX</text></div>
+    <div class="hud-top-right"><text class="hud-status-k">POLICY</text><text class="hud-status-v">REAL ONLY</text></div>
+  </div>
   <div class="cap-card"><text class="cap-text">{{capabilityText}}</text></div>
-  <input type="button" class="special-wide" value="REFRESH PHONE STATUS" onclick="detailAction1"/>
-  <input type="button" class="special-wide" value="SYNC" onclick="detailAction2"/>
+  <input type="button" class="special-wide-hud" value="REFRESH PHONE STATUS" onclick="detailAction1"/>
+  <input type="button" class="special-wide-hud" value="SYNC" onclick="detailAction2"/>
+  <text class="api-gated-note">DEPTH + AMBIENT LIGHT • API GATED</text>
 </div>
 
 <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen">
-  <text class="emergency-title">CHECK USER</text><text class="emergency-sub">HIGH IMPACT / SOS</text><text class="countdown">{{emergencyCountdown}}</text><text class="emergency-sub">SEND LOCATION WHEN TIMER ENDS</text>
-  <input type="button" class="emergency-send" value="SEND NOW" onclick="sendEmergencyNow"/><input type="button" class="emergency-cancel" value="I'M OK / CANCEL" onclick="cancelEmergency"/>
+  <div class="emergency-ring"><div class="emergency-ring-inner"><text class="emergency-title">CHECK USER</text><text class="countdown">{{emergencyCountdown}}</text><text class="emergency-sub">HIGH IMPACT / SOS</text></div></div>
+  <text class="emergency-sub">SEND LOCATION WHEN TIMER ENDS</text>
+  <input type="button" class="emergency-send" value="SEND NOW" onclick="sendEmergencyNow"/>
+  <input type="button" class="emergency-cancel" value="I'M OK / CANCEL" onclick="cancelEmergency"/>
 </div>
 
 <div if="{{view == 'lightRed'}}" class="light-red"><text class="light-title">TACTICAL RED</text><text class="light-sub">FIELD LIGHT</text><input type="button" class="light-stop" value="STOP" onclick="stopLight"/></div>
 <div if="{{view == 'lightWhite'}}" class="light-white"><text class="light-title dark-text">WHITE LIGHT</text><text class="light-sub dark-text">FIELD LIGHT</text><input type="button" class="light-stop" value="STOP" onclick="stopLight"/></div>
 <div if="{{view == 'lightBlack'}}" class="light-black"><text class="light-title red-text">SOS</text><text class="light-sub red-text">FLASHING</text><input type="button" class="light-stop" value="STOP SOS" onclick="stopLight"/></div>
+
 </stack>
