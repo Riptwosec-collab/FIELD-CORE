@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 /**
  * Health/session provider with a strict real-data-only policy.
- * User-entered/session state works locally now. Huawei Health Service Kit metrics stay gated
+ * User-entered/session state works locally now. HUAWEI Health Service Kit metrics stay gated
  * until the app has the SDK plus approved/user-granted scopes.
  */
 public final class HealthProvider {
@@ -22,7 +22,7 @@ public final class HealthProvider {
         JSONObject d=new JSONObject();
         try{
             d.put("huaweiHealthInstalled",isPackageInstalled("com.huawei.health"));
-            d.put("healthSdkPresent",classPresent("com.huawei.hms.hihealth.HiHealth"));
+            d.put("healthSdkPresent",healthSdkPresent());
             d.put("scopeState","APPROVAL_AND_USER_AUTH_REQUIRED");
             d.put("policy","REAL_DATA_ONLY");
             d.put("activeSession",prefs.getString("sessionType",""));
@@ -81,6 +81,11 @@ public final class HealthProvider {
     }
     private void golfStatus(Callback cb){JSONObject d=new JSONObject();try{d.put("score",prefs.getInt("golfScore",0));d.put("source","USER SCORECARD");}catch(Exception ignored){}cb.done(true,"GOLF SCORECARD",d);}
     private void changeGolf(int delta,Callback cb){int score=Math.max(0,prefs.getInt("golfScore",0)+delta);prefs.edit().putInt("golfScore",score).apply();golfStatus(cb);}
+    private boolean healthSdkPresent(){
+        return classPresent("com.huawei.hms.hihealth.HuaweiHiHealth")
+            || classPresent("com.huawei.hms.hihealth.HiHealthDataStore")
+            || classPresent("com.huawei.hms.hihealth.HiHealth");
+    }
     private boolean classPresent(String name){try{Class.forName(name);return true;}catch(Throwable ignored){return false;}}
     private boolean isPackageInstalled(String pkg){try{context.getPackageManager().getPackageInfo(pkg,0);return true;}catch(PackageManager.NameNotFoundException e){return false;}}
 }
