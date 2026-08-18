@@ -1,4 +1,5 @@
 <stack class="root" onswipe="swipeEvent">
+  <!-- FIELD CORE VISUAL V4: DISTINCT ALL-PAGE MASTERPIECE -->
   <div class="grid-layer"></div>
   <div if="{{powerProfile != 'ENDURANCE'}}" class="scan-beam"></div>
 
@@ -16,8 +17,8 @@
     </div>
 
     <div class="page-header home-header">
-      <text class="page-title">FUSION OS</text>
-      <div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">FIELD STATUS</text><div class="subtitle-line pulse-line"></div></div>
+      <text class="page-title">FIELD CORE</text>
+      <div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">FUSION OS</text><div class="subtitle-line pulse-line"></div></div>
     </div>
 
     <div class="telemetry-strip">
@@ -69,7 +70,7 @@
     </div>
   </div>
 
-  <div if="{{showBio}}" class="page masterpiece-page page-enter">
+  <div if="{{showBio}}" class="page masterpiece-page bio-page-v4 page-enter">
     <div class="system-status-strip">
       <div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div>
       <div class="status-cell"><text class="status-dot online">●</text><text class="status-label">BIO</text></div>
@@ -102,7 +103,7 @@
     <div class="category-dock"><input type="button" class="dock-item active" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{showSport}}" class="page masterpiece-page page-enter">
+  <div if="{{showSport}}" class="page masterpiece-page sport-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">SPORT</text></div><text class="status-label">GPS {{gpsState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">STATUS</text><text class="status-secure">{{connectionState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">SPORT</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">PERFORMANCE HUD</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -128,7 +129,7 @@
     <div class="category-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item active" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{showNav}}" class="page masterpiece-page page-enter">
+  <div if="{{showNav}}" class="page masterpiece-page nav-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">NAV</text></div><text class="status-label">ROUTE {{breadcrumbPoints}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">GPS</text><text class="status-secure">{{gpsState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">NAV</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">TACTICAL NAVIGATION</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -157,7 +158,7 @@
     <div class="category-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item active" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{showEnv}}" class="page masterpiece-page page-enter">
+  <div if="{{showEnv}}" class="page masterpiece-page env-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ENV</text></div><text class="status-label">{{weatherState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">CACHE</text><text class="status-secure">{{cacheState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">ENV</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">ATMOSPHERIC INTELLIGENCE</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -186,7 +187,7 @@
     <div class="category-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item active" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{showTactical}}" class="page masterpiece-page tactical-page page-enter">
+  <div if="{{showTactical}}" class="page masterpiece-page tactical-page tactical-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot danger-dot">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot danger-dot">●</text><text class="status-label">TACTICAL</text></div><text class="status-label">{{impactButtonLabel}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber tactical-back" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">POWER</text><text class="status-danger">{{powerProfile}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">TACTICAL</text><div class="subtitle-row"><div class="subtitle-line danger-line"></div><text class="page-subtitle danger-sub">OFFLINE / EMERGENCY CORE</text><div class="subtitle-line danger-line"></div></div></div>
@@ -205,7 +206,7 @@
     <div class="category-dock tactical-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item active danger-active" value="TAC" onclick="catTactical"/><input type="button" class="dock-item" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{showSystem}}" class="page masterpiece-page page-enter">
+  <div if="{{showSystem}}" class="page masterpiece-page system-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">SYSTEM</text></div><text class="status-label">CACHE {{cacheState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">LINK</text><text class="status-secure">{{connectionState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">SYSTEM</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">DEVICE CONTROL</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -230,7 +231,7 @@
     <div class="category-dock"><input type="button" class="dock-item" value="BIO" onclick="catBio"/><input type="button" class="dock-item" value="RUN" onclick="catSport"/><input type="button" class="dock-item" value="NAV" onclick="catNav"/><input type="button" class="dock-item" value="ENV" onclick="catEnv"/><input type="button" class="dock-item" value="TAC" onclick="catTactical"/><input type="button" class="dock-item active" value="SYS" onclick="catSystem"/></div>
   </div>
 
-  <div if="{{view == 'detail'}}" class="page masterpiece-page detail-page page-enter">
+  <div if="{{view == 'detail'}}" class="page masterpiece-page detail-page detail-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">ID {{selectedId}}</text><text class="status-label">{{selectedSource}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goList"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{featureState}}</text></div></div>
     <div class="page-header detail-header"><text class="page-title detail-title">{{selectedTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">{{selectedSource}}</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -426,7 +427,7 @@
   </div>
 
 
-  <div if="{{view == 'advancedHub'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'advancedHub'}}" class="page masterpiece-page utility-page advanced-hub-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADVANCED</text></div><text class="status-label">{{quickProfile}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="goHome"/><div class="status-area"><text class="status-title">CONTEXT</text><text class="status-secure">{{contextMode}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">FIELD CORE PRO</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">CONTEXT • MISSION • RECON</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -457,7 +458,7 @@
     </list>
   </div>
 
-  <div if="{{view == 'wifiScout'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'wifiScout'}}" class="page masterpiece-page utility-page wifi-scout-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">PHONE SCAN</text></div><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">PHONE LINK</text><text class="status-secure">{{connectionState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">WI-FI SCOUT</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RADAR • LOCAL HISTORY</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -472,7 +473,7 @@
   </div>
 
 
-  <div if="{{view == 'wifiList'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'wifiList'}}" class="page masterpiece-page utility-page wifi-list-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">LOCAL / PHONE</text><text class="status-label">AGE {{wifiAge}}s</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="wifiListBack"/><div class="status-area"><text class="status-title">SORT</text><text class="status-secure">SIGNAL</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiListTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">RSSI • SECURITY • BAND</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -485,7 +486,7 @@
     <text class="wifi-note">OPEN ≠ FREE INTERNET • HIDDEN ≠ THREAT</text>
   </div>
 
-  <div if="{{view == 'wifiDetail'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'wifiDetail'}}" class="page masterpiece-page utility-page wifi-detail-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">WI-FI</text></div><text class="status-label">DETAIL</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advWifiNetworks"/><div class="status-area"><text class="status-title">RISK</text><text class="status-secure">{{wifiSelectedRisk}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{wifiSelectedSsid}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">NETWORK DETAIL</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -494,7 +495,7 @@
     <text class="wifi-note">SIGNAL HUNT USES RSSI TREND • NOT PHYSICAL DIRECTION</text>
   </div>
 
-  <div if="{{view == 'cyberSweep'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'cyberSweep'}}" class="page masterpiece-page utility-page cyber-sweep-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><text class="status-label">CYBER SWEEP</text><text class="status-label">LOCAL</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="openWifiScout"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title">CYBER SWEEP</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">WI-FI + BLUETOOTH</text><div class="subtitle-line pulse-line"></div></div></div>
@@ -503,11 +504,117 @@
     <text class="wifi-note">NEW / UNKNOWN ≠ MALICIOUS</text>
   </div>
 
-  <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page page-enter">
+  <div if="{{view == 'advanced'}}" class="page masterpiece-page utility-page advanced-page-v4 page-enter">
     <div class="system-status-strip"><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">CORE</text></div><div class="status-cell"><text class="status-dot online">●</text><text class="status-label">ADV</text></div><text class="status-label">{{advancedState}}</text><text class="battery-mini">{{watchBattery}}%</text></div>
     <div class="header"><input type="button" class="back-cyber" value="‹" onclick="advancedBack"/><div class="status-area"><text class="status-title">STATE</text><text class="status-secure">{{advancedState}}</text></div></div>
     <div class="page-header compact-header"><text class="page-title advanced-title">{{advancedTitle}}</text><div class="subtitle-row"><div class="subtitle-line pulse-line"></div><text class="page-subtitle">{{advancedSubtitle}}</text><div class="subtitle-line pulse-line"></div></div></div>
     <div class="advanced-core"><div class="command-core"><div if="{{powerProfile != 'ENDURANCE'}}" class="command-pulse"></div><text class="command-state">{{advancedState}}</text><text class="command-app">{{contextMode}}</text></div><div class="advanced-side"><div class="module-stat"><text class="module-k">CONTEXT</text><text class="module-v">{{contextMode}}</text></div><div class="module-stat"><text class="module-k">CONF</text><text class="module-v">{{contextConfidence}}</text></div><div class="module-stat"><text class="module-k">WIFI / BT</text><text class="module-v">{{wifiCount}} / {{btCount}}</text></div><div class="module-stat"><text class="module-k">RISK</text><text class="module-v">{{envRisk}}</text></div></div></div>
+
+    <!-- VISUAL V4: every Advanced function gets its own graphic composition -->
+    <div if="{{advancedTitle == 'COMMAND CENTER'}}" class="v4-stage v4-command-stage">
+      <div class="v4-terrain"><div class="v4-terrain-line tl1"></div><div class="v4-terrain-line tl2"></div><div class="v4-terrain-line tl3"></div><div class="v4-command-target"><text class="v4-target-text">CORE</text></div></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">MISSION</text><text class="v4-v">{{missionLabel}}</text></div><div class="v4-stat"><text class="v4-k">RISK</text><text class="v4-v">{{envRisk}}</text></div><div class="v4-stat"><text class="v4-k">WIFI / BT</text><text class="v4-v">{{wifiCount}} / {{btCount}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'FIELD CONTEXT'}}" class="v4-stage v4-context-stage">
+      <div class="v4-context-wheel"><div class="v4-context-ring cr1"></div><div class="v4-context-ring cr2"></div><text class="v4-context-main">{{contextMode}}</text><text class="v4-context-conf">{{contextConfidence}}</text></div>
+      <div class="v4-chip-grid"><text class="v4-chip">BIO</text><text class="v4-chip">NAV</text><text class="v4-chip">ENV</text><text class="v4-chip">POWER</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'TELEMETRY CONFIDENCE'}}" class="v4-stage v4-confidence-stage">
+      <div class="v4-quality-row"><text class="v4-quality-label">GPS</text><div class="v4-quality-track"><div class="v4-quality-fill qf1"></div></div><text class="v4-quality-value">{{gpsState}}</text></div>
+      <div class="v4-quality-row"><text class="v4-quality-label">HR</text><div class="v4-quality-track"><div class="v4-quality-fill qf2"></div></div><text class="v4-quality-value">{{heartRate}}</text></div>
+      <div class="v4-quality-row"><text class="v4-quality-label">LINK</text><div class="v4-quality-track"><div class="v4-quality-fill qf3"></div></div><text class="v4-quality-value">{{connectionState}}</text></div>
+      <div class="v4-quality-row"><text class="v4-quality-label">WIFI</text><div class="v4-quality-track"><div class="v4-quality-fill qf4"></div></div><text class="v4-quality-value">{{wifiAge}}s</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'LOST MODE PRO'}}" class="v4-stage v4-lost-stage">
+      <div class="network-radar v4-lost-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="radar-sweep"></div><div class="radar-core"><text class="radar-value">{{breadcrumbPoints}}</text><text class="radar-label">RETURN</text></div></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">GPS</text><text class="v4-v">{{gpsState}}</text></div><div class="v4-stat"><text class="v4-k">ROUTE</text><text class="v4-v">{{routeSummary}}</text></div><div class="v4-stat"><text class="v4-k">BATTERY</text><text class="v4-v">{{watchBattery}}%</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'MISSION PACK'}}" class="v4-stage v4-mission-stage">
+      <div class="v4-mission-flow"><div class="v4-mission-node active-node"><text class="v4-node-k">CACHE</text><text class="v4-node-v">{{cacheState}}</text></div><div class="v4-mission-link"><div class="v4-flow-packet"></div></div><div class="v4-mission-node"><text class="v4-node-k">ROUTE</text><text class="v4-node-v">{{breadcrumbPoints}}</text></div><div class="v4-mission-link"><div class="v4-flow-packet fp2"></div></div><div class="v4-mission-node"><text class="v4-node-k">SAFE</text><text class="v4-node-v">{{anchorsCount}}</text></div></div>
+      <text class="v4-stage-note">WEATHER {{weatherState}} • {{missionLabel}}</text>
+    </div>
+
+    <div if="{{advancedTitle == 'ENVIRONMENT RISK'}}" class="v4-stage v4-env-risk-stage">
+      <div class="v4-risk-dial"><div class="v4-risk-ring"></div><text class="v4-risk-value">{{envRisk}}</text><text class="v4-risk-label">RISK</text></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">TEMP</text><text class="v4-v">{{weatherTemp}}</text></div><div class="v4-stat"><text class="v4-k">UV</text><text class="v4-v">{{weatherUV}}</text></div><div class="v4-stat"><text class="v4-k">PRESSURE</text><text class="v4-v">{{pressureTrend}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'SENSOR SELF-TEST'}}" class="v4-stage v4-sensor-stage">
+      <div class="v4-sensor-grid"><div class="v4-sensor-cell"><text class="v4-k">GPS</text><text class="v4-sensor-icon">◎</text><text class="v4-v">{{gpsState}}</text></div><div class="v4-sensor-cell"><text class="v4-k">HR</text><text class="v4-sensor-icon">♥</text><text class="v4-v">{{heartRate}}</text></div><div class="v4-sensor-cell"><text class="v4-k">BARO</text><text class="v4-sensor-icon">◌</text><text class="v4-v">{{pressure}}</text></div><div class="v4-sensor-cell"><text class="v4-k">COMP</text><text class="v4-sensor-icon">◇</text><text class="v4-v">{{headingNameText}}</text></div><div class="v4-sensor-cell"><text class="v4-k">MOTION</text><text class="v4-sensor-icon">⌁</text><text class="v4-v">{{impactButtonLabel}}</text></div><div class="v4-sensor-cell"><text class="v4-k">LINK</text><text class="v4-sensor-icon">↔</text><text class="v4-v">{{connectionState}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'MISSION TIMELINE PRO'}}" class="v4-stage v4-timeline-stage">
+      <div class="v4-timeline-rail"><div class="v4-timeline-pulse"></div></div><div class="v4-timeline-items"><text class="v4-timeline-item">{{timeline1}}</text><text class="v4-timeline-item">{{timeline2}}</text><text class="v4-timeline-item">{{timeline3}}</text><text class="v4-timeline-item">{{timeline4}}</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'VOICE MACRO ENGINE'}}" class="v4-stage v4-voice-stage">
+      <div class="voice-core v4-voice-core"><div if="{{powerProfile != 'ENDURANCE'}}" class="voice-ring vr1"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="voice-ring vr2"></div><text class="voice-icon">MIC</text></div>
+      <div class="v4-chip-grid"><text class="v4-chip">SAVE CAR</text><text class="v4-chip">RETURN</text><text class="v4-chip">WEATHER</text><text class="v4-chip">POWER</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'NOTIFICATION FILTER'}}" class="v4-stage v4-notify-stage">
+      <div class="v4-alert-lane critical-lane"><text class="v4-alert-k">CRITICAL</text><div class="v4-alert-track"><div class="v4-alert-packet ap1"></div></div><text class="v4-alert-v">IMMEDIATE</text></div>
+      <div class="v4-alert-lane warning-lane"><text class="v4-alert-k">WARNING</text><div class="v4-alert-track"><div class="v4-alert-packet ap2"></div></div><text class="v4-alert-v">FILTERED</text></div>
+      <div class="v4-alert-lane info-lane"><text class="v4-alert-k">INFO</text><div class="v4-alert-track"><div class="v4-alert-packet ap3"></div></div><text class="v4-alert-v">QUIET</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'NEARBY DEVICE RECON'}}" class="v4-stage v4-bt-stage">
+      <div class="network-radar v4-device-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="radar-sweep"></div><div class="radar-core"><text class="radar-value">{{btCount}}</text><text class="radar-label">BLE</text></div></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">TRUSTED</text><text class="v4-v">{{btTrusted}}</text></div><div class="v4-stat"><text class="v4-k">UNKNOWN</text><text class="v4-v">{{btUnknown}}</text></div><div class="v4-stat"><text class="v4-k">MODE</text><text class="v4-v">PHONE</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'RUNNING ZONE HUD'}}" class="v4-stage v4-running-stage">
+      <div class="sport-ring v4-run-ring"><div class="sport-ring-inner"><text class="sport-value">{{speedKmh}}</text><text class="sport-unit">KM/H</text></div></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">HR</text><text class="v4-v">{{heartRate}}</text></div><div class="v4-stat"><text class="v4-k">ALT</text><text class="v4-v">{{altitude}}</text></div><div class="v4-stat"><text class="v4-k">ZONE</text><text class="v4-v">LIVE</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'SKY SCANNER PRO'}}" class="v4-stage v4-sky-stage">
+      <div class="sky-orbit v4-sky-orbit"><div class="sky-core">SKY</div><div class="sky-ring sr1"></div><div class="sky-ring sr2"></div><div class="sky-dot sk1"></div><div class="sky-dot sk2"></div><div class="sky-dot sk3"></div></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">SUN</text><text class="v4-v">{{weatherSun}}</text></div><div class="v4-stat"><text class="v4-k">WEATHER</text><text class="v4-v">{{weatherState}}</text></div><div class="v4-stat"><text class="v4-k">UV</text><text class="v4-v">{{weatherUV}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'NIGHT / STEALTH HUD'}}" class="v4-stage v4-stealth-stage">
+      <div class="v4-stealth-core"><div class="v4-stealth-cross-h"></div><div class="v4-stealth-cross-v"></div><text class="v4-stealth-text">STEALTH</text></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">POWER</text><text class="v4-v">{{powerProfile}}</text></div><div class="v4-stat"><text class="v4-k">ALERT</text><text class="v4-v">{{notificationMode}}</text></div><div class="v4-stat"><text class="v4-k">MOTION</text><text class="v4-v">LOW</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'RETURN DECISION HUD'}}" class="v4-stage v4-return-stage">
+      <div class="v4-return-route"><div class="v4-route-base">BASE</div><div class="v4-route-line"><div class="v4-route-packet"></div></div><div class="v4-route-user">YOU</div></div>
+      <div class="v4-return-stats"><div class="v4-stat"><text class="v4-k">ROUTE</text><text class="v4-v">{{routeSummary}}</text></div><div class="v4-stat"><text class="v4-k">POWER</text><text class="v4-v">{{watchBattery}}%</text></div><div class="v4-stat"><text class="v4-k">WEATHER</text><text class="v4-v">{{weatherState}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'FIELD QUICK PROFILES'}}" class="v4-stage v4-profile-stage">
+      <div class="v4-profile-grid"><div class="v4-profile-card"><text class="v4-profile-icon">◉</text><text class="v4-profile-name">DAILY</text></div><div class="v4-profile-card"><text class="v4-profile-icon">△</text><text class="v4-profile-name">OUTDOOR</text></div><div class="v4-profile-card"><text class="v4-profile-icon">⌁</text><text class="v4-profile-name">RUNNING</text></div><div class="v4-profile-card"><text class="v4-profile-icon">◐</text><text class="v4-profile-name">NIGHT</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'IMPACT REVIEW'}}" class="v4-stage v4-impact-stage">
+      <div class="v4-impact-core"><div class="v4-impact-h"></div><div class="v4-impact-v"></div><text class="v4-impact-text">IMPACT</text></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">GPS</text><text class="v4-v">{{gpsState}}</text></div><div class="v4-stat"><text class="v4-k">HR</text><text class="v4-v">{{heartRate}}</text></div><div class="v4-stat"><text class="v4-k">ASSIST</text><text class="v4-v">{{impactButtonLabel}}</text></div></div>
+    </div>
+
+    <div if="{{advancedTitle == 'EMERGENCY ESCALATION'}}" class="v4-stage v4-escalation-stage">
+      <div class="v4-escalation-ring"><div class="v4-escalation-inner"><text class="v4-escalation-title">L0–L3</text><text class="v4-escalation-state">{{advancedState}}</text></div></div>
+      <div class="v4-level-grid"><text class="v4-level l0">L0 OK</text><text class="v4-level l1">L1 CHECK</text><text class="v4-level l2">L2 WARN</text><text class="v4-level l3">L3 SOS</text></div>
+    </div>
+
+    <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="v4-stage v4-settings-stage">
+      <div class="shield-core v4-settings-shield"><div if="{{powerProfile != 'ENDURANCE'}}" class="shield-ring"></div><text class="shield-text">LOCAL</text></div>
+      <div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">SCAN</text><text class="v4-v">{{wifiScanMode}}</text></div><div class="v4-stat"><text class="v4-k">ALERT</text><text class="v4-v">{{notificationMode}}</text></div><div class="v4-stat"><text class="v4-k">PRIVACY</text><text class="v4-v">LOCAL FIRST</text></div></div>
+    </div>
+
+    <!-- Recon / utility Advanced pages also get distinct visual identities. -->
+    <div if="{{advancedTitle == 'BEST WI-FI'}}" class="v4-stage v4-bestwifi-stage"><div class="v4-score-ring"><text class="v4-score">BEST</text><text class="v4-score-name">{{wifiBest}}</text></div><div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">OPEN</text><text class="v4-v">{{wifiOpen}}</text></div><div class="v4-stat"><text class="v4-k">SECURED</text><text class="v4-v">{{wifiSecured}}</text></div><div class="v4-stat"><text class="v4-k">AGE</text><text class="v4-v">{{wifiAge}}s</text></div></div></div>
+    <div if="{{advancedTitle == 'CHANNELS'}}" class="v4-stage v4-channel-stage"><div class="v4-channel-bars"><div class="v4-channel-bar cb1"></div><div class="v4-channel-bar cb2"></div><div class="v4-channel-bar cb3"></div><div class="v4-channel-bar cb4"></div><div class="v4-channel-bar cb5"></div><div class="v4-channel-bar cb6"></div></div><text class="v4-stage-note">2.4 / 5 / 6 GHz LOAD</text></div>
+    <div if="{{advancedTitle == 'SIGNAL HUNT'}}" class="v4-stage v4-signal-stage"><div class="eq-row v4-signal-eq"><div class="eq-bar eq1"></div><div class="eq-bar eq5"></div><div class="eq-bar eq2"></div><div class="eq-bar eq6"></div><div class="eq-bar eq3"></div><div class="eq-bar eq4"></div><div class="eq-bar eq7"></div></div><text class="v4-stage-note">RSSI TREND • NOT PHYSICAL DIRECTION</text></div>
+    <div if="{{advancedTitle == 'DUPLICATE SSID'}}" class="v4-stage v4-duplicate-stage"><div class="v4-duplicate-node"><text class="v4-duplicate-icon">WIFI A</text></div><div class="v4-duplicate-link">?</div><div class="v4-duplicate-node"><text class="v4-duplicate-icon">WIFI B</text></div><text class="v4-stage-note">HEURISTIC ONLY • VERIFY BEFORE CONNECTING</text></div>
+    <div if="{{advancedTitle == 'OUTDOOR SCAN'}}" class="v4-stage v4-outdoor-stage"><div class="network-radar v4-outdoor-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div if="{{powerProfile != 'ENDURANCE'}}" class="radar-sweep"></div><div class="radar-core"><text class="radar-value">{{wifiCount}}</text><text class="radar-label">OUTDOOR</text></div></div><div class="v4-side-stats"><div class="v4-stat"><text class="v4-k">MODE</text><text class="v4-v">{{wifiScanMode}}</text></div><div class="v4-stat"><text class="v4-k">AGE</text><text class="v4-v">{{wifiAge}}s</text></div></div></div>
+    <div if="{{advancedTitle == 'FIND PHONE'}}" class="v4-stage v4-findphone-stage"><div class="v4-phone-core"><div class="v4-phone-pulse pp1"></div><div class="v4-phone-pulse pp2"></div><text class="v4-phone-text">PHONE</text></div><text class="v4-stage-note">HAPTIC ALERT REQUEST</text></div>
+    <div if="{{advancedTitle == 'DEVICE HISTORY'}}" class="v4-stage v4-history-stage"><div class="v4-history-line"><text class="v4-k">BLE HISTORY</text><text class="v4-v">{{btCount}}</text></div><div class="v4-history-line"><text class="v4-k">TRUSTED</text><text class="v4-v">{{btTrusted}}</text></div><div class="v4-history-line"><text class="v4-k">UNKNOWN</text><text class="v4-v">{{btUnknown}}</text></div></div>
+
     <div class="advanced-data-card"><text class="section-label">REAL / CACHED RESULT</text><text class="advanced-data">{{advancedData}}</text><text class="module-note">{{message}}</text></div>
     <div class="detail-extra"><input type="button" class="mini-extra active-state" value="REFRESH" onclick="advancedRefresh"/><input type="button" class="mini-extra" value="ADVANCED HUB" onclick="openAdvancedHub"/></div>
     <div if="{{advancedTitle == 'NIGHT / STEALTH HUD'}}" class="detail-extra"><input type="button" class="mini-extra" value="ENABLE" onclick="advStealthOn"/><input type="button" class="mini-extra" value="DISABLE" onclick="advStealthOff"/></div>
@@ -522,7 +629,7 @@
     <div if="{{advancedTitle == 'FIELD CORE SETTINGS'}}" class="detail-extra"><input type="button" class="mini-extra" value="HAPTICS ON" onclick="advHapticsOn"/><input type="button" class="mini-extra" value="HAPTICS OFF" onclick="advHapticsOff"/></div>
   </div>
 
-  <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen page-enter">
+  <div if="{{view == 'emergencyConfirm'}}" class="emergency-screen emergency-v4 page-enter">
     <div class="system-status-strip emergency-strip"><div class="status-cell"><text class="status-dot danger-dot">●</text><text class="status-label">CORE</text></div><text class="danger-text">EMERGENCY</text><text class="status-label">GPS {{gpsState}}</text><text class="danger-text">SOS</text></div>
     <div class="emergency-dial"><div if="{{powerProfile != 'ENDURANCE'}}" class="emergency-pulse"></div><div class="emergency-dial-inner"><text class="emergency-title">CHECK USER</text><text class="countdown">{{emergencyCountdown}}</text><text class="emergency-sub">HIGH IMPACT / SOS</text></div></div>
     <text class="emergency-sub">SEND LOCATION WHEN TIMER ENDS</text>
