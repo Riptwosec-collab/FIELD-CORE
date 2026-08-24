@@ -19,7 +19,7 @@
     <uses-feature android:name="android.hardware.wifi" android:required="false"/>
 
     <application android:theme="@android:style/Theme.Material.NoActionBar" android:label="Field Core Companion" android:allowBackup="false">
-        <meta-data android:name="com.huawei.hms.client.appid" android:value="appid=REPLACE_WITH_HUAWEI_APP_ID"/>
+        <meta-data android:name="com.huawei.hms.client.appid" android:value="REPLACE_WITH_HUAWEI_APP_ID"/>
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
