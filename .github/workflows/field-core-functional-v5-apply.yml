@@ -1,0 +1,58 @@
+name: FIELD CORE Functional V5 Apply
+
+on:
+  push:
+    branches:
+      - agent/field-core-full-upgrade
+    paths:
+      - tools/apply_field_core_functional_v5.py
+      - .github/workflows/field-core-functional-v5-apply.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/field-core-full-upgrade
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply wrist-first functional layouts
+        run: python tools/apply_field_core_functional_v5.py
+
+      - name: Validate FIELD CORE preflight
+        run: |
+          cd Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1
+          python tools/preflight.py
+
+      - name: Validate JavaScript syntax
+        run: node --check Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.js
+
+      - name: Validate diff
+        run: git diff --check
+
+      - name: Commit Functional V5 source
+        run: |
+          if git diff --quiet; then
+            echo "Functional V5 already applied"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.hml
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.css
+          git add Field_Core_FIT4PRO_V1/Field_Core_FIT4PRO_V1/watch-lite/entry/src/main/js/MainAbility/pages/index/index.js
+          git commit -m "Apply wrist-first functional layouts to every FIELD CORE page [functional-v5]"
+          git push origin HEAD:agent/field-core-full-upgrade
